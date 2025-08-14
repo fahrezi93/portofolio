@@ -151,17 +151,16 @@ export default function Aurora(props: AuroraProps) {
       const height = ctn.offsetHeight;
       renderer.setSize(width, height);
       if (program) {
-        // @ts-expect-error ogl uniform type
-        program.uniforms.uResolution.value = [width, height];
+        const uniforms = (program.uniforms as unknown as Record<string, { value: unknown }>);
+        uniforms.uResolution.value = [width, height];
       }
     }
     window.addEventListener("resize", resize);
 
     const geometry = new Triangle(gl);
-    // @ts-expect-error delete uv from geometry attributes
-    if (geometry.attributes.uv) {
-      // @ts-expect-error dynamic attribute removal
-      delete geometry.attributes.uv;
+    const geometryWithAttrs = geometry as unknown as { attributes?: Record<string, unknown> };
+    if (geometryWithAttrs.attributes && 'uv' in geometryWithAttrs.attributes) {
+      delete (geometryWithAttrs.attributes as Record<string, unknown>).uv;
     }
 
     const colorStopsArray = colorStops.map((hex) => {
@@ -189,15 +188,12 @@ export default function Aurora(props: AuroraProps) {
       animateId = requestAnimationFrame(update);
       const { time = t * 0.01, speed = 1.0 } = propsRef.current;
       if (program) {
-        // @ts-expect-error ogl uniform type
-        program.uniforms.uTime.value = time * speed * 0.1;
-        // @ts-expect-error ogl uniform type
-        program.uniforms.uAmplitude.value = propsRef.current.amplitude ?? 1.0;
-        // @ts-expect-error ogl uniform type
-        program.uniforms.uBlend.value = propsRef.current.blend ?? blend;
+        const uniforms = (program.uniforms as unknown as Record<string, { value: unknown }>);
+        uniforms.uTime.value = time * speed * 0.1;
+        uniforms.uAmplitude.value = propsRef.current.amplitude ?? 1.0;
+        uniforms.uBlend.value = propsRef.current.blend ?? blend;
         const stops = propsRef.current.colorStops ?? colorStops;
-        // @ts-expect-error ogl uniform type
-        program.uniforms.uColorStops.value = stops.map((hex: string) => {
+        uniforms.uColorStops.value = stops.map((hex: string) => {
           const c = new Color(hex);
           return [c.r, c.g, c.b];
         });
