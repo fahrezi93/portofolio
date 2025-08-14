@@ -49,6 +49,10 @@ export const skills: Skill[] = [
     icon: SiJavascript,
   },
   {
+    name: "Python",
+    icon: SiPython,
+  },
+  {
     name: "Figma",
     icon: SiFigma,
   },
@@ -68,8 +72,5 @@ export const skills: Skill[] = [
     name: "Google Cloud",
     icon: SiGooglecloud,
   },
-  {
-    name: "Python",
-    icon: SiPython,
-  },
+
 ];

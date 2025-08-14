@@ -1,6 +1,6 @@
 
 import { useLanguage } from "@/context/language-context";
-import { Github, Linkedin, Twitter } from "lucide-react";
+import { Github, Linkedin, Instagram, Mail } from "lucide-react";
 
 export function Footer() {
   const { t } = useLanguage();
@@ -12,17 +12,21 @@ export function Footer() {
           © {new Date().getFullYear()} Fahrezi. {t.footer_text}
         </p>
         <div className="flex items-center gap-4">
-          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-            <Twitter className="h-6 w-6" />
-            <span className="sr-only">Twitter</span>
+          <a href="https://www.instagram.com/moh.farezi/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+            <Instagram className="h-6 w-6" />
+            <span className="sr-only">Instagram</span>
           </a>
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+          <a href="https://github.com/fahrezi93" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
             <Github className="h-6 w-6" />
             <span className="sr-only">GitHub</span>
           </a>
-          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+          <a href="https://www.linkedin.com/in/mohammad-fahrezi" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
             <Linkedin className="h-6 w-6" />
             <span className="sr-only">LinkedIn</span>
+          </a>
+          <a href="mailto:mohfarezi93@gmail.com" className="text-muted-foreground hover:text-primary transition-colors">
+            <Mail className="h-6 w-6" />
+            <span className="sr-only">Email</span>
           </a>
         </div>
       </div>

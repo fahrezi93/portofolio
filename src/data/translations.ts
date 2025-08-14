@@ -26,6 +26,8 @@ export interface Translation {
     contact_form_message: string;
     contact_form_message_placeholder: string;
     contact_form_submit: string;
+    skills_title: string;
+    skills_subtitle: string;
     footer_text: string;
   };
   id: {
@@ -54,6 +56,8 @@ export interface Translation {
     contact_form_message: string;
     contact_form_message_placeholder: string;
     contact_form_submit: string;
+    skills_title: string;
+    skills_subtitle: string;
     footer_text: string;
   };
 }
@@ -73,8 +77,8 @@ export const translations: Translation = {
     projects_title: "Featured Work",
     projects_subtitle: "Here's a selection of projects I've worked on. Each one was a unique challenge and a learning opportunity.",
     about_title: "About Me",
-    about_p1: "I'm a passionate front-end developer and UI/UX designer with a knack for creating beautiful, functional, and user-centered digital experiences. I believe that great design is not just about aesthetics, but about solving problems and creating intuitive, enjoyable interactions.",
-    about_p2: "When I'm not coding or designing, you can find me exploring new technologies, contributing to open-source projects, or enjoying a good cup of coffee.",
+    about_p1: "I'm a passionate student at Sriwijaya University with a strong interest in Front-End Development and Cloud Computing. I believe in the power of technology to transform ideas into impactful digital solutions.",
+    about_p2: "Currently, I'm actively participating in development programs and continuously exploring various cutting-edge technologies. When I'm not coding, you can find me experimenting with new frameworks, contributing to open-source projects, or diving deep into cloud architecture.",
     about_cta: "Get In Touch",
     contact_title: "Get in Touch",
     contact_subtitle: "Have a project in mind or just want to say hello? I'd love to hear from you.",
@@ -85,6 +89,8 @@ export const translations: Translation = {
     contact_form_message: "Message",
     contact_form_message_placeholder: "Tell me how I can help.",
     contact_form_submit: "Send Message",
+    skills_title: "Technologies & Skills",
+    skills_subtitle: "A look at the tools and technologies I use to bring ideas to life.",
     footer_text: "Handcrafted by me.",
   },
   id: {
@@ -101,8 +107,8 @@ export const translations: Translation = {
     projects_title: "Karya Unggulan",
     projects_subtitle: "Berikut adalah pilihan proyek yang pernah saya kerjakan. Masing-masing merupakan tantangan unik dan kesempatan belajar.",
     about_title: "Tentang Saya",
-    about_p1: "Saya seorang pengembang front-end dan desainer UI/UX yang bersemangat dengan bakat menciptakan pengalaman digital yang indah, fungsional, dan berpusat pada pengguna. Saya percaya bahwa desain yang hebat bukan hanya tentang estetika, tetapi tentang memecahkan masalah dan menciptakan interaksi yang intuitif dan menyenangkan.",
-    about_p2: "Saat saya tidak sedang membuat kode atau mendesain, Anda dapat menemukan saya menjelajahi teknologi baru, berkontribusi pada proyek sumber terbuka, atau menikmati secangkir kopi yang enak.",
+    about_p1: "Saya mahasiswa Universitas Sriwijaya dengan minat besar pada Front-End Development dan Cloud Computing. Saya percaya pada kekuatan teknologi untuk mengubah ide menjadi solusi digital yang berdampak.",
+    about_p2: "Saat ini sedang mengikuti program pengembangan dan terus eksplorasi berbagai teknologi terkini. Ketika tidak sedang coding, Anda dapat menemukan saya bereksperimen dengan framework baru, berkontribusi pada proyek open-source, atau mendalami arsitektur cloud.",
     about_cta: "Hubungi Saya",
     contact_title: "Hubungi Saya",
     contact_subtitle: "Punya proyek atau hanya ingin menyapa? Saya ingin sekali mendengar dari Anda.",
@@ -113,6 +119,8 @@ export const translations: Translation = {
     contact_form_message: "Pesan",
     contact_form_message_placeholder: "Beri tahu saya bagaimana saya dapat membantu.",
     contact_form_submit: "Kirim Pesan",
+    skills_title: "Teknologi & Keahlian",
+    skills_subtitle: "Lihat alat dan teknologi yang saya gunakan untuk mewujudkan ide menjadi kenyataan.",
     footer_text: "Dibuat dengan tangan oleh saya.",
   },
 };

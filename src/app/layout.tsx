@@ -3,8 +3,8 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'FolioFlow - Modern Portfolio',
-  description: 'A modern and unique portfolio website built with Next.js and Tailwind CSS.',
+  title: 'Fahrezi - Portfolio',
+  description: 'Personal Portfolio of Fahrezi - Developer & Designer',
 };
 
 export default function RootLayout({

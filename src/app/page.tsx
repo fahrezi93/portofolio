@@ -9,10 +9,7 @@ import { SkillsSection } from "@/components/skills-section";
 import { ContactSection } from "@/components/contact-section";
 import { Footer } from "@/components/footer";
 import { LanguageProvider } from "@/context/language-context";
-import dynamic from "next/dynamic";
 import AuroraBackground from "@/components/aurora-background";
-
-
 export default function Home() {
   const sectionVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -26,6 +23,7 @@ export default function Home() {
   return (
     <LanguageProvider>
       <div className="flex min-h-screen w-full flex-col relative">
+        {/* Aurora Background - Fixed layer at top with fade effect */}
         <AuroraBackground />
         <div className="relative z-10">
             <Header />

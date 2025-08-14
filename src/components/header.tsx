@@ -24,11 +24,16 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full p-4">
-      <div className="container mx-auto flex h-16 max-w-5xl items-center justify-between rounded-full border border-border/50 bg-background/50 px-6 backdrop-blur-md">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="font-headline text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
-            FF
+    <header className="sticky top-0 z-30 w-full p-4">
+      <div className="container mx-auto flex h-16 max-w-5xl items-center justify-between rounded-full border border-border/30 bg-background/20 px-6 backdrop-blur-lg">
+        <Link href="/" className="flex items-center gap-3">
+          <img 
+            src="/images/fahrezi_white_logo.png" 
+            alt="Fahrezi Logo" 
+            className="h-8 w-8"
+          />
+          <span className="font-headline text-xl font-bold text-foreground">
+            Fahrezi
           </span>
         </Link>
 
@@ -56,10 +61,17 @@ export function Header() {
             <SheetContent side="right" className="w-[280px]">
               <SheetTitle className="sr-only">Menu</SheetTitle>
               <SheetDescription className="sr-only">Main navigation menu</SheetDescription>
-              <div className="flex h-full flex-col">
-                 <div className="flex items-center justify-between border-b pb-6">
-                  <Link href="/" className="flex items-center gap-2" onClick={handleLinkClick}>
-                     <span className="font-headline text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">FF</span>
+                               <div className="flex h-full flex-col">
+                   <div className="flex items-center justify-between border-b border-border/30 pb-6">
+                  <Link href="/" className="flex items-center gap-3" onClick={handleLinkClick}>
+                     <img 
+                       src="/images/fahrezi_white_logo.png" 
+                       alt="Fahrezi Logo" 
+                       className="h-8 w-8"
+                     />
+                     <span className="font-headline text-xl font-bold text-foreground">
+                       Fahrezi
+                     </span>
                   </Link>
                   <SheetTrigger asChild>
                      <Button variant="ghost" size="icon">

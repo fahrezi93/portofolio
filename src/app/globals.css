@@ -78,5 +78,26 @@ body {
 }
 
 .animate-scroll {
-  animation: marquee-scroll 25s linear infinite;
+  animation: marquee-scroll 30s linear infinite;
+}
+
+/* Star button animations */
+@keyframes star-movement-top {
+  0% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(50px) translateY(-20px); }
+  100% { transform: translateX(100px) translateY(0); }
+}
+
+@keyframes star-movement-bottom {
+  0% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(-50px) translateY(20px); }
+  100% { transform: translateX(-100px) translateY(0); }
+}
+
+.animate-star-movement-top {
+  animation: star-movement-top 6s ease-in-out infinite;
+}
+
+.animate-star-movement-bottom {
+  animation: star-movement-bottom 6s ease-in-out infinite;
 }

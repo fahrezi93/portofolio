@@ -1,9 +1,7 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
-import dynamic from "next/dynamic";
-
-const Aurora = dynamic(() => import("@/components/aurora"), { ssr: false });
+import React, { useEffect, useState } from "react";
+import Aurora from "./aurora";
 
 function hslTripletToHex(hsl: string): string {
   // Expecting input like: "220 90% 60%"
@@ -56,8 +54,10 @@ export default function AuroraBackground() {
   const colorStops = useThemeAuroraStops();
 
   return (
-    <div className="pointer-events-none fixed inset-0 -z-10">
-      <Aurora colorStops={colorStops} blend={0.5} amplitude={1.0} speed={0.6} />
+    <div className="pointer-events-none fixed top-0 left-0 w-full h-screen -z-20">
+      <Aurora colorStops={colorStops} blend={0.8} amplitude={1.2} speed={0.8} />
+      {/* Fade effect di bawah untuk nyatu dengan hero section */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background to-transparent" />
     </div>
   );
 }
