@@ -54,4 +54,13 @@ export const projects: Project[] = [
     className: "lg:col-span-2",
     aiHint: "drowsiness guard",
   },
+  {
+    title: "Hoax Detector",
+    description: "A hoax detector that can detect fake news and misinformation using natural language processing.",
+    image: "/images/hoaxdetector.png",
+    tags: ["Python", "Flask","IndoBERT", "Transformers", "React", "Tailwind CSS"],
+    link: "#",
+    className: "lg:col-span-2",
+    aiHint: "hoax detector",
+  }
 ];
