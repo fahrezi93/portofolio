@@ -28,7 +28,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
   return (
     <motion.div 
-      className={`relative group overflow-hidden rounded-2xl bg-secondary/50 ${project.className}`}
+      className={`relative group overflow-hidden rounded-2xl bg-secondary/50 project-card-mobile ${project.className}`}
       variants={cardVariants}
     >
       <Link href={project.link} target="_blank" className="block w-full h-full">
@@ -42,11 +42,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
         <div className="absolute inset-0 p-6 flex flex-col justify-end">
-          <h3 className="text-2xl font-bold text-white mb-2">{project.title}</h3>
-          <p className="text-white/90 mb-4 text-base line-clamp-2">{project.description}</p>
-          <div className="flex flex-wrap gap-2 mb-4">
+          <h3 className="project-title text-2xl font-bold text-white mb-2">{project.title}</h3>
+          <p className="project-description text-white/90 mb-4 text-base line-clamp-2">{project.description}</p>
+          <div className="project-tags flex flex-wrap gap-2 mb-4">
             {project.tags.map((tag) => (
-              <Badge key={tag} variant="secondary" className="text-xs backdrop-blur-sm">
+              <Badge key={tag} variant="secondary" className="project-tag text-xs backdrop-blur-sm">
                 {tag}
               </Badge>
             ))}

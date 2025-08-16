@@ -13,7 +13,7 @@ export const projects: Project[] = [
     title: "Chatbot AI",
     description: "A chatbot AI that can answer questions and help with tasks.",
     image: "/images/aksara-ai.jpg",
-    tags: ["HTML", "CSS", "JavaScript", "Python", "Flask"],
+    tags: ["HTML", "CSS", "JavaScript", "Python", "Flask", "Firebase"],
     link: "https://aksara-ai.vercel.app",
     className: "lg:col-span-2 lg:row-span-2",
     aiHint: "chatbot",
@@ -62,5 +62,14 @@ export const projects: Project[] = [
     link: "#",
     className: "lg:col-span-2",
     aiHint: "hoax detector",
+  },
+  {
+    title: "Simpan Cepat",
+    description: "A note taking app that can help you save your notes and ideas.",
+    image: "/images/simpancepat.png",
+    tags: ["Next.js","React","Tailwind CSS", "TypeScript", "Firebase","Genkit"],
+    link: "#",
+    className: "lg:col-span-2",
+    aiHint: "simpan cepat",
   }
 ];
