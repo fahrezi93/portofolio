@@ -32,6 +32,7 @@ export const StarButton = <T extends React.ElementType = "button">({
         ...(rest as any).style,
       }}
     >
+      {/* Bottom star animation */}
       <div
         className="pointer-events-none absolute w-[300%] h-[50%] opacity-0 group-hover:opacity-70 transition-opacity duration-300 bottom-[-11px] right-[-250%] rounded-full animate-star-movement-bottom z-0"
         style={{
@@ -39,6 +40,8 @@ export const StarButton = <T extends React.ElementType = "button">({
           animationDuration: speed,
         }}
       ></div>
+      
+      {/* Top star animation */}
       <div
         className="pointer-events-none absolute w-[300%] h-[50%] opacity-0 group-hover:opacity-70 transition-opacity duration-300 top-[-10px] left-[-250%] rounded-full animate-star-movement-top z-0"
         style={{
@@ -46,7 +49,9 @@ export const StarButton = <T extends React.ElementType = "button">({
           animationDuration: speed,
         }}
       ></div>
-      <div className="relative z-10 bg-gray-800 text-primary-foreground h-14 px-10 rounded-full flex items-center justify-center w-full flex-shrink-0">
+      
+      {/* Button content */}
+      <div className="relative z-10 bg-gray-800 text-primary-foreground h-14 px-10 rounded-full flex items-center justify-center w-full flex-shrink-0 transition-all duration-200 hover:bg-gray-700">
         {children}
       </div>
     </Component>

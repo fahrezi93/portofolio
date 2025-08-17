@@ -79,6 +79,8 @@ body {
     /* Reset semua properti mobile untuk desktop */
     min-height: auto !important;
     aspect-ratio: auto !important;
+    will-change: auto !important;
+    transform: none !important;
   }
   
   .project-card-mobile .project-title {
@@ -115,6 +117,12 @@ body {
   .project-card-mobile {
     min-height: 280px;
     aspect-ratio: 16/12;
+    /* Optimasi performa untuk mobile */
+    will-change: transform;
+    transform: translateZ(0);
+    /* Optimasi rendering */
+    backface-visibility: hidden;
+    perspective: 1000px;
   }
   
   .project-card-mobile .project-title {
@@ -189,13 +197,23 @@ body {
   animation: marquee-scroll 30s linear infinite;
 }
 
-/* Star button animations */
+/* Star button animations - FIXED */
 @keyframes star-movement-top {
   0% { transform: translateX(0) translateY(0); }
   50% { transform: translateX(50px) translateY(-20px); }
   100% { transform: translateX(100px) translateY(0); }
 }
 
+@keyframes star-movement-bottom {
+  0% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(-50px) translateY(20px); }
+  100% { transform: translateX(-100px) translateY(0); }
+}
+
 .animate-star-movement-top {
   animation: star-movement-top 6s ease-in-out infinite;
+}
+
+.animate-star-movement-bottom {
+  animation: star-movement-bottom 6s ease-in-out infinite;
 }
