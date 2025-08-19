@@ -1,4 +1,3 @@
-
 "use client";
 
 import { ArrowDown } from "lucide-react";
@@ -10,7 +9,7 @@ export function HeroSection() {
   const { t } = useLanguage();
 
   return (
-    <section id="home" className="relative flex w-full min-h-[calc(100vh-8rem)] items-center justify-center overflow-hidden">
+    <section id="home" className="relative grid w-full min-h-[calc(100vh-8rem)] place-items-center overflow-hidden">
       <div className="container relative z-10 mx-auto flex h-full max-w-5xl flex-col items-center justify-center px-4 text-center md:px-6">
         <div className="flex flex-col items-center space-y-6">
           <div className="space-y-4">

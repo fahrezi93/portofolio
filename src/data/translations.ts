@@ -14,6 +14,7 @@ export interface Translation {
     projects_title: string;
     projects_subtitle: string;
     projects_view_more: string;
+    projects_show_less: string;
     about_title: string;
     about_p1: string;
     about_p2: string;
@@ -45,6 +46,7 @@ export interface Translation {
     projects_title: string;
     projects_subtitle: string;
     projects_view_more: string;
+    projects_show_less: string;
     about_title: string;
     about_p1: string;
     about_p2: string;
@@ -79,6 +81,7 @@ export const translations: Translation = {
     projects_title: "Featured Work",
     projects_subtitle: "Here's a selection of projects I've worked on. Each one was a unique challenge and a learning opportunity.",
     projects_view_more: "View More",
+    projects_show_less: "Show Less",
     about_title: "About Me",
     about_p1: "Hello I'm Mohammad Fahrezi,I'm a passionate student at Sriwijaya University with a strong interest in Front-End Development and UI/UX Design. I believe in the power of technology to transform ideas into impactful digital solutions.",
     about_p2: "Currently, I'm actively participating in development programs and continuously exploring various cutting-edge technologies. When I'm not coding, you can find me experimenting with new frameworks, contributing to open-source projects, or diving deep into cloud architecture.",
@@ -110,6 +113,7 @@ export const translations: Translation = {
     projects_title: "Karya Unggulan",
     projects_subtitle: "Berikut adalah pilihan proyek yang pernah saya kerjakan. Masing-masing merupakan tantangan unik dan kesempatan belajar.",
     projects_view_more: "Lihat Lebih Banyak",
+    projects_show_less: "Tampilkan Sedikit",
     about_title: "Tentang Saya",
     about_p1: "Halo nama saya Mohammad Fahrezi Saya mahasiswa Universitas Sriwijaya dengan minat besar pada Front-End Development dan UI/UX Design. Saya percaya pada kekuatan teknologi untuk mengubah ide menjadi solusi digital yang berdampak.",
     about_p2: "Saat ini sedang mengikuti program pengembangan dan terus eksplorasi berbagai teknologi terkini. Ketika tidak sedang coding, Anda dapat menemukan saya bereksperimen dengan framework baru, berkontribusi pada proyek open-source, atau mendalami arsitektur cloud.",

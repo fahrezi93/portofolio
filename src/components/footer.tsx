@@ -1,3 +1,4 @@
+"use client";
 
 import { useLanguage } from "@/context/language-context";
 import { Github, Linkedin, Instagram, Mail } from "lucide-react";

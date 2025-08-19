@@ -1,3 +1,4 @@
+"use client";
 
 import { skills } from "@/data/skills";
 import { useLanguage } from "@/context/language-context";

@@ -30,7 +30,7 @@ export default function Home() {
     <LanguageProvider>
       {/* Aurora Background - Fixed layer at top with fade effect */}
       <AuroraBackground />
-      <div className="flex min-h-screen w-full flex-col relative overflow-hidden">
+      <div className="flex min-h-screen w-full flex-col relative">
         <div className="relative z-10">
             <Header />
             <main className="flex-1 pt-24">
