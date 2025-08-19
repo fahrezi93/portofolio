@@ -10,6 +10,7 @@ import { ContactSection } from "@/components/contact-section";
 import { Footer } from "@/components/footer";
 import { LanguageProvider } from "@/context/language-context";
 import AuroraBackground from "@/components/aurora-background";
+import { useEffect } from "react";
 export default function Home() {
   const sectionVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -19,19 +20,24 @@ export default function Home() {
       transition: { duration: 0.6, ease: "easeOut" }
     },
   };
+  
+  // Scroll ke atas saat halaman dimuat
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <LanguageProvider>
-      <div className="flex min-h-screen w-full flex-col relative">
-        {/* Aurora Background - Fixed layer at top with fade effect */}
-        <AuroraBackground />
+      {/* Aurora Background - Fixed layer at top with fade effect */}
+      <AuroraBackground />
+      <div className="flex min-h-screen w-full flex-col relative overflow-hidden">
         <div className="relative z-10">
             <Header />
             <main className="flex-1">
               <motion.div initial="hidden" animate="visible" variants={sectionVariants}>
                 <HeroSection />
               </motion.div>
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants}>
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants} className="z-10 relative">
                 <ProjectsSection />
               </motion.div>
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants}>

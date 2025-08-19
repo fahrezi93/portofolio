@@ -5,9 +5,6 @@ import { ArrowDown } from "lucide-react";
 import { StarButton } from "./star-button";
 import RotatingText from "./rotating-text";
 import { useLanguage } from "@/context/language-context";
-import dynamic from "next/dynamic";
-
-const AuroraBackground = dynamic(() => import("@/components/aurora-background"), { ssr: false });
 
 export function HeroSection() {
   const { t } = useLanguage();

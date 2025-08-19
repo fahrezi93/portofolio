@@ -109,112 +109,105 @@ void main() {
 }
 `;
 
-export interface AuroraProps {
+interface AuroraSimpleProps {
   colorStops?: string[];
   amplitude?: number;
   blend?: number;
-  time?: number;
   speed?: number;
 }
 
-export default function Aurora(props: AuroraProps) {
+export default function AuroraSimple(props: AuroraSimpleProps) {
   const {
     colorStops = ["#3A29FF", "#FF94B4", "#FF3232"],
     amplitude = 1.0,
     blend = 0.5,
     speed = 0.5
   } = props;
-  const propsRef = useRef<AuroraProps>(props);
-  propsRef.current = props;
 
-  const ctnDom = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const ctn = ctnDom.current;
-    if (!ctn) return;
+    const container = containerRef.current;
+    if (!container) return;
 
+    // Create renderer
     const renderer = new Renderer({
       alpha: true,
       premultipliedAlpha: true,
       antialias: true,
     });
+    
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     gl.canvas.style.backgroundColor = "transparent";
-
-    let program: Program | undefined;
-
-    function resize() {
-      if (!ctn) return;
-      const width = ctn.offsetWidth;
-      const height = ctn.offsetHeight;
+    
+    // Set size
+    const resize = () => {
+      if (!container) return;
+      const width = container.offsetWidth;
+      const height = container.offsetHeight;
       renderer.setSize(width, height);
       if (program) {
-        const uniforms = (program.uniforms as unknown as Record<string, { value: unknown }>);
-        uniforms.uResolution.value = [width, height];
+        program.uniforms.uResolution.value = [width, height];
       }
-    }
-    window.addEventListener("resize", resize);
-
+    };
+    
+    // Create geometry
     const geometry = new Triangle(gl);
-    const geometryWithAttrs = geometry as unknown as { attributes?: Record<string, unknown> };
-    if (geometryWithAttrs.attributes && 'uv' in geometryWithAttrs.attributes) {
-      delete (geometryWithAttrs.attributes as Record<string, unknown>).uv;
-    }
-
+    
+    // Convert color stops to RGB arrays
     const colorStopsArray = colorStops.map((hex) => {
       const c = new Color(hex);
       return [c.r, c.g, c.b];
     });
-
-    program = new Program(gl, {
+    
+    // Create shader program
+    const program = new Program(gl, {
       vertex: VERT,
       fragment: FRAG,
       uniforms: {
         uTime: { value: 0 },
         uAmplitude: { value: amplitude },
         uColorStops: { value: colorStopsArray },
-        uResolution: { value: [ctn.offsetWidth, ctn.offsetHeight] },
+        uResolution: { value: [container.offsetWidth, container.offsetHeight] },
         uBlend: { value: blend },
       },
     });
-
+    
+    // Create mesh
     const mesh = new Mesh(gl, { geometry, program });
-    ctn.appendChild(gl.canvas);
-
-    let animateId = 0;
-    const update = (t: number) => {
-      animateId = requestAnimationFrame(update);
-      const { time = t * 0.01, speed = 1.0 } = propsRef.current;
-      if (program) {
-        const uniforms = (program.uniforms as unknown as Record<string, { value: unknown }>);
-        uniforms.uTime.value = time * speed * 0.1;
-        uniforms.uAmplitude.value = propsRef.current.amplitude ?? 1.0;
-        uniforms.uBlend.value = propsRef.current.blend ?? blend;
-        const stops = propsRef.current.colorStops ?? colorStops;
-        uniforms.uColorStops.value = stops.map((hex: string) => {
-          const c = new Color(hex);
-          return [c.r, c.g, c.b];
-        });
-        renderer.render({ scene: mesh });
-      }
+    
+    // Add canvas to container
+    container.appendChild(gl.canvas);
+    
+    // Animation loop
+    let time = 0;
+    let animationId = 0;
+    
+    const animate = () => {
+      time += 0.01 * speed;
+      program.uniforms.uTime.value = time;
+      renderer.render({ scene: mesh });
+      animationId = requestAnimationFrame(animate);
     };
-    animateId = requestAnimationFrame(update);
-
+    
+    // Start animation and handle resize
+    window.addEventListener('resize', resize);
     resize();
-
+    animationId = requestAnimationFrame(animate);
+    
+    // Cleanup
     return () => {
-      cancelAnimationFrame(animateId);
-      window.removeEventListener("resize", resize);
-      if (ctn && gl.canvas.parentNode === ctn) {
-        ctn.removeChild(gl.canvas);
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', resize);
+      if (container && gl.canvas.parentNode === container) {
+        container.removeChild(gl.canvas);
       }
       gl.getExtension("WEBGL_lose_context")?.loseContext();
     };
-  }, [amplitude, blend, colorStops]);
+  }, [amplitude, blend, colorStops, speed]);
 
-  return <div ref={ctnDom} className="w-full h-full" />;
+  return <div ref={containerRef} className="w-full h-full" />;
 }
-
