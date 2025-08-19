@@ -29,6 +29,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
     <motion.div 
       className={`relative group overflow-hidden rounded-2xl bg-secondary/50 project-card-mobile ${project.className}`}
       variants={cardVariants}
+      initial="hidden"
+      animate="visible"
     >
       <Link href={project.link} target="_blank" className="block w-full h-full">
         <Image
