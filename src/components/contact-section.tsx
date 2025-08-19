@@ -1,4 +1,3 @@
-
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +17,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Send } from "lucide-react";
 import { useLanguage } from "@/context/language-context";
+import emailjs from '@emailjs/browser';
+import { useState } from "react";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -34,6 +35,7 @@ const formSchema = z.object({
 export function ContactSection() {
   const { toast } = useToast();
   const { t } = useLanguage();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -45,13 +47,41 @@ export function ContactSection() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    toast({
-      title: "Message Sent!",
-      description: "Thanks for reaching out. I'll get back to you soon.",
-      variant: "default"
-    });
-    form.reset();
+    setIsSubmitting(true);
+    
+    const serviceId = 'fahrezi_email'; 
+    const templateId = 'template_w86l3fj';
+    const publicKey = 'KhbqXgjDEduLsAKJW';
+    
+    const templateParams = {
+      from_name: values.name,
+      from_email: values.email,
+      message: values.message,   
+      reply_to: values.email,      
+      to_name: 'Fahrezi'
+    };
+    
+    emailjs.send(serviceId, templateId, templateParams, publicKey)
+      .then((response) => {
+        console.log('SUCCESS!', response.status, response.text);
+        toast({
+          title: "Pesan Terkirim!",
+          description: "Terima kasih telah menghubungi. Saya akan segera membalas pesan Anda.",
+          variant: "default"
+        });
+        form.reset();
+      })
+      .catch((err) => {
+        console.error('FAILED...', err);
+        toast({
+          title: "Pengiriman Gagal",
+          description: "Maaf, terjadi kesalahan saat mengirim pesan. Silakan coba lagi nanti.",
+          variant: "destructive"
+        });
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   }
 
   return (
@@ -124,9 +154,9 @@ export function ContactSection() {
               )}
             />
             <div className="text-center">
-                <StarButton type="submit">
+                <StarButton type="submit" disabled={isSubmitting}>
                     <Send className="mr-2 h-5 w-5" />
-                    {t.contact_form_submit}
+                    {isSubmitting ? "Mengirim..." : t.contact_form_submit}
                 </StarButton>
             </div>
           </form>

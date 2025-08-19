@@ -7,7 +7,7 @@ export default function AuroraBackground() {
   return (
     <div className="pointer-events-none fixed inset-0 w-full h-screen">
       <AuroraSimple 
-        colorStops={["#3A29FF", "#FF94B4", "#FF3232"]} 
+        colorStops={["#3A29FF", "#FF94B4", "#001BB7"]} 
         blend={0.5} 
         amplitude={1.0} 
         speed={0.5} 

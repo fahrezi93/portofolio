@@ -41,7 +41,7 @@ export function Header() {
   // Don't render until mounted to prevent hydration issues
   if (!mounted) {
     return (
-      <header className="sticky top-0 z-30 w-full p-4">
+      <header className="fixed top-0 z-30 w-full p-4">
         <div className="container mx-auto flex h-16 max-w-5xl items-center justify-between rounded-full border border-border/30 bg-background/20 px-6 backdrop-blur-lg">
           <div className="flex items-center gap-3">
             <div className="h-8 w-8 bg-gray-300 rounded animate-pulse"></div>
@@ -54,7 +54,7 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-30 w-full p-4">
+    <header className="fixed top-0 z-30 w-full p-4">
       <div className="container mx-auto flex h-16 max-w-5xl items-center justify-between rounded-full border border-border/30 bg-background/20 px-6 backdrop-blur-lg">
         <Link href="/" className="flex items-center gap-3">
           <img 
