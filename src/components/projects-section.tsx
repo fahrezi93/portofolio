@@ -21,15 +21,14 @@ export function ProjectsSection() {
     return ["All", ...Array.from(tags)];
   }, []);
 
-  const displayedProjects = showAllProjects ? projects : projects.slice(0, 5);
-
   // Filter proyek berdasarkan tag yang aktif
   const filteredProjects = useMemo(() => {
     if (activeFilter === "All") {
-      return displayedProjects;
+      return showAllProjects ? projects : projects.slice(0, 5);
     }
-    return displayedProjects.filter(p => p.tags.includes(activeFilter));
-  }, [activeFilter, displayedProjects]);
+    // Jika ada filter aktif, tampilkan semua project yang sesuai filter
+    return projects.filter(p => p.tags.includes(activeFilter));
+  }, [activeFilter, showAllProjects]);
 
   const hasMoreProjects = projects.length > 5;
   
@@ -68,7 +67,7 @@ export function ProjectsSection() {
           ))}
         </div>
         
-        {hasMoreProjects && (
+        {hasMoreProjects && activeFilter === "All" && (
           <div className="mt-12 text-center">
             <Button
               onClick={handleToggleProjects}
