@@ -1,0 +1,78 @@
+/* src/components/StarBorder.css */
+
+.star-border-container {
+  display: inline-block;
+  position: relative;
+  border-radius: 9999px; /* rounded-full */
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.border-gradient-top,
+.border-gradient-bottom {
+  position: absolute;
+  width: 300%;
+  height: 50%;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 300ms ease-in-out;
+}
+
+.star-border-container:hover .border-gradient-top,
+.star-border-container:hover .border-gradient-bottom {
+  opacity: 1;
+}
+
+.border-gradient-bottom {
+  bottom: -12px;
+  right: -250%;
+  animation: star-movement-bottom linear infinite;
+}
+
+.border-gradient-top {
+  top: -12px;
+  left: -250%;
+  animation: star-movement-top linear infinite;
+}
+
+.inner-content {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; 
+  background: hsl(var(--secondary));
+  color: "cyan";
+  font-size: 1.125rem;
+  font-weight: 500;
+  text-align: center;
+  padding: 0 2.5rem;
+  height: 3.5rem;
+  border-radius: 9999px;
+  z-index: 1;
+  transition: background-color 200ms ease-in-out;
+}
+
+.star-border-container:hover .inner-content {
+  background: hsl(var(--secondary) / 0.9); /* Efek hover yang lebih subtle */
+}
+
+@keyframes star-movement-bottom {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes star-movement-top {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

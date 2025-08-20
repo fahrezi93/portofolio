@@ -7,6 +7,7 @@ export interface Translation {
   en: {
     nav_work: string;
     nav_about: string;
+    nav_experience: string;
     nav_contact: string;
     hero_subtitle: string;
     hero_rotating_1: string;
@@ -23,6 +24,9 @@ export interface Translation {
     about_p1: string;
     about_p2: string;
     about_cta: string;
+    download_cv: string;
+    experience_title: string;
+    experience_subtitle: string;
     contact_title: string;
     contact_subtitle: string;
     contact_form_name: string;
@@ -39,6 +43,7 @@ export interface Translation {
   id: {
     nav_work: string;
     nav_about: string;
+    nav_experience: string;
     nav_contact: string;
     hero_subtitle: string;
     hero_rotating_1: string;
@@ -55,6 +60,9 @@ export interface Translation {
     about_p1: string;
     about_p2: string;
     about_cta: string;
+    download_cv: string;
+    experience_title: string;
+    experience_subtitle: string;
     contact_title: string;
     contact_subtitle: string;
     contact_form_name: string;
@@ -74,6 +82,7 @@ const translations: Translation = {
   en: {
     nav_work: "Work",
     nav_about: "About",
+    nav_experience: "Experience",
     nav_contact: "Contact",
     hero_subtitle: "Hi, I'm a Developer & Designer",
     hero_rotating_1: "I",
@@ -87,9 +96,12 @@ const translations: Translation = {
     projects_view_more: "View More",
     projects_show_less: "Show Less",
     about_title: "About Me",
-    about_p1: "Hello I'm Mohammad Fahrezi,I'm a passionate student at Sriwijaya University with a strong interest in Front-End Development and UI/UX Design. I believe in the power of technology to transform ideas into impactful digital solutions.",
-    about_p2: "Currently, I'm actively participating in development programs and continuously exploring various cutting-edge technologies. When I'm not coding, you can find me experimenting with new frameworks, contributing to open-source projects, or diving deep into cloud architecture.",
+    about_p1: "Hello! I'm Mohammad Fahrezi, a passionate Computer Science student at Sriwijaya University with a deep fascination for Front-End Development and UI/UX Design. I believe technology has the extraordinary power to transform creative ideas into meaningful digital experiences that make a real difference.",
+    about_p2: "I'm constantly pushing boundaries through intensive development programs and exploring cutting-edge technologies. When I'm not crafting code, you'll find me experimenting with innovative frameworks, contributing to open-source communities, or diving deep into modern cloud architecture and emerging tech trends.",
     about_cta: "Get In Touch",
+    download_cv: "Download CV",
+    experience_title: "Work Experience",
+    experience_subtitle: "Here is a summary of my professional experience.",
     contact_title: "Get in Touch",
     contact_subtitle: "Have a project in mind or just want to say hello? I'd love to hear from you.",
     contact_form_name: "Name",
@@ -106,6 +118,7 @@ const translations: Translation = {
   id: {
     nav_work: "Karya",
     nav_about: "Tentang",
+    nav_experience: "Pengalaman",
     nav_contact: "Kontak",
     hero_subtitle: "Hai, saya seorang Developer & Desainer",
     hero_rotating_1: "Saya",
@@ -119,9 +132,12 @@ const translations: Translation = {
     projects_view_more: "Lihat Lebih Banyak",
     projects_show_less: "Tampilkan Sedikit",
     about_title: "Tentang Saya",
-    about_p1: "Halo nama saya Mohammad Fahrezi Saya mahasiswa Universitas Sriwijaya dengan minat besar pada Front-End Development dan UI/UX Design. Saya percaya pada kekuatan teknologi untuk mengubah ide menjadi solusi digital yang berdampak.",
-    about_p2: "Saat ini sedang mengikuti program pengembangan dan terus eksplorasi berbagai teknologi terkini. Ketika tidak sedang coding, Anda dapat menemukan saya bereksperimen dengan framework baru, berkontribusi pada proyek open-source, atau mendalami arsitektur cloud.",
+    about_p1: "Halo! Saya Mohammad Fahrezi, mahasiswa Ilmu Komputer di Universitas Sriwijaya yang memiliki passion mendalam terhadap Front-End Development dan UI/UX Design. Saya percaya teknologi memiliki kekuatan luar biasa untuk mengubah ide-ide kreatif menjadi pengalaman digital yang bermakna dan memberikan dampak nyata.",
+    about_p2: "Saya terus mendorong batasan melalui program pengembangan intensif dan mengeksplorasi teknologi-teknologi terdepan. Ketika tidak sedang menulis kode, Anda akan menemukan saya bereksperimen dengan framework inovatif, berkontribusi pada komunitas open-source, atau mendalami arsitektur cloud modern dan tren teknologi yang sedang berkembang.",
     about_cta: "Hubungi Saya",
+    download_cv: "Unduh CV",
+    experience_title: "Pengalaman Kerja",
+    experience_subtitle: "Berikut adalah ringkasan pengalaman profesional saya.",
     contact_title: "Hubungi Saya",
     contact_subtitle: "Punya proyek atau hanya ingin menyapa? Saya ingin sekali mendengar dari Anda.",
     contact_form_name: "Nama",

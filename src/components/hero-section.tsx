@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowDown } from "lucide-react";
-import { StarButton } from "./star-button";
+import StarBorder from "./StarBorder";
 import RotatingText from "./rotating-text";
 import { useLanguage } from "@/context/language-context";
 
@@ -40,10 +40,10 @@ export function HeroSection() {
             </p>
           </div>
           <div className="pt-4">
-            <StarButton as="a" href="#projects">
+            <StarBorder as="a" href="#projects">
                 {t.hero_cta}
                 <ArrowDown className="ml-2 h-5 w-5 animate-bounce"/>
-            </StarButton>
+            </StarBorder>
           </div>
         </div>
       </div>

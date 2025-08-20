@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { StarButton } from "./star-button";
+import StarBorder from "./StarBorder";
 import {
   Form,
   FormControl,
@@ -154,10 +154,10 @@ export function ContactSection() {
               )}
             />
             <div className="text-center">
-                <StarButton type="submit" disabled={isSubmitting}>
+                <StarBorder type="submit" disabled={isSubmitting}>
                     <Send className="mr-2 h-5 w-5" />
                     {isSubmitting ? "Mengirim..." : t.contact_form_submit}
-                </StarButton>
+                </StarBorder>
             </div>
           </form>
         </Form>

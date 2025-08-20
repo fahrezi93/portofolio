@@ -1,24 +1,36 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ProjectCard } from "./project-card";
 import { projects } from "@/data/projects";
 import { useLanguage } from "@/context/language-context";
 import { Button } from "./ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { Badge } from "./ui/badge";
 
 export function ProjectsSection() {
   const { t } = useLanguage();
   const [showAllProjects, setShowAllProjects] = useState(false);
-  
-  // Featured Work hanya menampilkan 5 proyek pertama
-  const featuredProjects = projects.slice(0, 5);
-  // Proyek lainnya untuk ditampilkan di "View More"
-  const additionalProjects = projects.slice(5);
-  
-  // Menentukan proyek yang akan ditampilkan
-  const displayedProjects = showAllProjects ? projects : featuredProjects;
+  const [activeFilter, setActiveFilter] = useState("All");
+
+  // Ambil semua tag unik dari data proyek
+  const allTags = useMemo(() => {
+    const tags = new Set<string>();
+    projects.forEach(p => p.tags.forEach(tag => tags.add(tag)));
+    return ["All", ...Array.from(tags)];
+  }, []);
+
+  const displayedProjects = showAllProjects ? projects : projects.slice(0, 5);
+
+  // Filter proyek berdasarkan tag yang aktif
+  const filteredProjects = useMemo(() => {
+    if (activeFilter === "All") {
+      return displayedProjects;
+    }
+    return displayedProjects.filter(p => p.tags.includes(activeFilter));
+  }, [activeFilter, displayedProjects]);
+
   const hasMoreProjects = projects.length > 5;
   
   const handleToggleProjects = () => {
@@ -34,10 +46,24 @@ export function ProjectsSection() {
         <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
           {t.projects_subtitle || 'Check out some of my recent projects'}
         </p>
+
+        {/* Tombol Filter */}
+        <div className="flex flex-wrap justify-center gap-2 mt-8">
+          {allTags.map(tag => (
+            <Badge
+              key={tag}
+              variant={activeFilter === tag ? "default" : "secondary"}
+              onClick={() => setActiveFilter(tag)}
+              className="cursor-pointer text-sm py-1 px-3"
+            >
+              {tag}
+            </Badge>
+          ))}
+        </div>
       </div>
       <div className="container mx-auto max-w-7xl px-4 md:px-6 mt-12">
         <div className="flex flex-wrap justify-center gap-8">
-          {displayedProjects.map((project) => (
+          {filteredProjects.map((project) => (
             <ProjectCard key={project.title} project={project} />
           ))}
         </div>

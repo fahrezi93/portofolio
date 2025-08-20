@@ -87,6 +87,13 @@ struct ColorStop {
 void main() {
   vec2 uv = gl_FragCoord.xy / uResolution;
   
+  // Hitung rasio aspek layar
+  float aspect = uResolution.x / uResolution.y;
+  
+  // Buat salinan UV dan sesuaikan dengan rasio aspek
+  vec2 adjustedUv = uv;
+  adjustedUv.x *= aspect;
+
   ColorStop colors[3];
   colors[0] = ColorStop(uColorStops[0], 0.0);
   colors[1] = ColorStop(uColorStops[1], 0.5);
@@ -95,8 +102,11 @@ void main() {
   vec3 rampColor;
   COLOR_RAMP(colors, uv.x, rampColor);
   
-  float height = snoise(vec2(uv.x * 2.0 + uTime * 0.1, uTime * 0.25)) * 0.5 * uAmplitude;
+  // Gunakan 'adjustedUv' dan kurangi sedikit peregangan horizontal
+  float height = snoise(vec2(adjustedUv.x * 1.5 + uTime * 0.1, uTime * 0.25)) * 0.5 * uAmplitude;
   height = exp(height);
+
+  // Gunakan 'uv.y' asli untuk menjaga posisi vertikal aurora
   height = (uv.y * 2.0 - height + 0.2);
   float intensity = 0.6 * height;
   

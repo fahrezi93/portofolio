@@ -5,6 +5,7 @@ import { Header } from "@/components/header";
 import { HeroSection } from "@/components/hero-section";
 import { ProjectsSection } from "@/components/projects-section";
 import { AboutSection } from "@/components/about-section";
+import { ExperienceSection } from "@/components/experience-section";
 import { SkillsSection } from "@/components/skills-section";
 import { ContactSection } from "@/components/contact-section";
 import { Footer } from "@/components/footer";
@@ -42,6 +43,9 @@ export default function Home() {
               </motion.div>
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants}>
                 <AboutSection />
+              </motion.div>
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants}>
+                <ExperienceSection />
               </motion.div>
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants}>
                 <SkillsSection />

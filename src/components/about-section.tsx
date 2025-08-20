@@ -1,7 +1,9 @@
 
 import { useLanguage } from "@/context/language-context";
-import { StarButton } from "./star-button";
+import StarBorder from "./StarBorder";
 import Image from "next/image";
+import { Button } from "./ui/button";
+import { Download } from "lucide-react";
 
 
 export function AboutSection() {
@@ -21,9 +23,28 @@ export function AboutSection() {
               {t.about_p2}
             </p>
           </div>
-          <StarButton as="a" href="#contact">
-            {t.about_cta}
-          </StarButton>
+          {/* Container untuk tombol */}
+          <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 mt-8">
+            <StarBorder as="a" href="#contact">
+              {t.about_cta}
+            </StarBorder>
+            {/* Tombol Download CV dengan styling yang seragam */}
+            <Button 
+              variant="outline" 
+              size="lg"
+              asChild
+              className="group relative overflow-hidden border-2 border-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
+            >
+              <a 
+                href="/images/CV-Fahrezi.pdf" 
+                download
+                className="flex items-center gap-2 px-6 py-3"
+              >
+                <Download className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
+                <span className="font-medium">{t.download_cv}</span>
+              </a>
+            </Button>
+          </div>
         </div>
 
         <div className="order-1 md:order-2 flex items-center justify-center">

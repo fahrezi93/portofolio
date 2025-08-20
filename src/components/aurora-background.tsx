@@ -10,7 +10,7 @@ export default function AuroraBackground() {
         colorStops={["#3A29FF", "#FF94B4", "#001BB7"]} 
         blend={0.5} 
         amplitude={1.0} 
-        speed={0.5} 
+        speed={0.2} 
       />
       {/* Fade effect di bawah untuk nyatu dengan hero section */}
       <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background to-transparent" />
