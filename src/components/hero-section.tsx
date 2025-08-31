@@ -23,15 +23,15 @@ export function HeroSection() {
               <span>{t.hero_rotating_1}</span>
               <RotatingText
                 texts={[t.hero_rotating_2, t.hero_rotating_3, t.hero_rotating_4]}
-                mainClassName="px-3 sm:px-4 md:px-6 bg-gradient-to-r from-blue-400 to-blue-600 text-primary-foreground py-2 sm:py-3 md:py-4 rounded-xl min-w-fit"
+                mainClassName="px-2 sm:px-2 md:px-3 bg-gradient-to-r from-blue-400 to-blue-600 text-white overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-xl"
                 staggerFrom={"last"}
-                initial={{ y: 100, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -120, opacity: 0 }}
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "-120%" }}
                 staggerDuration={0.025}
-                splitLevelClassName="overflow-visible"
+                splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
                 transition={{ type: "spring", damping: 30, stiffness: 400 }}
-                rotationInterval={2000}
+                rotationInterval={3000}
               />
               <span>digital products.</span>
             </div>

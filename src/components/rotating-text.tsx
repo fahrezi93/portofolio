@@ -212,13 +212,13 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
           mainClassName
         )}
         {...rest}
-        layout="position"
+        layout="size"
         transition={{
           layout: {
             type: "spring",
-            damping: 30,
-            stiffness: 400,
-            duration: 0.3
+            damping: 20,
+            stiffness: 200,
+            duration: 0.6
           }
         }}
       >
@@ -234,7 +234,15 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
                 ? "flex flex-col items-center"
                 : "inline-flex items-center whitespace-nowrap"
             )}
-            layout="position"
+            layout="size"
+            transition={{
+              layout: {
+                type: "spring",
+                damping: 20,
+                stiffness: 200,
+                duration: 0.6
+              }
+            }}
             aria-hidden="true"
           >
             {elements.map((wordObj, wordIndex, array) => {
@@ -253,7 +261,6 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
                       initial={initial}
                       animate={animate}
                       exit={exit}
-                      layout="position"
                       transition={{
                         ...transition,
                         delay: getStaggerDelay(
@@ -262,13 +269,7 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
                             (sum, word) => sum + word.characters.length,
                             0
                           )
-                        ),
-                        layout: {
-                          type: "spring",
-                          damping: 30,
-                          stiffness: 400,
-                          duration: 0.2
-                        }
+                        )
                       }}
                       className={cn("inline-block", elementLevelClassName)}
                     >
@@ -276,12 +277,9 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
                     </motion.span>
                   ))}
                   {wordObj.needsSpace && (
-                    <motion.span 
-                      className="inline-block w-[0.25em]"
-                      layout="position"
-                    >
+                    <span className="inline-block w-[0.25em]">
                       {" "}
-                    </motion.span>
+                    </span>
                   )}
                 </span>
               );
