@@ -1,4 +1,3 @@
-
 "use client";
 import React, {
   forwardRef,
@@ -14,9 +13,8 @@ import {
   Transition,
   type VariantLabels,
   type Target,
-  type AnimationControls,
   type TargetAndTransition,
-} from "framer-motion";
+} from "motion/react";
 
 function cn(...classes: (string | undefined | null | boolean)[]): string {
   return classes.filter(Boolean).join(" ");
@@ -37,7 +35,7 @@ export interface RotatingTextProps
   texts: string[];
   transition?: Transition;
   initial?: boolean | Target | VariantLabels;
-  animate?: boolean | VariantLabels | AnimationControls | TargetAndTransition;
+  animate?: boolean | VariantLabels | TargetAndTransition;
   exit?: Target | VariantLabels;
   animatePresenceMode?: "sync" | "wait";
   animatePresenceInitial?: boolean;
@@ -210,12 +208,19 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
     return (
       <motion.span
         className={cn(
-          "flex flex-wrap whitespace-pre-wrap relative",
+          "inline-flex items-center justify-center relative",
           mainClassName
         )}
         {...rest}
-        layout
-        transition={transition}
+        layout="position"
+        transition={{
+          layout: {
+            type: "spring",
+            damping: 30,
+            stiffness: 400,
+            duration: 0.3
+          }
+        }}
       >
         <span className="sr-only">{texts[currentTextIndex]}</span>
         <AnimatePresence
@@ -226,10 +231,10 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
             key={currentTextIndex}
             className={cn(
               splitBy === "lines"
-                ? "flex flex-col w-full"
-                : "flex flex-wrap whitespace-pre-wrap relative"
+                ? "flex flex-col items-center"
+                : "inline-flex items-center whitespace-nowrap"
             )}
-            layout
+            layout="position"
             aria-hidden="true"
           >
             {elements.map((wordObj, wordIndex, array) => {
@@ -239,7 +244,8 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
               return (
                 <span
                   key={wordIndex}
-                  className={cn("inline-flex", splitLevelClassName)}
+                  className={cn("inline-flex items-center", splitLevelClassName)}
+                  style={{ lineHeight: '1.2' }}
                 >
                   {wordObj.characters.map((char, charIndex) => (
                     <motion.span
@@ -247,6 +253,7 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
                       initial={initial}
                       animate={animate}
                       exit={exit}
+                      layout="position"
                       transition={{
                         ...transition,
                         delay: getStaggerDelay(
@@ -256,6 +263,12 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
                             0
                           )
                         ),
+                        layout: {
+                          type: "spring",
+                          damping: 30,
+                          stiffness: 400,
+                          duration: 0.2
+                        }
                       }}
                       className={cn("inline-block", elementLevelClassName)}
                     >
@@ -263,7 +276,12 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
                     </motion.span>
                   ))}
                   {wordObj.needsSpace && (
-                    <span className="whitespace-pre"> </span>
+                    <motion.span 
+                      className="inline-block w-[0.25em]"
+                      layout="position"
+                    >
+                      {" "}
+                    </motion.span>
                   )}
                 </span>
               );

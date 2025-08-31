@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { LanguageProvider } from "@/context/language-context";
+import AppLoading from "@/components/app-loading";
 
 export const metadata: Metadata = {
   title: 'Mohammad Fahrezi - Front-End Developer & UI/UX Designer',
@@ -108,7 +109,9 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased">
         <LanguageProvider>
-          {children}
+          <AppLoading>
+            {children}
+          </AppLoading>
         </LanguageProvider>
         <Toaster />
       </body>

@@ -27,15 +27,7 @@ export const projects: Project[] = [
     className: "lg:col-span-2",
     aiHint: "waste classifier",
   },
-  {
-    title: "Portfolio Website",
-    description: "A personal portfolio to showcase my skills and projects, built with a focus on performance and aesthetics.",
-    image: "/images/portofolio.png",
-    tags: ["React", "Tailwind CSS", "TypeScript", "Next.js"],
-    link: "https://fahrezi-portofolio.vercel.app",
-    className: "lg:col-span-2",
-    aiHint: "portfolio website",
-  },
+
    {
     title: "NutriSuggest",
     description: "A food recommendation system that suggests healthy and nutritious foods based on user preferences and health goals.",
@@ -49,10 +41,19 @@ export const projects: Project[] = [
     title: "Thrift Haven",
     description: "A thrift store website that allows users to buy and sell second-hand items.",
     image: "/images/thrift-haven.png",
-    tags: ["React", "Tailwind CSS", "TypeScript", "Next.js", "Firebase", "SQLite"],
+    tags: ["React", "Tailwind CSS", "TypeScript", "Next.js", "Firebase", "Protgress SQL"],
     link: "#",
     className: "lg:col-span-2",
     aiHint: "thrift haven",
+  },
+  {
+    title:"Talent Path",
+    description: "A career guidance website that provides resources and advice for students and professionals in the tech industry.",
+    image: "/images/talent-path.png",
+    tags: ["React","CSS", "TypeScript", "Vite"],
+    link: "https://talent-path.vercel.app",
+    className: "lg:col-span-2",
+    aiHint: "guide career tech",
   },
   {
     title: "Smart Attendance",
@@ -80,5 +81,14 @@ export const projects: Project[] = [
     link: "#",
     className: "lg:col-span-2",
     aiHint: "simpan cepat",
-  }
+  },
+  {
+    title: "Portfolio Website",
+    description: "A personal portfolio to showcase my skills and projects, built with a focus on performance and aesthetics.",
+    image: "/images/portofolio.png",
+    tags: ["React", "Tailwind CSS", "TypeScript", "Next.js"],
+    link: "https://fahrezi-portofolio.vercel.app",
+    className: "lg:col-span-2",
+    aiHint: "portfolio website",
+  },
 ];

@@ -5,7 +5,7 @@ import AuroraSimple from "./aurora-simple";
 
 export default function AuroraBackground() {
   return (
-    <div className="pointer-events-none fixed inset-0 -z-10 w-full h-screen">
+    <div className="pointer-events-none absolute inset-0 -z-10 w-full h-screen">
       <AuroraSimple 
         colorStops={["#3A29FF", "#FF94B4", "#001BB7"]} 
         blend={0.5} 

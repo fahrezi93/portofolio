@@ -17,21 +17,21 @@ export function HeroSection() {
               {t.hero_subtitle}
             </p>
             <div
-              className="flex flex-wrap items-center justify-center gap-x-4 font-headline text-5xl font-bold leading-tight tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl"
+              className="flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-4 font-headline text-5xl font-bold leading-relaxed tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl"
+              style={{ lineHeight: '1.3' }}
             >
               <span>{t.hero_rotating_1}</span>
               <RotatingText
                 texts={[t.hero_rotating_2, t.hero_rotating_3, t.hero_rotating_4]}
-                mainClassName="px-4 py-2 bg-gradient-to-r from-blue-400 to-blue-600 text-primary-foreground rounded-2xl overflow-hidden"
+                mainClassName="px-3 sm:px-4 md:px-6 bg-gradient-to-r from-blue-400 to-blue-600 text-primary-foreground py-2 sm:py-3 md:py-4 rounded-xl min-w-fit"
                 staggerFrom={"last"}
-                splitBy="characters"
+                initial={{ y: 100, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -120, opacity: 0 }}
                 staggerDuration={0.025}
-                rotationInterval={2000}
-                splitLevelClassName="overflow-hidden pb-1"
+                splitLevelClassName="overflow-visible"
                 transition={{ type: "spring", damping: 30, stiffness: 400 }}
-                initial={{ y: "100%" }}
-                animate={{ y: 0 }}
-                exit={{ y: "-120%" }}
+                rotationInterval={2000}
               />
               <span>digital products.</span>
             </div>

@@ -7,6 +7,14 @@ const nextConfig = {
     ],
   },
   transpilePackages: ['three'],
+  logging: {
+    fetches: {
+      fullUrl: false,
+    },
+  },
+  experimental: {
+    optimizePackageImports: ['react-icons'],
+  },
 };
 
 export default nextConfig;
