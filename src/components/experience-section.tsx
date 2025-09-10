@@ -111,7 +111,7 @@ export function ExperienceSection() {
                 </div>
 
                 {/* Subtle Corner Accent */}
-                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-primary/10 to-transparent rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-primary/10 to-transparent rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
               </div>
             </motion.div>
           ))}

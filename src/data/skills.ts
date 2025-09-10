@@ -12,6 +12,7 @@ import {
   SiJavascript,
   SiGooglecloud,
   SiPython,
+  SiGithub,
 } from "react-icons/si";
 
 export type Skill = {
@@ -63,6 +64,10 @@ export const skills: Skill[] = [
   {
     name: "Git",
     icon: SiGit,
+  },
+  {
+    name: "GitHub",
+    icon: SiGithub,
   },
   {
     name: "React Native",

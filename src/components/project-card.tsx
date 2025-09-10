@@ -5,7 +5,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Project } from "@/data/projects";
+// Generic project type for legacy project card
+type Project = {
+  title: string;
+  description: string;
+  image: string;
+  tags: string[];
+  link: string;
+  className: string;
+  aiHint: string;
+};
 import { ArrowUpRight } from "lucide-react";
 import { useLanguage } from "@/context/language-context";
 

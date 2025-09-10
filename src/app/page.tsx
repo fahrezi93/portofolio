@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Header } from "@/components/header";
 import { HeroSection } from "@/components/hero-section";
-import { ProjectsSection } from "@/components/projects-section";
+import { PortfolioTabs } from "@/components/portfolio-tabs";
 import { AboutSection } from "@/components/about-section";
 import { ExperienceSection } from "@/components/experience-section";
 import { SkillsSection } from "@/components/skills-section";
@@ -39,7 +39,7 @@ export default function Home() {
                 <HeroSection />
               </motion.div>
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants} className="z-10 relative">
-                <ProjectsSection />
+                <PortfolioTabs />
               </motion.div>
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants}>
                 <AboutSection />

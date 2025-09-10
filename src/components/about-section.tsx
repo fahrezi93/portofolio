@@ -55,10 +55,9 @@ export function AboutSection() {
                 <div className="relative w-40 h-40 md:w-56 md:h-56">
                   <Image
                     src="/images/profile.jpg"
-                    alt="Profile photo"
+                    alt="Mohammad Fahrezi Profile"
                     fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 160px, 224px"
+                    className="object-cover object-[center_70%] scale-125"
                     priority
                   />
                 </div>

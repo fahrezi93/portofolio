@@ -3,7 +3,19 @@
 
 import { useState, useMemo } from "react";
 import { ProjectCard } from "./project-card";
-import { projects } from "@/data/projects";
+// Legacy project type definition
+type Project = {
+  title: string;
+  description: string;
+  image: string;
+  tags: string[];
+  link: string;
+  className: string;
+  aiHint: string;
+};
+
+// Empty projects array since we now use separate portfolio sections
+const projects: Project[] = [];
 import { useLanguage } from "@/context/language-context";
 import { Button } from "./ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
@@ -17,7 +29,7 @@ export function ProjectsSection() {
   // Ambil semua tag unik dari data proyek
   const allTags = useMemo(() => {
     const tags = new Set<string>();
-    projects.forEach(p => p.tags.forEach(tag => tags.add(tag)));
+    projects.forEach((p: Project) => p.tags.forEach((tag: string) => tags.add(tag)));
     return ["All", ...Array.from(tags)];
   }, []);
 
@@ -27,7 +39,7 @@ export function ProjectsSection() {
       return showAllProjects ? projects : projects.slice(0, 5);
     }
     // Jika ada filter aktif, tampilkan semua project yang sesuai filter
-    return projects.filter(p => p.tags.includes(activeFilter));
+    return projects.filter((p: Project) => p.tags.includes(activeFilter));
   }, [activeFilter, showAllProjects]);
 
   const hasMoreProjects = projects.length > 5;
@@ -62,7 +74,7 @@ export function ProjectsSection() {
       </div>
       <div className="container mx-auto max-w-7xl px-4 md:px-6 mt-12">
         <div className="flex flex-wrap justify-center gap-8">
-          {filteredProjects.map((project) => (
+          {filteredProjects.map((project: Project) => (
             <ProjectCard key={project.title} project={project} />
           ))}
         </div>

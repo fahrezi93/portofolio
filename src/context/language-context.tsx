@@ -39,6 +39,20 @@ export interface Translation {
     skills_title: string;
     skills_subtitle: string;
     footer_text: string;
+    portfolio_title: string;
+    portfolio_subtitle: string;
+    portfolio_tab_design: string;
+    portfolio_tab_design_desc: string;
+    portfolio_tab_editing: string;
+    portfolio_tab_editing_desc: string;
+    portfolio_tab_development: string;
+    portfolio_tab_development_desc: string;
+    portfolio_design_cta_text: string;
+    portfolio_design_cta_button: string;
+    portfolio_dev_cta_text: string;
+    portfolio_dev_cta_button: string;
+    portfolio_video_cta_text: string;
+    portfolio_video_cta_button: string;
   };
   id: {
     nav_work: string;
@@ -75,6 +89,20 @@ export interface Translation {
     skills_title: string;
     skills_subtitle: string;
     footer_text: string;
+    portfolio_title: string;
+    portfolio_subtitle: string;
+    portfolio_tab_design: string;
+    portfolio_tab_design_desc: string;
+    portfolio_tab_editing: string;
+    portfolio_tab_editing_desc: string;
+    portfolio_tab_development: string;
+    portfolio_tab_development_desc: string;
+    portfolio_design_cta_text: string;
+    portfolio_design_cta_button: string;
+    portfolio_dev_cta_text: string;
+    portfolio_dev_cta_button: string;
+    portfolio_video_cta_text: string;
+    portfolio_video_cta_button: string;
   };
 }
 
@@ -114,6 +142,20 @@ const translations: Translation = {
     skills_title: "Technologies & Skills",
     skills_subtitle: "A look at the tools and technologies I use to bring ideas to life.",
     footer_text: "Handcrafted by me.",
+    portfolio_title: "My Portfolio",
+    portfolio_subtitle: "Explore my work across different creative disciplines",
+    portfolio_tab_design: "Design",
+    portfolio_tab_design_desc: "UI/UX & Visual Design",
+    portfolio_tab_editing: "Video Editing",
+    portfolio_tab_editing_desc: "Motion Graphics & Videos",
+    portfolio_tab_development: "Development",
+    portfolio_tab_development_desc: "Web & Mobile Apps",
+    portfolio_design_cta_text: "Interested in working together on a design project?",
+    portfolio_design_cta_button: "Let's Create Something Amazing",
+    portfolio_dev_cta_text: "Have an idea for a web or mobile application?",
+    portfolio_dev_cta_button: "Let's Build Something Great",
+    portfolio_video_cta_text: "Need video editing or motion graphics for your project?",
+    portfolio_video_cta_button: "Let's Create Stunning Visuals",
   },
   id: {
     nav_work: "Karya",
@@ -150,6 +192,20 @@ const translations: Translation = {
     skills_title: "Teknologi & Keahlian",
     skills_subtitle: "Lihat alat dan teknologi yang saya gunakan untuk mewujudkan ide menjadi kenyataan.",
     footer_text: "Dibuat dengan tangan oleh saya.",
+    portfolio_title: "Portofolio Saya",
+    portfolio_subtitle: "Jelajahi karya saya di berbagai disiplin kreatif",
+    portfolio_tab_design: "Desain",
+    portfolio_tab_design_desc: "UI/UX & Desain Visual",
+    portfolio_tab_editing: "Video Editing",
+    portfolio_tab_editing_desc: "Motion Graphics & Video",
+    portfolio_tab_development: "Development",
+    portfolio_tab_development_desc: "Aplikasi Web & Mobile",
+    portfolio_design_cta_text: "Tertarik untuk bekerja sama dalam proyek desain?",
+    portfolio_design_cta_button: "Mari Ciptakan Sesuatu yang Menakjubkan",
+    portfolio_dev_cta_text: "Punya ide untuk aplikasi web atau mobile?",
+    portfolio_dev_cta_button: "Mari Bangun Sesuatu yang Hebat",
+    portfolio_video_cta_text: "Butuh video editing atau motion graphics untuk proyek Anda?",
+    portfolio_video_cta_button: "Mari Ciptakan Visual yang Memukau",
   },
 };
 
