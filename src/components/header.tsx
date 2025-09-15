@@ -29,7 +29,7 @@ export function Header() {
 
   // Fallback values if translations are not available
   const navLinks = [
-    { href: "#projects", label: t?.nav_work || "Work" },
+    { href: "#portfolio", label: t?.nav_work || "Work" },
     { href: "#about", label: t?.nav_about || "About" },
     { href: "#experience", label: t?.nav_experience || "Experience" },
     { href: "#contact", label: t?.nav_contact || "Contact" },
@@ -73,9 +73,10 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="text-base font-medium text-muted-foreground transition-colors hover:text-primary"
+              className="relative text-base font-medium text-muted-foreground transition-colors hover:text-primary group"
             >
               {link.label}
+              <span className="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 ease-out group-hover:w-full group-hover:left-0 transform -translate-x-1/2 group-hover:translate-x-0"></span>
             </Link>
           ))}
           <LanguageSwitcher />

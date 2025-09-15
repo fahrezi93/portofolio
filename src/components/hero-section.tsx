@@ -40,7 +40,7 @@ export function HeroSection() {
             </p>
           </div>
           <div className="pt-4">
-            <StarBorder as="a" href="#projects">
+            <StarBorder as="a" href="#portfolio">
                 {t.hero_cta}
                 <ArrowDown className="ml-2 h-5 w-5 animate-bounce"/>
             </StarBorder>
