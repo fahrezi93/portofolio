@@ -9,6 +9,8 @@ import { ExperienceSection } from "@/components/experience-section";
 import { SkillsSection } from "@/components/skills-section";
 import { ContactSection } from "@/components/contact-section";
 import { Footer } from "@/components/footer";
+import { GitHubStats } from "@/components/github-stats";
+import { ScrollProgress } from "@/components/scroll-progress";
 import { LanguageProvider } from "@/context/language-context";
 import AuroraBackground from "@/components/aurora-background";
 import { useEffect } from "react";
@@ -31,6 +33,8 @@ export default function Home() {
     <LanguageProvider>
       {/* Aurora Background - Fixed layer at top with fade effect */}
       <AuroraBackground />
+      {/* Scroll Progress Indicator */}
+      <ScrollProgress />
       <div className="flex min-h-screen w-full flex-col relative">
         <div className="relative z-10">
             <Header />
@@ -49,6 +53,9 @@ export default function Home() {
               </motion.div>
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants}>
                 <SkillsSection />
+              </motion.div>
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants}>
+                <GitHubStats />
               </motion.div>
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants}>
                 <ContactSection />

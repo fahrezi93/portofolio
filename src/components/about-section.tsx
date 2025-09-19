@@ -1,16 +1,32 @@
 
+"use client";
+
 import { useLanguage } from "@/context/language-context";
 import StarBorder from "./StarBorder";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { Download } from "lucide-react";
+import { useParallax } from "@/hooks/use-parallax";
 
 
 export function AboutSection() {
   const { t } = useLanguage();
+  const parallaxOffset = useParallax(0.1);
+  
   return (
-    <section id="about" className="w-full py-16 md:py-24 lg:py-32">
-      <div className="container mx-auto max-w-5xl px-4 md:px-6 grid items-center justify-center gap-12 text-center md:grid-cols-2 md:text-left">
+    <section id="about" className="w-full py-16 md:py-24 lg:py-32 relative overflow-hidden">
+      {/* Subtle background elements */}
+      <div 
+        className="absolute inset-0 opacity-5"
+        style={{
+          transform: `translateY(${parallaxOffset}px)`,
+        }}
+      >
+        <div className="absolute top-20 right-10 w-64 h-64 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 left-10 w-48 h-48 bg-gradient-to-br from-green-400 to-blue-400 rounded-full blur-2xl" />
+      </div>
+      
+      <div className="container mx-auto max-w-5xl px-4 md:px-6 grid items-center justify-center gap-12 text-center md:grid-cols-2 md:text-left relative z-10">
         <div className="order-2 md:order-1 space-y-6">
           <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl">
             {t.about_title}

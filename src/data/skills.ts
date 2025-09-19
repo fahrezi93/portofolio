@@ -13,6 +13,9 @@ import {
   SiGooglecloud,
   SiPython,
   SiGithub,
+  SiNodedotjs,
+  SiExpress,
+  SiSupabase,
 } from "react-icons/si";
 
 export type Skill = {
@@ -50,6 +53,14 @@ export const skills: Skill[] = [
     icon: SiJavascript,
   },
   {
+    name: "Node.js",
+    icon: SiNodedotjs,
+  },
+  {
+    name: "Express.js",
+    icon: SiExpress,
+  },
+  {
     name: "Python",
     icon: SiPython,
   },
@@ -60,6 +71,10 @@ export const skills: Skill[] = [
   {
     name: "Firebase",
     icon: SiFirebase,
+  },
+  {
+    name: "Supabase",
+    icon: SiSupabase,
   },
   {
     name: "Git",

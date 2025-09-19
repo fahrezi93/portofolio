@@ -4,21 +4,38 @@ import { ArrowDown } from "lucide-react";
 import StarBorder from "./StarBorder";
 import RotatingText from "./rotating-text";
 import { useLanguage } from "@/context/language-context";
+import { ParallaxBackground } from "./parallax-background";
+import { useParallax } from "@/hooks/use-parallax";
 
 export function HeroSection() {
   const { t } = useLanguage();
+  const parallaxOffset = useParallax(0.2);
 
   return (
-    <section id="home" className="relative grid w-full min-h-[calc(100vh-8rem)] place-items-center overflow-hidden">
-      <div className="container relative z-10 mx-auto flex h-full max-w-5xl flex-col items-center justify-center px-4 text-center md:px-6">
-        <div className="flex flex-col items-center space-y-6">
+    <ParallaxBackground className="relative grid w-full min-h-[calc(100vh-8rem)] place-items-center">
+      <section id="home" className="relative w-full">
+        <div className="container relative z-10 mx-auto flex h-full max-w-5xl flex-col items-center justify-center px-4 text-center md:px-6 min-h-[calc(100vh-8rem)]">
+        <div 
+          className="flex flex-col items-center space-y-6"
+          style={{
+            transform: `translateY(${parallaxOffset * -0.5}px)`,
+          }}
+        >
           <div className="space-y-4">
-             <p className="font-headline text-lg text-primary md:text-xl">
+             <p 
+               className="font-headline text-lg text-primary md:text-xl"
+               style={{
+                 transform: `translateY(${parallaxOffset * -0.3}px)`,
+               }}
+             >
               {t.hero_subtitle}
             </p>
             <div
               className="flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-4 font-headline text-5xl font-bold leading-relaxed tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl"
-              style={{ lineHeight: '1.3' }}
+              style={{ 
+                lineHeight: '1.3',
+                transform: `translateY(${parallaxOffset * -0.2}px)`,
+              }}
             >
               <span>{t.hero_rotating_1}</span>
               <RotatingText
@@ -46,7 +63,8 @@ export function HeroSection() {
             </StarBorder>
           </div>
         </div>
-      </div>
-    </section>
+        </div>
+      </section>
+    </ParallaxBackground>
   );
 }
