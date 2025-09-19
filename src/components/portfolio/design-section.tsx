@@ -142,7 +142,15 @@ export function DesignSection() {
         <p className="text-muted-foreground mb-4">
           {t.portfolio_design_cta_text}
         </p>
-        <Button className="group">
+        <Button 
+          className="group"
+          onClick={() => {
+            const contactSection = document.getElementById('contact');
+            if (contactSection) {
+              contactSection.scrollIntoView({ behavior: 'smooth' });
+            }
+          }}
+        >
           <Figma className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform" />
           {t.portfolio_design_cta_button}
         </Button>
