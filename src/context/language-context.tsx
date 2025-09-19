@@ -53,6 +53,28 @@ export interface Translation {
     portfolio_dev_cta_button: string;
     portfolio_video_cta_text: string;
     portfolio_video_cta_button: string;
+    github_title: string;
+    github_subtitle: string;
+    github_loading: string;
+    github_error: string;
+    github_repos: string;
+    github_followers: string;
+    github_stars: string;
+    github_years: string;
+    github_popular_repos: string;
+    github_view_profile: string;
+    comments_title: string;
+    comments_subtitle: string;
+    comments_form_name: string;
+    comments_form_message: string;
+    comments_form_photo: string;
+    comments_form_photo_optional: string;
+    comments_form_photo_choose: string;
+    comments_form_photo_limit: string;
+    comments_form_submit: string;
+    comments_form_posting: string;
+    comments_empty_title: string;
+    comments_empty_subtitle: string;
   };
   id: {
     nav_work: string;
@@ -103,6 +125,28 @@ export interface Translation {
     portfolio_dev_cta_button: string;
     portfolio_video_cta_text: string;
     portfolio_video_cta_button: string;
+    github_title: string;
+    github_subtitle: string;
+    github_loading: string;
+    github_error: string;
+    github_repos: string;
+    github_followers: string;
+    github_stars: string;
+    github_years: string;
+    github_popular_repos: string;
+    github_view_profile: string;
+    comments_title: string;
+    comments_subtitle: string;
+    comments_form_name: string;
+    comments_form_message: string;
+    comments_form_photo: string;
+    comments_form_photo_optional: string;
+    comments_form_photo_choose: string;
+    comments_form_photo_limit: string;
+    comments_form_submit: string;
+    comments_form_posting: string;
+    comments_empty_title: string;
+    comments_empty_subtitle: string;
   };
 }
 
@@ -156,6 +200,28 @@ const translations: Translation = {
     portfolio_dev_cta_button: "Let's Build Something Great",
     portfolio_video_cta_text: "Need video editing or motion graphics for your project?",
     portfolio_video_cta_button: "Let's Create Stunning Visuals",
+    github_title: "GitHub Activity",
+    github_subtitle: "A glimpse into my coding journey and open source contributions",
+    github_loading: "Loading GitHub stats...",
+    github_error: "Unable to load GitHub stats at the moment.",
+    github_repos: "Public Repos",
+    github_followers: "Followers",
+    github_stars: "Total Stars",
+    github_years: "Years Active",
+    github_popular_repos: "Popular Repositories",
+    github_view_profile: "View Full Profile",
+    comments_title: "Comments",
+    comments_subtitle: "Leave a comment about my portfolio! I'd love to hear your thoughts and feedback.",
+    comments_form_name: "Name",
+    comments_form_message: "Message",
+    comments_form_photo: "Profile Photo",
+    comments_form_photo_optional: "(optional)",
+    comments_form_photo_choose: "Choose Profile Photo",
+    comments_form_photo_limit: "Max file size: 5MB",
+    comments_form_submit: "Post Comment",
+    comments_form_posting: "Posting...",
+    comments_empty_title: "No comments yet",
+    comments_empty_subtitle: "Be the first to leave a comment about this portfolio!",
   },
   id: {
     nav_work: "Karya",
@@ -206,6 +272,28 @@ const translations: Translation = {
     portfolio_dev_cta_button: "Mari Bangun Sesuatu yang Hebat",
     portfolio_video_cta_text: "Butuh video editing atau motion graphics untuk proyek Anda?",
     portfolio_video_cta_button: "Mari Ciptakan Visual yang Memukau",
+    github_title: "Aktivitas GitHub",
+    github_subtitle: "Sekilas perjalanan coding dan kontribusi open source saya",
+    github_loading: "Memuat statistik GitHub...",
+    github_error: "Tidak dapat memuat statistik GitHub saat ini.",
+    github_repos: "Repo Publik",
+    github_followers: "Pengikut",
+    github_stars: "Total Bintang",
+    github_years: "Tahun Aktif",
+    github_popular_repos: "Repository Populer",
+    github_view_profile: "Lihat Profil Lengkap",
+    comments_title: "Komentar",
+    comments_subtitle: "Tinggalkan komentar tentang portofolio saya! Saya ingin mendengar pendapat dan masukan Anda.",
+    comments_form_name: "Nama",
+    comments_form_message: "Pesan",
+    comments_form_photo: "Foto Profil",
+    comments_form_photo_optional: "(opsional)",
+    comments_form_photo_choose: "Pilih Foto Profil",
+    comments_form_photo_limit: "Ukuran file maksimal: 5MB",
+    comments_form_submit: "Kirim Komentar",
+    comments_form_posting: "Mengirim...",
+    comments_empty_title: "Belum ada komentar",
+    comments_empty_subtitle: "Jadilah yang pertama memberikan komentar tentang portofolio ini!",
   },
 };
 

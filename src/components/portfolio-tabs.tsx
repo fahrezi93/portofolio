@@ -70,45 +70,75 @@ export function PortfolioTabs() {
           </p>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex flex-col md:flex-row flex-wrap justify-center gap-4 md:gap-6 mb-16 max-w-4xl mx-auto">
-          {tabs.map((tab) => {
-            const IconComponent = tab.icon;
-            const isActive = activeTab === tab.id;
-            
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`group relative rounded-full transition-all duration-300 transform hover:scale-105 w-full md:w-auto md:min-w-[280px] ${
-                  isActive 
-                    ? "scale-105 shadow-lg" 
-                    : "hover:shadow-md"
-                }`}
-              >
-                <div className={`relative px-6 py-4 rounded-full border transition-all duration-300 ${
-                  isActive 
-                    ? "bg-slate-700 dark:bg-slate-600 border-slate-600 dark:border-slate-500 text-white" 
-                    : "bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
-                }`}>
-                  <div className="flex items-center gap-3">
-                    {/* Icon */}
-                    <IconComponent className="w-5 h-5 flex-shrink-0" />
-                    
-                    {/* Content */}
-                    <div className="text-left flex-1">
-                      <h3 className="font-semibold text-base mb-0.5">
-                        {tab.label}
-                      </h3>
-                      <p className="text-xs opacity-80">
-                        {tab.description}
-                      </p>
+        {/* Tab Navigation - Mobile Optimized */}
+        <div className="mb-16 max-w-4xl mx-auto">
+          {/* Mobile: Compact segmented control */}
+          <div className="md:hidden">
+            <div className="bg-muted p-1 rounded-lg mx-4">
+              <div className="flex">
+                {tabs.map((tab) => {
+                  const IconComponent = tab.icon;
+                  const isActive = activeTab === tab.id;
+                  
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`flex-1 flex flex-col items-center gap-1 py-2 px-2 rounded-md transition-all duration-200 ${
+                        isActive 
+                          ? "bg-background text-foreground shadow-sm" 
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      <IconComponent className="w-5 h-5" />
+                      <span className="text-xs font-medium">{tab.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop: Full cards */}
+          <div className="hidden md:flex flex-wrap justify-center gap-6">
+            {tabs.map((tab) => {
+              const IconComponent = tab.icon;
+              const isActive = activeTab === tab.id;
+              
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`group relative rounded-full transition-all duration-300 transform hover:scale-105 min-w-[280px] ${
+                    isActive 
+                      ? "scale-105 shadow-lg" 
+                      : "hover:shadow-md"
+                  }`}
+                >
+                  <div className={`relative px-6 py-4 rounded-full border transition-all duration-300 ${
+                    isActive 
+                      ? "bg-slate-700 dark:bg-slate-600 border-slate-600 dark:border-slate-500 text-white" 
+                      : "bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
+                  }`}>
+                    <div className="flex items-center gap-3">
+                      {/* Icon */}
+                      <IconComponent className="w-5 h-5 flex-shrink-0" />
+                      
+                      {/* Content */}
+                      <div className="text-left flex-1">
+                        <h3 className="font-semibold text-base mb-0.5">
+                          {tab.label}
+                        </h3>
+                        <p className="text-xs opacity-80">
+                          {tab.description}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </button>
-            );
-          })}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Tab Content */}

@@ -219,3 +219,12 @@
   text-shadow: 0 0 50px rgba(59, 130, 246, 0.8);
   transform: scale(1.05);
 }
+
+/* Hide scrollbar for mobile tabs */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}

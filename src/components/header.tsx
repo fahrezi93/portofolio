@@ -1,12 +1,12 @@
-
 "use client";
 
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import { Menu, X } from "lucide-react";
-import { Button } from "./ui/button";
-import { useLanguage } from "@/context/language-context";
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Menu, X, Globe, Shield } from 'lucide-react';
+import { useLanguage } from '@/context/language-context';
+import Link from 'next/link';
 import { LanguageSwitcher } from "./language-switcher";
+import { Button } from "./ui/button";
 
 export function Header() {
   const [isMenuOpen, setMenuOpen] = useState(false);

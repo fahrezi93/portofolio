@@ -72,14 +72,63 @@ export function GitHubStats() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
+        duration: 0.6,
+        ease: "easeOut",
+        staggerChildren: 0.15,
+        delayChildren: 0.2
       }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
+    hidden: { 
+      opacity: 0, 
+      y: 30,
+      scale: 0.95
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const statsCardVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 20,
+      scale: 0.9
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.4,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const repoCardVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 25,
+      rotateX: -15
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      rotateX: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
   };
 
   if (loading) {
@@ -88,11 +137,11 @@ export function GitHubStats() {
         <div className="container mx-auto max-w-6xl px-4 md:px-6">
           <div className="text-center mb-12">
             <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl mb-4">
-              GitHub Activity
+              {t.github_title}
             </h2>
             <div className="flex justify-center items-center space-x-2">
               <Github className="w-6 h-6 animate-spin" />
-              <span>Loading GitHub stats...</span>
+              <span>{t.github_loading}</span>
             </div>
           </div>
         </div>
@@ -106,9 +155,9 @@ export function GitHubStats() {
         <div className="container mx-auto max-w-6xl px-4 md:px-6">
           <div className="text-center">
             <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl mb-4">
-              GitHub Activity
+              {t.github_title}
             </h2>
-            <p className="text-muted-foreground">Unable to load GitHub stats at the moment.</p>
+            <p className="text-muted-foreground">{t.github_error}</p>
           </div>
         </div>
       </section>
@@ -130,51 +179,130 @@ export function GitHubStats() {
               variants={itemVariants}
               className="font-headline text-3xl font-bold tracking-tight sm:text-4xl mb-4"
             >
-              GitHub Activity
+              {t.github_title}
             </motion.h2>
             <motion.p 
               variants={itemVariants}
               className="text-lg text-muted-foreground max-w-2xl mx-auto"
             >
-              A glimpse into my coding journey and open source contributions
+              {t.github_subtitle}
             </motion.p>
           </div>
 
           {/* Stats Grid */}
-          <motion.div 
-            variants={itemVariants}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12"
-          >
-            <div className="bg-card rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
-              <Code2 className="w-8 h-8 mx-auto mb-3 text-blue-500" />
-              <div className="text-2xl font-bold">{stats?.public_repos || 0}</div>
-              <div className="text-sm text-muted-foreground">Public Repos</div>
-            </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+            <motion.div 
+              variants={statsCardVariants}
+              whileHover={{ 
+                scale: 1.05, 
+                y: -5,
+                transition: { duration: 0.2 }
+              }}
+              className="bg-card rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <motion.div
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ delay: 0.5, duration: 0.5, ease: "easeOut" }}
+              >
+                <Code2 className="w-8 h-8 mx-auto mb-3 text-blue-500" />
+              </motion.div>
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.7, duration: 0.3 }}
+                className="text-2xl font-bold"
+              >
+                {stats?.public_repos || 0}
+              </motion.div>
+              <div className="text-sm text-muted-foreground">{t.github_repos}</div>
+            </motion.div>
             
-            <div className="bg-card rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
-              <Users className="w-8 h-8 mx-auto mb-3 text-green-500" />
-              <div className="text-2xl font-bold">{stats?.followers || 0}</div>
-              <div className="text-sm text-muted-foreground">Followers</div>
-            </div>
+            <motion.div 
+              variants={statsCardVariants}
+              whileHover={{ 
+                scale: 1.05, 
+                y: -5,
+                transition: { duration: 0.2 }
+              }}
+              className="bg-card rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <motion.div
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ delay: 0.6, duration: 0.5, ease: "easeOut" }}
+              >
+                <Users className="w-8 h-8 mx-auto mb-3 text-green-500" />
+              </motion.div>
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8, duration: 0.3 }}
+                className="text-2xl font-bold"
+              >
+                {stats?.followers || 0}
+              </motion.div>
+              <div className="text-sm text-muted-foreground">{t.github_followers}</div>
+            </motion.div>
             
-            <div className="bg-card rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
-              <Star className="w-8 h-8 mx-auto mb-3 text-yellow-500" />
-              <div className="text-2xl font-bold">
+            <motion.div 
+              variants={statsCardVariants}
+              whileHover={{ 
+                scale: 1.05, 
+                y: -5,
+                transition: { duration: 0.2 }
+              }}
+              className="bg-card rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <motion.div
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ delay: 0.7, duration: 0.5, ease: "easeOut" }}
+              >
+                <Star className="w-8 h-8 mx-auto mb-3 text-yellow-500" />
+              </motion.div>
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.9, duration: 0.3 }}
+                className="text-2xl font-bold"
+              >
                 {repos.reduce((total, repo) => total + repo.stargazers_count, 0)}
-              </div>
-              <div className="text-sm text-muted-foreground">Total Stars</div>
-            </div>
+              </motion.div>
+              <div className="text-sm text-muted-foreground">{t.github_stars}</div>
+            </motion.div>
             
-            <div className="bg-card rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow">
-              <Calendar className="w-8 h-8 mx-auto mb-3 text-purple-500" />
-              <div className="text-2xl font-bold">{getYearsActive()}+</div>
-              <div className="text-sm text-muted-foreground">Years Active</div>
-            </div>
-          </motion.div>
+            <motion.div 
+              variants={statsCardVariants}
+              whileHover={{ 
+                scale: 1.05, 
+                y: -5,
+                transition: { duration: 0.2 }
+              }}
+              className="bg-card rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow"
+            >
+              <motion.div
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ delay: 0.8, duration: 0.5, ease: "easeOut" }}
+              >
+                <Calendar className="w-8 h-8 mx-auto mb-3 text-purple-500" />
+              </motion.div>
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.0, duration: 0.3 }}
+                className="text-2xl font-bold"
+              >
+                {getYearsActive()}+
+              </motion.div>
+              <div className="text-sm text-muted-foreground">{t.github_years}</div>
+            </motion.div>
+          </div>
 
           {/* Popular Repositories */}
           <motion.div variants={itemVariants}>
-            <h3 className="text-2xl font-bold mb-6 text-center">Popular Repositories</h3>
+            <h3 className="text-2xl font-bold mb-6 text-center">{t.github_popular_repos}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {repos.slice(0, 6).map((repo, index) => (
                 <motion.a
@@ -182,10 +310,19 @@ export function GitHubStats() {
                   href={repo.html_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  variants={itemVariants}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="bg-card rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-border hover:border-primary/50"
+                  variants={repoCardVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ 
+                    scale: 1.03,
+                    y: -8,
+                    rotateY: 5,
+                    transition: { duration: 0.3, ease: "easeOut" }
+                  }}
+                  whileTap={{ scale: 0.97 }}
+                  className="bg-card rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-border hover:border-primary/50 transform-gpu"
                 >
                   <div className="flex items-start justify-between mb-3">
                     <GitBranch className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-1" />
@@ -217,12 +354,22 @@ export function GitHubStats() {
               href={`https://github.com/${GITHUB_USERNAME}`}
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ 
+                scale: 1.05,
+                y: -2,
+                boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
+                transition: { duration: 0.2 }
+              }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center space-x-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
+              className="inline-flex items-center space-x-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-all duration-300 shadow-lg"
             >
-              <Github className="w-5 h-5" />
-              <span>View Full Profile</span>
+              <motion.div
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Github className="w-5 h-5" />
+              </motion.div>
+              <span>{t.github_view_profile}</span>
             </motion.a>
           </motion.div>
         </motion.div>

@@ -1,5 +1,7 @@
 import type {Metadata} from 'next';
+import { Plus_Jakarta_Sans } from "next/font/google";
 import './globals.css';
+import { AdminProvider } from "@/context/admin-context";
 import { Toaster } from "@/components/ui/toaster";
 import { LanguageProvider } from "@/context/language-context";
 import AppLoading from "@/components/app-loading";
@@ -108,11 +110,13 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <LanguageProvider>
-          <AppLoading>
-            {children}
-          </AppLoading>
-        </LanguageProvider>
+        <AdminProvider>
+          <LanguageProvider>
+            <AppLoading>
+              {children}
+            </AppLoading>
+          </LanguageProvider>
+        </AdminProvider>
         <Toaster />
       </body>
     </html>
