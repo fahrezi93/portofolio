@@ -48,7 +48,7 @@ export function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-muted/30">
+    <div className="min-h-screen bg-slate-950/20">
       {/* Header */}
       <header className="bg-card border-b border-border shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

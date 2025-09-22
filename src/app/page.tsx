@@ -13,6 +13,7 @@ import { GitHubStats } from "@/components/github-stats";
 import { CommentsSection } from "@/components/comments-section";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { LanguageProvider } from "@/context/language-context";
+import ModernBackground from "@/components/modern-background";
 import AuroraBackground from "@/components/aurora-background";
 import { useEffect } from "react";
 export default function Home() {
@@ -32,7 +33,9 @@ export default function Home() {
 
   return (
     <LanguageProvider>
-      {/* Aurora Background - Fixed layer at top with fade effect */}
+      {/* Modern Background - Fixed layer with animated elements */}
+      <ModernBackground />
+      {/* Aurora Background - Overlay with matching colors */}
       <AuroraBackground />
       {/* Scroll Progress Indicator */}
       <ScrollProgress />
