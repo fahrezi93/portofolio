@@ -6,9 +6,9 @@ import { motion } from "framer-motion";
 export default function ModernBackground() {
   return (
     <div className="fixed inset-0 -z-20 overflow-hidden">
-      {/* Base gradient background with blue tint */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950/80" />
-      <div className="absolute inset-0 bg-gradient-to-tr from-blue-950/30 via-transparent to-purple-950/20" />
+      {/* Base gradient background with darker blue tint */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-950 to-slate-950" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-blue-950/20 via-transparent to-purple-950/15" />
       
       {/* Large animated gradient orbs with improved positioning */}
       <div className="absolute inset-0">
@@ -16,8 +16,8 @@ export default function ModernBackground() {
         <motion.div
           className="absolute -top-40 -left-60 w-[800px] h-[700px] rounded-full"
           style={{
-            background: "radial-gradient(ellipse 120% 80% at 40% 60%, rgba(59, 130, 246, 0.20) 0%, rgba(59, 130, 246, 0.12) 20%, rgba(59, 130, 246, 0.06) 40%, rgba(59, 130, 246, 0.02) 60%, rgba(59, 130, 246, 0.01) 80%, transparent 100%)",
-            filter: "blur(150px)",
+            background: "radial-gradient(ellipse 120% 80% at 40% 60%, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.04) 20%, rgba(59, 130, 246, 0.02) 40%, rgba(59, 130, 246, 0.005) 60%, transparent 80%)",
+            filter: "blur(100px)",
             transform: "rotate(-15deg)",
           }}
           animate={{
@@ -36,7 +36,7 @@ export default function ModernBackground() {
         <motion.div
           className="absolute -top-30 -right-50 w-[700px] h-[600px] rounded-full"
           style={{
-            background: "radial-gradient(ellipse 90% 110% at 60% 40%, rgba(147, 51, 234, 0.18) 0%, rgba(147, 51, 234, 0.10) 20%, rgba(147, 51, 234, 0.05) 40%, rgba(147, 51, 234, 0.02) 60%, rgba(147, 51, 234, 0.01) 80%, transparent 100%)",
+            background: "radial-gradient(ellipse 90% 110% at 60% 40%, rgba(147, 51, 234, 0.06) 0%, rgba(147, 51, 234, 0.03) 20%, rgba(147, 51, 234, 0.015) 40%, rgba(147, 51, 234, 0.005) 60%, transparent 80%)",
             filter: "blur(130px)",
             transform: "rotate(25deg)",
           }}
@@ -56,7 +56,7 @@ export default function ModernBackground() {
         <motion.div
           className="absolute top-1/3 -left-50 w-[650px] h-[550px] rounded-full"
           style={{
-            background: "radial-gradient(ellipse 110% 90% at 30% 50%, rgba(236, 72, 153, 0.16) 0%, rgba(236, 72, 153, 0.08) 20%, rgba(236, 72, 153, 0.04) 40%, rgba(236, 72, 153, 0.02) 60%, rgba(236, 72, 153, 0.01) 80%, transparent 100%)",
+            background: "radial-gradient(ellipse 110% 90% at 30% 50%, rgba(236, 72, 153, 0.05) 0%, rgba(236, 72, 153, 0.025) 20%, rgba(236, 72, 153, 0.01) 40%, rgba(236, 72, 153, 0.005) 60%, transparent 80%)",
             filter: "blur(120px)",
             transform: "rotate(-30deg)",
           }}
@@ -76,7 +76,7 @@ export default function ModernBackground() {
         <motion.div
           className="absolute bottom-20 -right-60 w-[600px] h-[500px] rounded-full"
           style={{
-            background: "radial-gradient(ellipse 100% 120% at 70% 30%, rgba(6, 182, 212, 0.14) 0%, rgba(6, 182, 212, 0.07) 20%, rgba(6, 182, 212, 0.03) 40%, rgba(6, 182, 212, 0.01) 60%, rgba(6, 182, 212, 0.005) 80%, transparent 100%)",
+            background: "radial-gradient(ellipse 100% 120% at 70% 30%, rgba(6, 182, 212, 0.04) 0%, rgba(6, 182, 212, 0.02) 20%, rgba(6, 182, 212, 0.01) 40%, rgba(6, 182, 212, 0.005) 60%, transparent 80%)",
             filter: "blur(110px)",
             transform: "rotate(40deg)",
           }}
@@ -96,7 +96,7 @@ export default function ModernBackground() {
         <motion.div
           className="absolute bottom-40 left-1/4 w-[550px] h-[450px] rounded-full"
           style={{
-            background: "radial-gradient(ellipse 130% 80% at 50% 70%, rgba(34, 197, 94, 0.10) 0%, rgba(34, 197, 94, 0.05) 20%, rgba(34, 197, 94, 0.025) 40%, rgba(34, 197, 94, 0.01) 60%, rgba(34, 197, 94, 0.005) 80%, transparent 100%)",
+            background: "radial-gradient(ellipse 130% 80% at 50% 70%, rgba(34, 197, 94, 0.03) 0%, rgba(34, 197, 94, 0.015) 20%, rgba(34, 197, 94, 0.008) 40%, rgba(34, 197, 94, 0.003) 60%, transparent 80%)",
             filter: "blur(100px)",
             transform: "rotate(-20deg)",
           }}
@@ -113,9 +113,9 @@ export default function ModernBackground() {
         />
       </div>
       
-      {/* Enhanced floating particles - More particles */}
+      {/* Enhanced floating particles - Reduced for mobile performance */}
       <div className="absolute inset-0">
-        {Array.from({ length: 80 }).map((_, i) => {
+        {Array.from({ length: 40 }).map((_, i) => {
           // Generate unique random values for each particle
           const randomX = Math.random() * 100;
           const randomY = Math.random() * 100;
@@ -154,9 +154,9 @@ export default function ModernBackground() {
         })}
       </div>
       
-      {/* Extra tiny particles for more density */}
+      {/* Extra tiny particles - Reduced for performance */}
       <div className="absolute inset-0">
-        {Array.from({ length: 30 }).map((_, i) => {
+        {Array.from({ length: 15 }).map((_, i) => {
           const randomX = Math.random() * 100;
           const randomY = Math.random() * 100;
           const randomSize = Math.random() * 2 + 0.5; // Very small: 0.5-2.5px
@@ -307,8 +307,8 @@ export default function ModernBackground() {
           }}
         />
         
-        {/* Additional small geometric shapes scattered around */}
-        {Array.from({ length: 8 }).map((_, i) => {
+        {/* Additional small geometric shapes - Reduced for performance */}
+        {Array.from({ length: 4 }).map((_, i) => {
           const randomLeft = Math.random() * 90 + 5;
           const randomTop = Math.random() * 90 + 5;
           const randomSize = Math.random() * 6 + 4; // 4-10px
@@ -345,8 +345,8 @@ export default function ModernBackground() {
           );
         })}
         
-        {/* Small floating shapes */}
-        {Array.from({ length: 12 }).map((_, i) => {
+        {/* Small floating shapes - Reduced for performance */}
+        {Array.from({ length: 6 }).map((_, i) => {
           // Generate random positions for each shape
           const randomLeft = Math.random() * 90 + 5; // 5% to 95%
           const randomTop = Math.random() * 90 + 5;  // 5% to 95%
@@ -424,19 +424,6 @@ export default function ModernBackground() {
         }}
       />
       
-      {/* Multi-layer radial gradients for depth */}
-      <div className="absolute inset-0 bg-gradient-radial from-transparent via-slate-950/10 to-slate-950/30" />
-      <div className="absolute inset-0 bg-gradient-radial from-slate-950/5 via-transparent to-slate-950/20" />
-      
-      {/* Enhanced top fade for header */}
-      <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-slate-950/95 via-slate-950/60 to-transparent" />
-      
-      {/* Bottom fade for footer */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-slate-950/80 to-transparent" />
-      
-      {/* Side fades for better content integration */}
-      <div className="absolute top-0 left-0 w-32 h-full bg-gradient-to-r from-slate-950/40 to-transparent" />
-      <div className="absolute top-0 right-0 w-32 h-full bg-gradient-to-l from-slate-950/40 to-transparent" />
     </div>
   );
 }

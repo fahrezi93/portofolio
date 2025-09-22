@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { useLanguage } from "@/context/language-context";
 import { Badge } from "./ui/badge";
 import { DesignSection } from "@/components/portfolio/design-section";
@@ -57,21 +58,76 @@ export function PortfolioTabs() {
     }
   };
 
-  return (
-    <section id="portfolio" className="w-full py-16 md:py-24 lg:py-32 bg-background">
-      <div className="container mx-auto max-w-7xl px-4 md:px-6">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl mb-4">
-            {t.portfolio_title}
-          </h2>
-          <p className="max-w-2xl mx-auto text-lg text-muted-foreground">
-            {t.portfolio_subtitle}
-          </p>
-        </div>
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+        staggerChildren: 0.3,
+        delayChildren: 0.2
+      }
+    }
+  };
 
-        {/* Tab Navigation - Mobile Optimized */}
-        <div className="mb-16 max-w-4xl mx-auto">
+  const headerVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const tabsVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const contentVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  return (
+    <section id="portfolio" className="w-full py-16 md:py-24 lg:py-32 bg-transparent">
+      <div className="container mx-auto max-w-7xl px-4 md:px-6">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={containerVariants}
+        >
+          {/* Header */}
+          <motion.div variants={headerVariants} className="text-center mb-12">
+            <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl mb-4">
+              {t.portfolio_title}
+            </h2>
+            <p className="max-w-2xl mx-auto text-lg text-muted-foreground">
+              {t.portfolio_subtitle}
+            </p>
+          </motion.div>
+
+          {/* Tab Navigation - Mobile Optimized */}
+          <motion.div variants={tabsVariants} className="mb-16 max-w-4xl mx-auto">
           {/* Mobile: Compact segmented control */}
           <div className="md:hidden">
             <div className="bg-muted p-1 rounded-lg mx-4">
@@ -139,12 +195,13 @@ export function PortfolioTabs() {
               );
             })}
           </div>
-        </div>
+          </motion.div>
 
-        {/* Tab Content */}
-        <div className="min-h-[600px]">
-          {renderTabContent()}
-        </div>
+          {/* Tab Content */}
+          <motion.div variants={contentVariants} className="min-h-[600px]">
+            {renderTabContent()}
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

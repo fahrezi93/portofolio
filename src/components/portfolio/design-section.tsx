@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { motion } from "framer-motion";
 import { useLanguage } from "@/context/language-context";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
@@ -12,6 +13,31 @@ export function DesignSection() {
   const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [showAll, setShowAll] = useState<boolean>(false);
+
+  // Simple fade-in animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.1
+      }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { 
+      opacity: 0
+    },
+    visible: { 
+      opacity: 1,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
+  };
 
   // Get unique categories from design projects
   const categories = useMemo(() => {
@@ -49,11 +75,19 @@ export function DesignSection() {
       </div>
 
       {/* Design Projects Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+      <motion.div 
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-start"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
         {displayedProjects.map((project, index) => (
-          <div
+          <motion.div
             key={`${project.title}-${index}`}
-            className="group relative bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]"
+            className="group relative bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-[1.01] h-full flex flex-col"
+            variants={cardVariants}
+            style={{ minHeight: '450px' }}
           >
             {/* Project Image */}
             <div className="relative aspect-[4/3] bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 overflow-hidden">
@@ -72,7 +106,7 @@ export function DesignSection() {
             </div>
 
             {/* Project Info */}
-            <div className="p-6">
+            <div className="p-6 flex-1 flex flex-col">
               <div className="flex items-start justify-between mb-3">
                 <div>
                   <h3 className="font-semibold text-xl mb-1">{project.title}</h3>
@@ -108,9 +142,9 @@ export function DesignSection() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       {/* View More Button */}
       {filteredProjects.length > 4 && (

@@ -49,7 +49,7 @@ export function ProjectsSection() {
   };
 
   return (
-    <section id="projects" className="w-full py-16 md:py-24 lg:py-32 bg-background z-10">
+    <section id="projects" className="w-full py-16 md:py-24 lg:py-32 bg-transparent z-10">
       <div className="container mx-auto max-w-7xl px-4 md:px-6 text-center">
         <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl">
           {t.projects_title || 'Featured Work'}
