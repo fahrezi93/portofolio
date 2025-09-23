@@ -7,9 +7,9 @@ import { LanguageProvider } from "@/context/language-context";
 import AppLoading from "@/components/app-loading";
 
 export const metadata: Metadata = {
-  title: 'Mohammad Fahrezi - Front-End Developer & UI/UX Designer',
+  title: 'Mohammad Fahrezi - Fullstack Developer & UI/UX Designer',
   description: 'Passionate Computer Science student at Sriwijaya University specializing in Front-End Development and UI/UX Design. Creating modern, intuitive web applications with cutting-edge technologies.',
-  keywords: ['Mohammad Fahrezi', 'Front-End Developer', 'UI/UX Designer', 'React', 'Next.js', 'TypeScript', 'Web Developer', 'Sriwijaya University', 'Portfolio'],
+  keywords: ['Mohammad Fahrezi', 'Fullstack Developer', 'UI/UX Designer', 'React', 'Next.js', 'TypeScript', 'Web Developer', 'Sriwijaya University', 'Portfolio'],
   authors: [{ name: 'Mohammad Fahrezi' }],
   creator: 'Mohammad Fahrezi',
   publisher: 'Mohammad Fahrezi',
@@ -24,9 +24,9 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: 'website',
-    locale: 'en_US',
+    locale: 'id_ID',
     url: 'https://fahrezi-portofolio.vercel.app',
-    title: 'Mohammad Fahrezi - Front-End Developer & UI/UX Designer',
+    title: 'Mohammad Fahrezi - Fullstack Developer & UI/UX Designer',
     description: 'Passionate Computer Science student at Sriwijaya University specializing in Front-End Development and UI/UX Design. Creating modern, intuitive web applications with cutting-edge technologies.',
     siteName: 'Mohammad Fahrezi Portfolio',
     images: [
@@ -34,14 +34,14 @@ export const metadata: Metadata = {
         url: '/images/thumbnail-porto.png',
         width: 1200,
         height: 630,
-        alt: 'Mohammad Fahrezi Portfolio - Front-End Developer & UI/UX Designer',
+        alt: 'Mohammad Fahrezi Portfolio - Fullstack Developer & UI/UX Designer',
         type: 'image/png',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Mohammad Fahrezi - Front-End Developer & UI/UX Designer',
+    title: 'Mohammad Fahrezi - Fullstack Developer & UI/UX Designer',
     description: 'Passionate Computer Science student specializing in Front-End Development and UI/UX Design.',
     images: ['/images/thumbnail-porto.png'],
     creator: '@fahrezi93',
@@ -91,24 +91,32 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Person",
               "name": "Mohammad Fahrezi",
-              "jobTitle": "Front-End Developer & UI/UX Designer",
-              "description": "Passionate Computer Science student at Sriwijaya University specializing in Front-End Development and UI/UX Design",
-              "url": "https://fahrezi-portfolio.netlify.app",
+              "jobTitle": "Fullstack Developer & UI/UX Designer",
+              "description": "Passionate Computer Science student at Sriwijaya University specializing in Fullstack Development and UI/UX Design",
+              "url": "https://fahrezi-portofolio.vercel.app",
               "sameAs": [
                 "https://github.com/fahrezi93",
-                "https://linkedin.com/in/fahrezi93"
+                "https://linkedin.com/in/fahrezi93",
+                "https://instagram.com/moh.fahrezi"
               ],
               "alumniOf": {
                 "@type": "EducationalOrganization",
                 "name": "Sriwijaya University"
               },
               "knowsAbout": [
-                "Front-End Development",
+                "Fullstack Development",
                 "UI/UX Design",
                 "React",
                 "Next.js",
                 "TypeScript",
                 "JavaScript",
+                "HTML",
+                "CSS",
+                "Node.js",
+                "Express.js",
+                "Python",
+                "Git",
+                "Figma",
                 "Web Development"
               ]
             })
