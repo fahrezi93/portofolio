@@ -31,10 +31,10 @@ export const metadata: Metadata = {
     siteName: 'Mohammad Fahrezi Portfolio',
     images: [
       {
-        url: '/images/fahrezi_white_logo.png',
+        url: '/images/thumbnail-porto.png',
         width: 1200,
         height: 630,
-        alt: 'Mohammad Fahrezi - Front-End Developer & UI/UX Designer',
+        alt: 'Mohammad Fahrezi Portfolio - Front-End Developer & UI/UX Designer',
         type: 'image/png',
       },
     ],
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Mohammad Fahrezi - Front-End Developer & UI/UX Designer',
     description: 'Passionate Computer Science student specializing in Front-End Development and UI/UX Design.',
-    images: ['/images/fahrezi_white_logo.png'],
+    images: ['/images/thumbnail-porto.png'],
     creator: '@fahrezi93',
   },
   robots: {
@@ -74,7 +74,13 @@ export default function RootLayout({
         <meta name="theme-color" content="#000000" />
         <meta name="color-scheme" content="dark light" />
         <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/images/fahrezi_white_logo.png" />
+        <link rel="apple-touch-icon" href="/images/thumbnail-porto.png" />
+        <meta property="og:image" content="/images/thumbnail-porto.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:type" content="image/png" />
+        <meta name="twitter:image" content="/images/thumbnail-porto.png" />
+        <meta name="twitter:image:alt" content="Mohammad Fahrezi Portfolio - Front-End Developer & UI/UX Designer" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
