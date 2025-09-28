@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/context/language-context";
 import { Badge } from "./ui/badge";
@@ -14,6 +14,24 @@ type TabType = "design" | "editing" | "development";
 export function PortfolioTabs() {
   const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<TabType>("development");
+  const [isMobile, setIsMobile] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    const checkReducedMotion = () => {
+      setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    };
+
+    checkMobile();
+    checkReducedMotion();
+    
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const tabs = [
     {
@@ -58,50 +76,51 @@ export function PortfolioTabs() {
     }
   };
 
+  // Consistent animations dengan page.tsx
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: isMobile || reducedMotion ? 1 : 0 },
     visible: {
       opacity: 1,
       transition: {
-        duration: 0.6,
+        duration: isMobile || reducedMotion ? 0 : 0.6,
         ease: "easeOut",
-        staggerChildren: 0.3,
-        delayChildren: 0.2
+        staggerChildren: isMobile || reducedMotion ? 0 : 0.3,
+        delayChildren: isMobile || reducedMotion ? 0 : 0.2
       }
     }
   };
 
   const headerVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: isMobile || reducedMotion ? 1 : 0, y: isMobile || reducedMotion ? 0 : 30 },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: {
-        duration: 0.6,
+        duration: isMobile || reducedMotion ? 0 : 0.6,
         ease: "easeOut"
       }
     }
   };
 
   const tabsVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: isMobile || reducedMotion ? 1 : 0, y: isMobile || reducedMotion ? 0 : 20 },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: {
-        duration: 0.5,
+        duration: isMobile || reducedMotion ? 0 : 0.5,
         ease: "easeOut"
       }
     }
   };
 
   const contentVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: isMobile || reducedMotion ? 1 : 0, y: isMobile || reducedMotion ? 0 : 20 },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: {
-        duration: 0.5,
+        duration: isMobile || reducedMotion ? 0 : 0.5,
         ease: "easeOut"
       }
     }

@@ -9,27 +9,45 @@ import { ExperienceSection } from "@/components/experience-section";
 import { SkillsSection } from "@/components/skills-section";
 import { ContactSection } from "@/components/contact-section";
 import { Footer } from "@/components/footer";
-import { GitHubStats } from "@/components/github-stats";
-import { CommentsSection } from "@/components/comments-section";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { LanguageProvider } from "@/context/language-context";
 import ModernBackground from "@/components/modern-background";
 import AuroraBackground from "@/components/aurora-background";
-import { useEffect } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
+
+// Lazy load komponen berat
+const GitHubStats = lazy(() => import("@/components/github-stats").then(module => ({ default: module.GitHubStats })));
+const CommentsSection = lazy(() => import("@/components/comments-section").then(module => ({ default: module.CommentsSection })));
 export default function Home() {
+  const [isMobile, setIsMobile] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    const checkReducedMotion = () => {
+      setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    };
+
+    checkMobile();
+    checkReducedMotion();
+    window.scrollTo(0, 0);
+    
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Simplified animations for mobile dan reduced motion
   const sectionVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: isMobile || reducedMotion ? 1 : 0, y: isMobile || reducedMotion ? 0 : 20 },
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
+      transition: { duration: isMobile || reducedMotion ? 0 : 0.6, ease: "easeOut" }
     },
   };
-  
-  // Scroll ke atas saat halaman dimuat
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   return (
     <LanguageProvider>
@@ -59,10 +77,22 @@ export default function Home() {
                 <SkillsSection />
               </motion.div>
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants}>
-                <GitHubStats />
+                <Suspense fallback={
+                  <div className="flex items-center justify-center py-20">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                  </div>
+                }>
+                  <GitHubStats />
+                </Suspense>
               </motion.div>
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants}>
-                <CommentsSection />
+                <Suspense fallback={
+                  <div className="flex items-center justify-center py-20">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
+                  </div>
+                }>
+                  <CommentsSection />
+                </Suspense>
               </motion.div>
               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants}>
                 <ContactSection />

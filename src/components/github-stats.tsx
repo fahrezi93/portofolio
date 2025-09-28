@@ -29,9 +29,27 @@ export function GitHubStats() {
   const [repos, setRepos] = useState<Repository[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   // Replace with your GitHub username
   const GITHUB_USERNAME = 'fahrezi93';
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    const checkReducedMotion = () => {
+      setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    };
+
+    checkMobile();
+    checkReducedMotion();
+    
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const fetchGitHubData = async () => {
@@ -67,25 +85,26 @@ export function GitHubStats() {
     return currentYear - createdYear;
   };
 
+  // Consistent animations dengan page.tsx
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: isMobile || reducedMotion ? 1 : 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1
+        staggerChildren: isMobile || reducedMotion ? 0 : 0.2,
+        delayChildren: isMobile || reducedMotion ? 0 : 0.1
       }
     }
   };
 
   const itemVariants = {
     hidden: { 
-      opacity: 0
+      opacity: isMobile || reducedMotion ? 1 : 0
     },
     visible: { 
       opacity: 1,
       transition: {
-        duration: 0.8,
+        duration: isMobile || reducedMotion ? 0 : 0.6,
         ease: "easeOut"
       }
     }
@@ -93,12 +112,12 @@ export function GitHubStats() {
 
   const statsCardVariants = {
     hidden: { 
-      opacity: 0
+      opacity: isMobile || reducedMotion ? 1 : 0
     },
     visible: { 
       opacity: 1,
       transition: {
-        duration: 0.8,
+        duration: isMobile || reducedMotion ? 0 : 0.6,
         ease: "easeOut"
       }
     }
@@ -106,16 +125,16 @@ export function GitHubStats() {
 
   const repoCardVariants = {
     hidden: { 
-      opacity: 0, 
-      y: 25,
-      rotateX: -15
+      opacity: isMobile || reducedMotion ? 1 : 0, 
+      y: isMobile || reducedMotion ? 0 : 25,
+      rotateX: isMobile || reducedMotion ? 0 : -15
     },
     visible: { 
       opacity: 1, 
       y: 0,
       rotateX: 0,
       transition: {
-        duration: 0.5,
+        duration: isMobile || reducedMotion ? 0 : 0.5,
         ease: "easeOut"
       }
     }

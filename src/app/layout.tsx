@@ -98,7 +98,7 @@ export default function RootLayout({
                 "https://github.com/fahrezi93",
                 "https://linkedin.com/in/fahrezi93",
                 "https://instagram.com/moh.fahrezi"
-              ],
+              ],  
               "alumniOf": {
                 "@type": "EducationalOrganization",
                 "name": "Sriwijaya University"
