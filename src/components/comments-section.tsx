@@ -215,9 +215,25 @@ export function CommentsSection() {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file && file.size <= 5 * 1024 * 1024) { // 5MB limit
-      setNewComment(prev => ({ ...prev, profilePhoto: file }));
+    if (!file) return;
+
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      setError('Please select a valid image file (JPEG, PNG, GIF, or WebP)');
+      return;
     }
+
+    // Validate file size (5MB limit)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+      setError(`File size too large. Please select an image smaller than 5MB. Current size: ${(file.size / 1024 / 1024).toFixed(2)}MB`);
+      return;
+    }
+
+    // Clear any previous errors
+    setError(null);
+    setNewComment(prev => ({ ...prev, profilePhoto: file }));
   };
 
   const formatTimeAgo = (created_at: string) => {
@@ -360,6 +376,41 @@ export function CommentsSection() {
                 <label className="block text-sm font-medium mb-2">
                   {t.comments_form_photo} <span className="text-muted-foreground">{t.comments_form_photo_optional}</span>
                 </label>
+                
+                {/* Preview Area */}
+                {newComment.profilePhoto && (
+                  <div className="mb-3 p-3 bg-muted/50 rounded-lg border border-border">
+                    <div className="flex items-center gap-3">
+                      <div className="flex-shrink-0">
+                        <img 
+                          src={URL.createObjectURL(newComment.profilePhoto)} 
+                          alt="Preview"
+                          className="w-12 h-12 rounded-full object-cover border-2 border-primary/20"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-foreground truncate">
+                          {newComment.profilePhoto.name}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {(newComment.profilePhoto.size / 1024 / 1024).toFixed(2)} MB
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setNewComment(prev => ({ ...prev, profilePhoto: null }))}
+                        className="flex-shrink-0 text-red-500 hover:text-red-700 transition-colors"
+                        title="Remove photo"
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Upload Button */}
                 <div className="relative">
                   <input
                     type="file"
@@ -370,10 +421,16 @@ export function CommentsSection() {
                   />
                   <label
                     htmlFor="profile-photo"
-                    className="flex items-center justify-center gap-2 w-full py-3 px-4 border-2 border-dashed border-primary/30 rounded-lg cursor-pointer hover:border-primary/50 transition-colors"
+                    className={`flex items-center justify-center gap-2 w-full py-3 px-4 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
+                      newComment.profilePhoto 
+                        ? 'border-green-500/30 bg-green-50/10 hover:border-green-500/50' 
+                        : 'border-primary/30 hover:border-primary/50'
+                    }`}
                   >
-                    <Upload className="w-5 h-5 text-primary" />
-                    <span className="text-primary">{t.comments_form_photo_choose}</span>
+                    <Upload className={`w-5 h-5 ${newComment.profilePhoto ? 'text-green-500' : 'text-primary'}`} />
+                    <span className={newComment.profilePhoto ? 'text-green-500' : 'text-primary'}>
+                      {newComment.profilePhoto ? 'Change Photo' : t.comments_form_photo_choose}
+                    </span>
                   </label>
                   <p className="text-xs text-muted-foreground mt-1">{t.comments_form_photo_limit}</p>
                 </div>

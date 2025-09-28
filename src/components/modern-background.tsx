@@ -133,10 +133,10 @@ export default function ModernBackground() {
         </div>
       )}
       
-      {/* Enhanced comet lines - 5 garis (3 vertikal + 2 horizontal) */}
+      {/* Enhanced comet lines - 5 garis dengan timing natural */}
       {!isMobile && !reducedMotion && (
         <div className="absolute inset-0">
-          {/* 3 Garis vertikal dari atas */}
+          {/* 3 Garis vertikal dari atas - timing bervariasi */}
           <motion.div
             className="absolute w-[1px] h-[120px]"
             style={{
@@ -149,10 +149,11 @@ export default function ModernBackground() {
               opacity: [0, 1, 1, 0],
             }}
             transition={{
-              duration: 4,
+              duration: 3.5,
               repeat: Infinity,
-              delay: 1,
+              delay: 0.5,
               ease: "easeIn",
+              repeatDelay: 2, // Jeda setelah selesai
             }}
           />
           
@@ -168,10 +169,11 @@ export default function ModernBackground() {
               opacity: [0, 1, 1, 0],
             }}
             transition={{
-              duration: 5,
+              duration: 4.8,
               repeat: Infinity,
-              delay: 6,
+              delay: 3.2,
               ease: "easeIn",
+              repeatDelay: 1.5,
             }}
           />
           
@@ -187,14 +189,15 @@ export default function ModernBackground() {
               opacity: [0, 1, 1, 0],
             }}
             transition={{
-              duration: 4.5,
+              duration: 4.2,
               repeat: Infinity,
-              delay: 11,
+              delay: 7.8,
               ease: "easeIn",
+              repeatDelay: 3,
             }}
           />
           
-          {/* 2 Garis horizontal dari samping */}
+          {/* 2 Garis horizontal dari samping - timing overlap */}
           <motion.div
             className="absolute w-[150px] h-[1px]"
             style={{
@@ -207,10 +210,11 @@ export default function ModernBackground() {
               opacity: [0, 1, 1, 0],
             }}
             transition={{
-              duration: 6,
+              duration: 5.5,
               repeat: Infinity,
-              delay: 3,
+              delay: 2.1,
               ease: "easeInOut",
+              repeatDelay: 4,
             }}
           />
           
@@ -226,10 +230,11 @@ export default function ModernBackground() {
               opacity: [0, 1, 1, 0],
             }}
             transition={{
-              duration: 7,
+              duration: 6.8,
               repeat: Infinity,
-              delay: 9,
+              delay: 5.7,
               ease: "easeInOut",
+              repeatDelay: 2.5,
             }}
           />
         </div>
