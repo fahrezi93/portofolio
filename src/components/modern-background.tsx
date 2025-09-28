@@ -284,7 +284,7 @@ export default function ModernBackground() {
       {/* Subtle grid pattern - opacity yang pas */}
       {!isMobile && (
         <div 
-          className="absolute inset-0 opacity-[0.05]"
+          className="absolute inset-0 opacity-[0.06]"
           style={{
             backgroundImage: `
               linear-gradient(rgba(255, 255, 255, 1) 1px, transparent 1px),

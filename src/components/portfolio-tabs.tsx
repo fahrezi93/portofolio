@@ -76,51 +76,51 @@ export function PortfolioTabs() {
     }
   };
 
-  // Consistent animations dengan page.tsx
+  // Mobile-friendly animations - tetap ada animasi tapi lebih ringan
   const containerVariants = {
-    hidden: { opacity: isMobile || reducedMotion ? 1 : 0 },
+    hidden: { opacity: reducedMotion ? 1 : 0 },
     visible: {
       opacity: 1,
       transition: {
-        duration: isMobile || reducedMotion ? 0 : 0.6,
+        duration: reducedMotion ? 0 : (isMobile ? 0.4 : 0.6),
         ease: "easeOut",
-        staggerChildren: isMobile || reducedMotion ? 0 : 0.3,
-        delayChildren: isMobile || reducedMotion ? 0 : 0.2
+        staggerChildren: reducedMotion ? 0 : (isMobile ? 0.15 : 0.3),
+        delayChildren: reducedMotion ? 0 : (isMobile ? 0.1 : 0.2)
       }
     }
   };
 
   const headerVariants = {
-    hidden: { opacity: isMobile || reducedMotion ? 1 : 0, y: isMobile || reducedMotion ? 0 : 30 },
+    hidden: { opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : (isMobile ? 15 : 30) },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: {
-        duration: isMobile || reducedMotion ? 0 : 0.6,
+        duration: reducedMotion ? 0 : (isMobile ? 0.4 : 0.6),
         ease: "easeOut"
       }
     }
   };
 
   const tabsVariants = {
-    hidden: { opacity: isMobile || reducedMotion ? 1 : 0, y: isMobile || reducedMotion ? 0 : 20 },
+    hidden: { opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : (isMobile ? 10 : 20) },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: {
-        duration: isMobile || reducedMotion ? 0 : 0.5,
+        duration: reducedMotion ? 0 : (isMobile ? 0.3 : 0.5),
         ease: "easeOut"
       }
     }
   };
 
   const contentVariants = {
-    hidden: { opacity: isMobile || reducedMotion ? 1 : 0, y: isMobile || reducedMotion ? 0 : 20 },
+    hidden: { opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : (isMobile ? 10 : 20) },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: {
-        duration: isMobile || reducedMotion ? 0 : 0.5,
+        duration: reducedMotion ? 0 : (isMobile ? 0.3 : 0.5),
         ease: "easeOut"
       }
     }

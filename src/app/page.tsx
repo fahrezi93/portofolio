@@ -39,13 +39,13 @@ export default function Home() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Simplified animations for mobile dan reduced motion
+  // Mobile-friendly animations - tetap ada animasi tapi lebih ringan
   const sectionVariants = {
-    hidden: { opacity: isMobile || reducedMotion ? 1 : 0, y: isMobile || reducedMotion ? 0 : 20 },
+    hidden: { opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : (isMobile ? 10 : 20) },
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: isMobile || reducedMotion ? 0 : 0.6, ease: "easeOut" }
+      transition: { duration: reducedMotion ? 0 : (isMobile ? 0.4 : 0.6), ease: "easeOut" }
     },
   };
 

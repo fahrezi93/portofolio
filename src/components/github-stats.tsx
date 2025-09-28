@@ -85,26 +85,26 @@ export function GitHubStats() {
     return currentYear - createdYear;
   };
 
-  // Consistent animations dengan page.tsx
+  // Mobile-friendly animations - tetap ada animasi tapi lebih ringan
   const containerVariants = {
-    hidden: { opacity: isMobile || reducedMotion ? 1 : 0 },
+    hidden: { opacity: reducedMotion ? 1 : 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: isMobile || reducedMotion ? 0 : 0.2,
-        delayChildren: isMobile || reducedMotion ? 0 : 0.1
+        staggerChildren: reducedMotion ? 0 : (isMobile ? 0.1 : 0.2),
+        delayChildren: reducedMotion ? 0 : (isMobile ? 0.05 : 0.1)
       }
     }
   };
 
   const itemVariants = {
     hidden: { 
-      opacity: isMobile || reducedMotion ? 1 : 0
+      opacity: reducedMotion ? 1 : 0
     },
     visible: { 
       opacity: 1,
       transition: {
-        duration: isMobile || reducedMotion ? 0 : 0.6,
+        duration: reducedMotion ? 0 : (isMobile ? 0.4 : 0.6),
         ease: "easeOut"
       }
     }
@@ -112,12 +112,12 @@ export function GitHubStats() {
 
   const statsCardVariants = {
     hidden: { 
-      opacity: isMobile || reducedMotion ? 1 : 0
+      opacity: reducedMotion ? 1 : 0
     },
     visible: { 
       opacity: 1,
       transition: {
-        duration: isMobile || reducedMotion ? 0 : 0.6,
+        duration: reducedMotion ? 0 : (isMobile ? 0.4 : 0.6),
         ease: "easeOut"
       }
     }
@@ -125,16 +125,16 @@ export function GitHubStats() {
 
   const repoCardVariants = {
     hidden: { 
-      opacity: isMobile || reducedMotion ? 1 : 0, 
-      y: isMobile || reducedMotion ? 0 : 25,
-      rotateX: isMobile || reducedMotion ? 0 : -15
+      opacity: reducedMotion ? 1 : 0, 
+      y: reducedMotion ? 0 : (isMobile ? 15 : 25),
+      rotateX: reducedMotion ? 0 : (isMobile ? -8 : -15)
     },
     visible: { 
       opacity: 1, 
       y: 0,
       rotateX: 0,
       transition: {
-        duration: isMobile || reducedMotion ? 0 : 0.5,
+        duration: reducedMotion ? 0 : (isMobile ? 0.3 : 0.5),
         ease: "easeOut"
       }
     }

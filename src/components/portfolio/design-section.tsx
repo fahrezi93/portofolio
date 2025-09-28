@@ -13,27 +13,55 @@ export function DesignSection() {
   const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [showAll, setShowAll] = useState<boolean>(false);
+  const [hasAnimated, setHasAnimated] = useState<boolean>(false);
+  
+  // Handle view more with scroll position management
+  const handleViewMore = () => {
+    if (!showAll) {
+      // Expanding: scroll to maintain position at button
+      const currentScrollY = window.scrollY;
+      setShowAll(true);
+      
+      // Small delay to let DOM update, then adjust scroll
+      setTimeout(() => {
+        window.scrollTo({
+          top: currentScrollY,
+          behavior: 'smooth'
+        });
+      }, 100);
+    } else {
+      // Collapsing: scroll to top of section
+      setShowAll(false);
+      const portfolioSection = document.getElementById('portfolio');
+      if (portfolioSection) {
+        portfolioSection.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }
+  };
 
-  // Simple fade-in animation variants
+  // Animation variants - only animate once
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: hasAnimated ? 1 : 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1
+        staggerChildren: hasAnimated ? 0 : 0.1,
+        delayChildren: hasAnimated ? 0 : 0.05
       }
     }
   };
 
   const cardVariants = {
     hidden: { 
-      opacity: 0
+      opacity: hasAnimated ? 1 : 0
     },
     visible: { 
       opacity: 1,
       transition: {
-        duration: 0.8,
+        duration: hasAnimated ? 0 : 0.3,
         ease: "easeOut"
       }
     }
@@ -54,8 +82,7 @@ export function DesignSection() {
   }, [selectedCategory]);
 
   const displayedProjects = useMemo(() => {
-    if (showAll) return filteredProjects;
-    return filteredProjects.slice(0, 4);
+    return showAll ? filteredProjects : filteredProjects.slice(0, 4);
   }, [filteredProjects, showAll]);
 
   return (
@@ -76,15 +103,17 @@ export function DesignSection() {
 
       {/* Design Projects Grid */}
       <motion.div 
+        key={`grid-${showAll}-${selectedCategory}`} // Force re-render when showAll changes
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-start"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.1 }}
+        onAnimationComplete={() => setHasAnimated(true)}
       >
         {displayedProjects.map((project, index) => (
           <motion.div
-            key={`${project.title}-${index}`}
+            key={`${project.id}-${showAll}-${index}`} // More unique key
             className="group relative bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-[1.01] h-full flex flex-col"
             variants={cardVariants}
             style={{ minHeight: '450px' }}
@@ -151,10 +180,10 @@ export function DesignSection() {
         <div className="text-center">
           <Button 
             variant="outline" 
-            onClick={() => setShowAll(!showAll)}
+            onClick={handleViewMore}
             className="group"
           >
-{showAll ? t.projects_show_less : `${t.projects_view_more} (${filteredProjects.length - 4} more)`}
+            {showAll ? t.projects_show_less : `${t.projects_view_more} (${filteredProjects.length - 4} more)`}
             <ChevronDown className={`w-4 h-4 ml-2 transition-transform ${showAll ? 'rotate-180' : ''}`} />
           </Button>
         </div>
