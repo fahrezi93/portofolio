@@ -1,19 +1,119 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/context/language-context";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { ExternalLink, Github, Code, Globe, Smartphone, Server, ChevronDown, Eye } from "lucide-react";
 import { developmentProjects, DevelopmentProject } from "@/data/development-projects";
+import { ProjectsService } from "@/lib/projects-service";
 import { ImagePreviewModal } from "../ui/image-preview-modal";
+
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  technologies: string[];
+  type: string;
+  year: string;
+  githubUrl?: string;
+  liveUrl?: string;
+  status: string;
+  category: string;
+  createdAt: string;
+}
 
 export function DevelopmentSection() {
   const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [showAll, setShowAll] = useState<boolean>(false);
   const [hasAnimated, setHasAnimated] = useState<boolean>(false);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [useDatabase, setUseDatabase] = useState(false);
+
+  // Load projects from database or fallback to static data
+  useEffect(() => {
+    loadProjects();
+  }, []);
+
+  const loadProjects = async () => {
+    setIsLoading(true);
+    
+    try {
+      const result = await ProjectsService.getAllProjects();
+      
+      if (result.success && result.data) {
+        // Convert database projects to component format
+        const dbProjects: Project[] = result.data
+          .filter(project => project.category === 'development')
+          .map(project => ({
+            id: project.id!,
+            title: project.title,
+            description: project.description,
+            image: project.image_url,
+            technologies: project.technologies,
+            type: project.type || 'Web App',
+            year: project.year,
+            githubUrl: project.github_url,
+            liveUrl: project.demo_url,
+            status: project.featured ? 'Completed' : 'In Progress',
+            category: 'development',
+            createdAt: project.created_at || new Date().toISOString()
+          }))
+          .sort((a, b) => {
+            // Sort by creation date: newest first (descending order)
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          });
+        
+        setProjects(dbProjects);
+        setUseDatabase(true);
+        console.log('✅ Loaded development projects from database:', dbProjects.length);
+      } else {
+        // Fallback to static data
+        console.warn('Database not available, using static data');
+        const staticProjects: Project[] = developmentProjects.map(project => ({
+          id: project.id,
+          title: project.title,
+          description: project.description,
+          image: project.image,
+          technologies: project.technologies,
+          type: project.type,
+          year: project.year,
+          githubUrl: project.githubUrl,
+          liveUrl: project.liveUrl,
+          status: project.status,
+          category: project.category,
+          createdAt: `${project.year}-01-01T00:00:00Z` // Use year as approximate creation date
+        }));
+        setProjects(staticProjects);
+        setUseDatabase(false);
+      }
+    } catch (error) {
+      console.error('Error loading projects:', error);
+      // Fallback to static data on error
+      const staticProjects: Project[] = developmentProjects.map(project => ({
+        id: project.id,
+        title: project.title,
+        description: project.description,
+        image: project.image,
+        technologies: project.technologies,
+        type: project.type,
+        year: project.year,
+        githubUrl: project.githubUrl,
+        liveUrl: project.liveUrl,
+        status: project.status,
+        category: project.category,
+        createdAt: `${project.year}-01-01T00:00:00Z` // Use year as approximate creation date
+      }));
+      setProjects(staticProjects);
+      setUseDatabase(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   
   // Handle view more with scroll position management
   const handleViewMore = () => {
@@ -67,19 +167,19 @@ export function DevelopmentSection() {
     }
   };
 
-  // Get unique categories from development projects
+  // Get unique categories from projects
   const categories = useMemo(() => {
     const cats = new Set<string>();
-    developmentProjects.forEach(project => {
+    projects.forEach(project => {
       cats.add(project.type);
     });
     return ['All', ...Array.from(cats)];
-  }, []);
+  }, [projects]);
 
   const filteredProjects = useMemo(() => {
-    if (selectedCategory === "All") return developmentProjects;
-    return developmentProjects.filter(project => project.type === selectedCategory);
-  }, [selectedCategory]);
+    if (selectedCategory === "All") return projects;
+    return projects.filter(project => project.type === selectedCategory);
+  }, [selectedCategory, projects]);
 
   const displayedProjects = useMemo(() => {
     return showAll ? filteredProjects : filteredProjects.slice(0, 4);
@@ -120,16 +220,36 @@ export function DevelopmentSection() {
         ))}
       </div>
 
+      {/* Loading State */}
+      {isLoading && (
+        <div className="flex items-center justify-center py-12">
+          <div className="text-center">
+            <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading development projects...</p>
+          </div>
+        </div>
+      )}
+
+      {/* Database Status Indicator */}
+      {!isLoading && (
+        <div className="text-center mb-4">
+          <Badge variant={useDatabase ? "default" : "secondary"} className="text-xs">
+            {useDatabase ? "🟢 Live Data" : "📁 Static Data"}
+          </Badge>
+        </div>
+      )}
+
       {/* Development Projects Grid */}
-      <motion.div 
-        key={`dev-grid-${showAll}-${selectedCategory}`} // Force re-render when showAll changes
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-start"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        onAnimationComplete={() => setHasAnimated(true)}
-      >
+      {!isLoading && (
+        <motion.div 
+          key={`dev-grid-${showAll}-${selectedCategory}`} // Force re-render when showAll changes
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-start"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          onAnimationComplete={() => setHasAnimated(true)}
+        >
         {displayedProjects.map((project, index) => (
           <motion.div
             key={`${project.id}-${showAll}-${index}`} // More unique key
@@ -177,11 +297,11 @@ export function DevelopmentSection() {
                 {project.description}
               </p>
 
-              {/* Tags */}
+              {/* Technologies */}
               <div className="flex flex-wrap gap-2 mb-4">
-                {project.tags.map((tag) => (
-                  <Badge key={tag} variant="secondary" className="text-xs">
-                    {tag}
+                {project.technologies.map((tech: string) => (
+                  <Badge key={tech} variant="secondary" className="text-xs">
+                    {tech}
                   </Badge>
                 ))}
               </div>
@@ -226,7 +346,8 @@ export function DevelopmentSection() {
             </div>
           </motion.div>
         ))}
-      </motion.div>
+        </motion.div>
+      )}
 
       {/* View More Button */}
       {filteredProjects.length > 4 && (

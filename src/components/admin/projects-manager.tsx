@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Plus, 
@@ -14,6 +14,11 @@ import {
   Search
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { PhotoUpload } from './photo-upload';
+import { TechnologiesInput } from './technologies-input';
+import { AIDescriptionGeneratorComponent } from './ai-description-generator';
+import { ProjectsService, ProjectData } from '@/lib/projects-service';
+import { DataMigration } from '@/lib/data-migration';
 import { developmentProjects } from '@/data/development-projects';
 import { designProjects } from '@/data/design-projects';
 import { videoProjects } from '@/data/video-projects';
@@ -98,48 +103,206 @@ export function ProjectsManager() {
   ];
 
   const [projects, setProjects] = useState<Project[]>(allProjects);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [useDatabase, setUseDatabase] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
+  const [isMigrating, setIsMigrating] = useState(false);
+  const [migrationResult, setMigrationResult] = useState<string | null>(null);
+
+  // Load projects from database on component mount
+  useEffect(() => {
+    loadProjects();
+  }, []);
+
+  const loadProjects = async () => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      const result = await ProjectsService.getAllProjects();
+      
+      if (result.success && result.data) {
+        // Convert ProjectData to Project format
+        const dbProjects: Project[] = result.data.map(project => ({
+          id: project.id!,
+          title: project.title,
+          description: project.description,
+          category: project.category,
+          image: project.image_url,
+          demoUrl: project.demo_url,
+          githubUrl: project.github_url,
+          technologies: project.technologies,
+          featured: project.featured,
+          createdAt: project.created_at!,
+          type: project.type || project.category,
+          year: project.year
+        }));
+        
+        setProjects(dbProjects);
+        setUseDatabase(true);
+      } else {
+        // Fallback to static data if database fails
+        console.warn('Database not available, using static data:', result.error);
+        setProjects(allProjects);
+        setUseDatabase(false);
+      }
+    } catch (error) {
+      console.error('Error loading projects:', error);
+      setProjects(allProjects);
+      setUseDatabase(false);
+      setError('Failed to load projects from database, using local data');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.title || !formData.description || !formData.category) {
-      alert('Please fill in all required fields');
+    if (!formData.title || !formData.description || !formData.category || !formData.image) {
+      alert('Please fill in all required fields including project image');
       return;
     }
 
-    const newProject: Project = {
-      id: editingProject?.id || `${formData.category}-${Date.now()}`,
-      title: formData.title,
-      description: formData.description,
-      category: formData.category,
-      type: formData.type || formData.category,
-      year: formData.year,
-      image: formData.image || '/images/placeholder.jpg',
-      demoUrl: formData.demoUrl,
-      githubUrl: formData.githubUrl,
-      technologies: formData.technologies,
-      featured: formData.featured,
-      createdAt: formData.year
-    };
+    setIsLoading(true);
+    setError(null);
 
-    if (editingProject) {
-      // Update existing project
-      setProjects(prev => prev.map(p => p.id === editingProject.id ? newProject : p));
-    } else {
-      // Add new project
-      setProjects(prev => [newProject, ...prev]);
+    try {
+      if (useDatabase) {
+        // Use database operations
+        const projectData: Omit<ProjectData, 'id' | 'created_at' | 'updated_at'> = {
+          title: formData.title,
+          description: formData.description,
+          category: formData.category,
+          type: formData.type || formData.category,
+          year: formData.year,
+          image_url: formData.image,
+          demo_url: formData.demoUrl || undefined,
+          github_url: formData.githubUrl || undefined,
+          technologies: formData.technologies,
+          featured: formData.featured
+        };
+
+        if (editingProject) {
+          // Update existing project
+          const result = await ProjectsService.updateProject(editingProject.id, projectData);
+          if (result.success && result.data) {
+            const updatedProject: Project = {
+              id: result.data.id!,
+              title: result.data.title,
+              description: result.data.description,
+              category: result.data.category,
+              image: result.data.image_url,
+              demoUrl: result.data.demo_url,
+              githubUrl: result.data.github_url,
+              technologies: result.data.technologies,
+              featured: result.data.featured,
+              createdAt: result.data.created_at!,
+              type: result.data.type || result.data.category,
+              year: result.data.year
+            };
+            setProjects(prev => prev.map(p => p.id === editingProject.id ? updatedProject : p));
+          } else {
+            throw new Error(result.error || 'Failed to update project');
+          }
+        } else {
+          // Create new project
+          const result = await ProjectsService.createProject(projectData);
+          if (result.success && result.data) {
+            const newProject: Project = {
+              id: result.data.id!,
+              title: result.data.title,
+              description: result.data.description,
+              category: result.data.category,
+              image: result.data.image_url,
+              demoUrl: result.data.demo_url,
+              githubUrl: result.data.github_url,
+              technologies: result.data.technologies,
+              featured: result.data.featured,
+              createdAt: result.data.created_at!,
+              type: result.data.type || result.data.category,
+              year: result.data.year
+            };
+            setProjects(prev => [newProject, ...prev]);
+          } else {
+            throw new Error(result.error || 'Failed to create project');
+          }
+        }
+      } else {
+        // Fallback to local state management
+        const newProject: Project = {
+          id: editingProject?.id || `${formData.category}-${Date.now()}`,
+          title: formData.title,
+          description: formData.description,
+          category: formData.category,
+          type: formData.type || formData.category,
+          year: formData.year,
+          image: formData.image,
+          demoUrl: formData.demoUrl,
+          githubUrl: formData.githubUrl,
+          technologies: formData.technologies,
+          featured: formData.featured,
+          createdAt: new Date().toISOString()
+        };
+
+        if (editingProject) {
+          setProjects(prev => prev.map(p => p.id === editingProject.id ? newProject : p));
+        } else {
+          setProjects(prev => [newProject, ...prev]);
+        }
+      }
+
+      // Reset form and close modal
+      resetForm();
+      setShowAddModal(false);
+      setEditingProject(null);
+      
+    } catch (error) {
+      console.error('Error saving project:', error);
+      setError(error instanceof Error ? error.message : 'Failed to save project');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Handle data migration
+  const handleMigration = async () => {
+    if (!confirm('This will migrate all data from /data folder to Supabase. Continue?')) {
+      return;
     }
 
-    // Reset form and close modal
-    resetForm();
-    setShowAddModal(false);
-    setEditingProject(null);
+    setIsMigrating(true);
+    setMigrationResult(null);
+    setError(null);
+
+    try {
+      const result = await DataMigration.migrateAllData();
+      
+      if (result.success) {
+        setMigrationResult(
+          `✅ Migration successful! Migrated ${result.migrated} projects:\n` +
+          `- Development: ${result.summary.development}\n` +
+          `- Design: ${result.summary.design}\n` +
+          `- Video: ${result.summary.video}`
+        );
+        
+        // Reload projects after migration
+        await loadProjects();
+      } else {
+        setError(`Migration failed: ${result.errors.join(', ')}`);
+      }
+    } catch (error) {
+      console.error('Migration error:', error);
+      setError(error instanceof Error ? error.message : 'Migration failed');
+    } finally {
+      setIsMigrating(false);
+    }
   };
 
   const resetForm = () => {
@@ -174,9 +337,31 @@ export function ProjectsManager() {
     setShowAddModal(true);
   };
 
-  const handleDelete = (projectId: string) => {
-    if (confirm('Are you sure you want to delete this project?')) {
-      setProjects(prev => prev.filter(p => p.id !== projectId));
+  const handleDelete = async (projectId: string) => {
+    if (!confirm('Are you sure you want to delete this project?')) {
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      if (useDatabase) {
+        const result = await ProjectsService.deleteProject(projectId);
+        if (result.success) {
+          setProjects(prev => prev.filter(p => p.id !== projectId));
+        } else {
+          throw new Error(result.error || 'Failed to delete project');
+        }
+      } else {
+        // Fallback to local state
+        setProjects(prev => prev.filter(p => p.id !== projectId));
+      }
+    } catch (error) {
+      console.error('Error deleting project:', error);
+      setError(error instanceof Error ? error.message : 'Failed to delete project');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -212,19 +397,93 @@ export function ProjectsManager() {
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold text-foreground">Projects Manager</h2>
-          <p className="text-muted-foreground">Manage your portfolio projects</p>
+          <p className="text-muted-foreground">
+            Manage your portfolio projects
+            {useDatabase ? (
+              <span className="ml-2 text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded-full">
+                Database Connected
+              </span>
+            ) : (
+              <span className="ml-2 text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 px-2 py-1 rounded-full">
+                Local Mode
+              </span>
+            )}
+          </p>
         </div>
-        <Button 
-          onClick={() => {
-            setEditingProject(null);
-            setShowAddModal(true);
-          }}
-          className="flex items-center gap-2"
-        >
-          <Plus className="w-4 h-4" />
-          Add Project
-        </Button>
+        <div className="flex items-center gap-2">
+          {useDatabase && (
+            <Button 
+              onClick={handleMigration}
+              variant="outline"
+              className="flex items-center gap-2"
+              disabled={isLoading || isMigrating}
+            >
+              {isMigrating ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                  Migrating...
+                </>
+              ) : (
+                <>
+                  <div className="w-4 h-4">📦</div>
+                  Migrate Data
+                </>
+              )}
+            </Button>
+          )}
+          <Button 
+            onClick={() => {
+              setEditingProject(null);
+              setShowAddModal(true);
+            }}
+            className="flex items-center gap-2"
+            disabled={isLoading}
+          >
+            <Plus className="w-4 h-4" />
+            Add Project
+          </Button>
+        </div>
       </div>
+
+      {/* Error Message */}
+      {error && (
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 text-red-600 dark:text-red-400">⚠️</div>
+            <p className="text-red-700 dark:text-red-400 text-sm">{error}</p>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => setError(null)}
+              className="ml-auto text-red-600 hover:text-red-700"
+            >
+              ✕
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Migration Result */}
+      {migrationResult && (
+        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+          <div className="flex items-start gap-2">
+            <div className="w-4 h-4 text-green-600 dark:text-green-400 mt-0.5">✅</div>
+            <div className="flex-1">
+              <pre className="text-green-700 dark:text-green-400 text-sm whitespace-pre-wrap font-mono">
+                {migrationResult}
+              </pre>
+            </div>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => setMigrationResult(null)}
+              className="text-green-600 hover:text-green-700"
+            >
+              ✕
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Filters */}
       <div className="bg-card rounded-xl p-6 shadow-sm border border-border">
@@ -257,8 +516,16 @@ export function ProjectsManager() {
       </div>
 
       {/* Projects Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredProjects.map((project, index) => (
+      {isLoading && projects.length === 0 ? (
+        <div className="flex items-center justify-center py-12">
+          <div className="text-center">
+            <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading projects...</p>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredProjects.map((project, index) => (
           <motion.div
             key={project.id}
             initial={{ opacity: 0, y: 20 }}
@@ -378,7 +645,8 @@ export function ProjectsManager() {
             </div>
           </motion.div>
         ))}
-      </div>
+        </div>
+      )}
 
       {/* Empty State */}
       {filteredProjects.length === 0 && (
@@ -429,8 +697,24 @@ export function ProjectsManager() {
                   value={formData.description}
                   onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                   className="w-full px-3 py-2 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 h-24 resize-none"
-                  placeholder="Enter project description"
+                  placeholder="Enter project description or use AI to generate one..."
                   required
+                />
+                
+                {/* AI Description Generator */}
+                <AIDescriptionGeneratorComponent
+                  context={{
+                    title: formData.title,
+                    category: formData.category,
+                    type: formData.type,
+                    technologies: formData.technologies,
+                    year: formData.year
+                  }}
+                  currentDescription={formData.description}
+                  onDescriptionGenerated={(description) => 
+                    setFormData(prev => ({ ...prev, description }))
+                  }
+                  className="mt-3"
                 />
               </div>
 
@@ -461,28 +745,27 @@ export function ProjectsManager() {
                 </div>
               </div>
 
-              {/* Year and Image */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Year</label>
-                  <input
-                    type="text"
-                    value={formData.year}
-                    onChange={(e) => setFormData(prev => ({ ...prev, year: e.target.value }))}
-                    className="w-full px-3 py-2 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    placeholder="2025"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Image URL</label>
-                  <input
-                    type="url"
-                    value={formData.image}
-                    onChange={(e) => setFormData(prev => ({ ...prev, image: e.target.value }))}
-                    className="w-full px-3 py-2 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    placeholder="/images/project.jpg"
-                  />
-                </div>
+              {/* Year */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Year</label>
+                <input
+                  type="text"
+                  value={formData.year}
+                  onChange={(e) => setFormData(prev => ({ ...prev, year: e.target.value }))}
+                  className="w-full px-3 py-2 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  placeholder="2025"
+                />
+              </div>
+
+              {/* Project Image Upload */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Project Image *</label>
+                <PhotoUpload
+                  value={formData.image}
+                  onChange={(url) => setFormData(prev => ({ ...prev, image: url || '' }))}
+                  folder="projects"
+                  maxSize={5}
+                />
               </div>
 
               {/* URLs */}
@@ -512,15 +795,10 @@ export function ProjectsManager() {
               {/* Technologies */}
               <div>
                 <label className="block text-sm font-medium mb-2">Technologies/Tools</label>
-                <input
-                  type="text"
-                  value={formData.technologies.join(', ')}
-                  onChange={(e) => setFormData(prev => ({ 
-                    ...prev, 
-                    technologies: e.target.value.split(',').map(t => t.trim()).filter(t => t) 
-                  }))}
-                  className="w-full px-3 py-2 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
-                  placeholder="React, TypeScript, Tailwind CSS (comma separated)"
+                <TechnologiesInput
+                  value={formData.technologies}
+                  onChange={(technologies) => setFormData(prev => ({ ...prev, technologies }))}
+                  placeholder="Add technologies used in this project..."
                 />
               </div>
 
@@ -551,8 +829,15 @@ export function ProjectsManager() {
                 >
                   Cancel
                 </Button>
-                <Button type="submit">
-                  {editingProject ? 'Update Project' : 'Add Project'}
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                      {editingProject ? 'Updating...' : 'Adding...'}
+                    </>
+                  ) : (
+                    editingProject ? 'Update Project' : 'Add Project'
+                  )}
                 </Button>
               </div>
             </form>
