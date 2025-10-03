@@ -6,7 +6,6 @@ import {
   LayoutDashboard, 
   FolderOpen, 
   MessageSquare, 
-  Settings, 
   LogOut,
   User,
   BarChart3,
@@ -16,10 +15,9 @@ import { useAdmin } from '@/context/admin-context';
 import { Button } from '@/components/ui/button';
 import { ProjectsManager } from '@/components/admin/projects-manager';
 import { CommentsManager } from '@/components/admin/comments-manager';
-import { PortfolioSettings } from '@/components/admin/portfolio-settings';
 import { supabase } from '@/lib/supabase';
 
-type TabType = 'overview' | 'projects' | 'comments' | 'settings';
+type TabType = 'overview' | 'projects' | 'comments';
 
 export function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
@@ -29,7 +27,6 @@ export function AdminDashboard() {
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
     { id: 'projects', label: 'Projects', icon: FolderOpen },
     { id: 'comments', label: 'Comments', icon: MessageSquare },
-    { id: 'settings', label: 'Settings', icon: Settings },
   ] as const;
 
   const renderContent = () => {
@@ -40,8 +37,6 @@ export function AdminDashboard() {
         return <ProjectsManager />;
       case 'comments':
         return <CommentsManager />;
-      case 'settings':
-        return <PortfolioSettings />;
       default:
         return <OverviewPanel onTabChange={setActiveTab} />;
     }
@@ -136,49 +131,75 @@ export function AdminDashboard() {
 // Overview Panel Component
 function OverviewPanel({ onTabChange }: { onTabChange: (tab: TabType) => void }) {
   const [totalComments, setTotalComments] = useState<number>(0);
+  const [totalProjects, setTotalProjects] = useState<number>(0);
   const [isLoadingComments, setIsLoadingComments] = useState(true);
+  const [isLoadingProjects, setIsLoadingProjects] = useState(true);
 
-  // Fetch comments count from Supabase
+  // Fetch data from Supabase
   useEffect(() => {
-    const fetchCommentsCount = async () => {
+    const fetchData = async () => {
       try {
         setIsLoadingComments(true);
+        setIsLoadingProjects(true);
         
         // Check if Supabase is configured
         if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
           console.log('Supabase not configured, using fallback data');
           setTotalComments(0);
+          setTotalProjects(39); // Fallback to static count
+          setIsLoadingComments(false);
+          setIsLoadingProjects(false);
           return;
         }
 
-        const { count, error } = await supabase
+        // Fetch comments count
+        const { count: commentsCount, error: commentsError } = await supabase
           .from('comments')
           .select('*', { count: 'exact', head: true });
 
-        if (error) {
-          console.error('Error fetching comments count:', error);
+        if (commentsError) {
+          console.error('Error fetching comments count:', commentsError);
           setTotalComments(0);
         } else {
-          setTotalComments(count || 0);
+          setTotalComments(commentsCount || 0);
         }
+
+        // Fetch projects count
+        const { count: projectsCount, error: projectsError } = await supabase
+          .from('projects')
+          .select('*', { count: 'exact', head: true });
+
+        if (projectsError) {
+          console.error('Error fetching projects count:', projectsError);
+          setTotalProjects(39); // Fallback to static count
+        } else {
+          setTotalProjects(projectsCount || 0);
+        }
+
       } catch (error) {
-        console.error('Error fetching comments:', error);
+        console.error('Error fetching data:', error);
         setTotalComments(0);
+        setTotalProjects(39); // Fallback to static count
       } finally {
         setIsLoadingComments(false);
+        setIsLoadingProjects(false);
       }
     };
 
-    fetchCommentsCount();
+    fetchData();
   }, []);
 
   // Real data calculations
-  const totalProjects = 9 + 24 + 6; // Development (9) + Design (24) + Video (6) = 39
   const pageViews = 'N/A'; // Would need analytics integration
   const engagement = 'N/A'; // Would need analytics integration
   
   const stats = [
-    { label: 'Total Projects', value: totalProjects.toString(), icon: FolderOpen, color: 'text-blue-600' },
+    { 
+      label: 'Total Projects', 
+      value: isLoadingProjects ? '...' : totalProjects.toString(), 
+      icon: FolderOpen, 
+      color: 'text-blue-600' 
+    },
     { 
       label: 'Comments', 
       value: isLoadingComments ? '...' : totalComments.toString(), 
@@ -198,9 +219,6 @@ function OverviewPanel({ onTabChange }: { onTabChange: (tab: TabType) => void })
     onTabChange('comments');
   };
 
-  const handleUpdateSettings = () => {
-    onTabChange('settings');
-  };
 
   return (
     <div className="space-y-8">
@@ -253,14 +271,6 @@ function OverviewPanel({ onTabChange }: { onTabChange: (tab: TabType) => void })
           >
             <MessageSquare className="w-5 h-5" />
             Moderate Comments
-          </Button>
-          <Button 
-            variant="outline" 
-            onClick={handleUpdateSettings}
-            className="flex items-center gap-2 h-12 hover:scale-105 transition-transform"
-          >
-            <Settings className="w-5 h-5" />
-            Update Settings
           </Button>
         </div>
       </div>

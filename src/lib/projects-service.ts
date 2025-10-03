@@ -12,6 +12,7 @@ export interface ProjectData {
   demo_url?: string;
   github_url?: string;
   technologies: string[];
+  status?: string;
   featured: boolean;
   created_at?: string;
   updated_at?: string;

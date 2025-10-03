@@ -32,13 +32,26 @@ interface Project {
   demoUrl?: string;
   githubUrl?: string;
   technologies: string[];
+  status: string;
   featured: boolean;
   createdAt: string;
   type: string;
   year: string;
 }
 
-export function ProjectsManager() {
+export function ProjectsManager(): JSX.Element {
+  // State variables
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [useDatabase, setUseDatabase] = useState(false);
+  const [isMigrating, setIsMigrating] = useState(false);
+  const [migrationResult, setMigrationResult] = useState<string | null>(null);
+
   // Form state for new/edit project
   const [formData, setFormData] = useState({
     title: '',
@@ -50,6 +63,7 @@ export function ProjectsManager() {
     demoUrl: '',
     githubUrl: '',
     technologies: [] as string[],
+    status: 'In Progress' as 'In Progress' | 'Completed' | 'Planned',
     featured: false
   });
 
@@ -65,8 +79,9 @@ export function ProjectsManager() {
       demoUrl: project.liveUrl,
       githubUrl: project.githubUrl,
       technologies: project.technologies,
-      featured: project.status === 'Completed',
-      createdAt: project.year,
+      status: project.status,
+      featured: false, // Default value since DevelopmentProject doesn't have featured
+      createdAt: new Date().toISOString(),
       type: project.type,
       year: project.year
     })),
@@ -77,11 +92,12 @@ export function ProjectsManager() {
       description: project.description,
       category: 'design' as const,
       image: project.image,
-      demoUrl: project.figmaUrl,
-      githubUrl: project.behanceUrl,
+      demoUrl: project.figmaUrl || project.behanceUrl || project.dribbbleUrl,
+      githubUrl: undefined,
       technologies: project.tools,
-      featured: project.type === 'UI/UX' || project.type === 'Web Design',
-      createdAt: project.year,
+      status: 'Completed',
+      featured: false,
+      createdAt: new Date().toISOString(),
       type: project.type,
       year: project.year
     })),
@@ -92,55 +108,46 @@ export function ProjectsManager() {
       description: project.description,
       category: 'video' as const,
       image: project.thumbnail,
-      demoUrl: project.youtubeUrl,
-      githubUrl: project.videoUrl,
+      demoUrl: project.youtubeUrl || project.videoUrl,
+      githubUrl: undefined,
       technologies: project.software,
-      featured: project.type === 'Commercial' || project.type === 'Motion Graphics',
-      createdAt: project.year,
+      status: 'Completed',
+      featured: false,
+      createdAt: new Date().toISOString(),
       type: project.type,
       year: project.year
     }))
   ];
 
-  const [projects, setProjects] = useState<Project[]>(allProjects);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [useDatabase, setUseDatabase] = useState(false);
-
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [editingProject, setEditingProject] = useState<Project | null>(null);
-  const [isMigrating, setIsMigrating] = useState(false);
-  const [migrationResult, setMigrationResult] = useState<string | null>(null);
-
-  // Load projects from database on component mount
+  // Load projects on component mount
   useEffect(() => {
     loadProjects();
   }, []);
 
+  // Load projects from database or fallback to static data
   const loadProjects = async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const result = await ProjectsService.getAllProjects();
       
       if (result.success && result.data) {
-        // Convert ProjectData to Project format
-        const dbProjects: Project[] = result.data.map(project => ({
-          id: project.id!,
-          title: project.title,
-          description: project.description,
-          category: project.category,
-          image: project.image_url,
-          demoUrl: project.demo_url,
-          githubUrl: project.github_url,
-          technologies: project.technologies,
-          featured: project.featured,
-          createdAt: project.created_at!,
-          type: project.type || project.category,
-          year: project.year
+        // Transform database projects to match Project interface
+        const dbProjects: Project[] = result.data.map(dbProject => ({
+          id: dbProject.id!,
+          title: dbProject.title,
+          description: dbProject.description,
+          category: dbProject.category,
+          image: dbProject.image_url,
+          demoUrl: dbProject.demo_url,
+          githubUrl: dbProject.github_url,
+          technologies: dbProject.technologies,
+          status: dbProject.status || 'Completed',
+          featured: dbProject.featured,
+          createdAt: dbProject.created_at || new Date().toISOString(),
+          type: dbProject.type || dbProject.category,
+          year: dbProject.year
         }));
         
         setProjects(dbProjects);
@@ -186,6 +193,7 @@ export function ProjectsManager() {
           demo_url: formData.demoUrl || undefined,
           github_url: formData.githubUrl || undefined,
           technologies: formData.technologies,
+          status: formData.status,
           featured: formData.featured
         };
 
@@ -202,6 +210,7 @@ export function ProjectsManager() {
               demoUrl: result.data.demo_url,
               githubUrl: result.data.github_url,
               technologies: result.data.technologies,
+              status: result.data.status || 'Completed',
               featured: result.data.featured,
               createdAt: result.data.created_at!,
               type: result.data.type || result.data.category,
@@ -224,6 +233,7 @@ export function ProjectsManager() {
               demoUrl: result.data.demo_url,
               githubUrl: result.data.github_url,
               technologies: result.data.technologies,
+              status: result.data.status || 'Completed',
               featured: result.data.featured,
               createdAt: result.data.created_at!,
               type: result.data.type || result.data.category,
@@ -247,6 +257,7 @@ export function ProjectsManager() {
           demoUrl: formData.demoUrl,
           githubUrl: formData.githubUrl,
           technologies: formData.technologies,
+          status: formData.status,
           featured: formData.featured,
           createdAt: new Date().toISOString()
         };
@@ -316,6 +327,7 @@ export function ProjectsManager() {
       demoUrl: '',
       githubUrl: '',
       technologies: [],
+      status: 'In Progress',
       featured: false
     });
   };
@@ -331,6 +343,7 @@ export function ProjectsManager() {
       demoUrl: project.demoUrl || '',
       githubUrl: project.githubUrl || '',
       technologies: project.technologies,
+      status: project.status as 'In Progress' | 'Completed' | 'Planned',
       featured: project.featured
     });
     setEditingProject(project);
@@ -349,7 +362,9 @@ export function ProjectsManager() {
       if (useDatabase) {
         const result = await ProjectsService.deleteProject(projectId);
         if (result.success) {
-          setProjects(prev => prev.filter(p => p.id !== projectId));
+          // Refresh data from database to ensure consistency
+          await loadProjects();
+          console.log('✅ Project deleted and data refreshed');
         } else {
           throw new Error(result.error || 'Failed to delete project');
         }
@@ -379,16 +394,49 @@ export function ProjectsManager() {
     return matchesSearch && matchesCategory;
   });
 
-  const handleDeleteProject = (id: string) => {
-    if (confirm('Are you sure you want to delete this project?')) {
-      setProjects(projects.filter(p => p.id !== id));
-    }
-  };
 
-  const toggleFeatured = (id: string) => {
-    setProjects(projects.map(p => 
-      p.id === id ? { ...p, featured: !p.featured } : p
-    ));
+  const toggleFeatured = async (id: string) => {
+    const project = projects.find(p => p.id === id);
+    if (!project) return;
+
+    const newFeaturedStatus = !project.featured;
+    
+    try {
+      if (useDatabase) {
+        // Update in database
+        const result = await ProjectsService.updateProject(id, {
+          title: project.title,
+          description: project.description,
+          category: project.category,
+          type: project.type,
+          year: project.year,
+          image_url: project.image,
+          demo_url: project.demoUrl,
+          github_url: project.githubUrl,
+          technologies: project.technologies,
+          status: project.status,
+          featured: newFeaturedStatus
+        });
+        
+        if (result.success) {
+          // Update local state only if database update succeeds
+          setProjects(projects.map(p => 
+            p.id === id ? { ...p, featured: newFeaturedStatus } : p
+          ));
+          console.log(`✅ Project ${newFeaturedStatus ? 'featured' : 'unfeatured'}: ${project.title}`);
+        } else {
+          throw new Error(result.error || 'Failed to update featured status');
+        }
+      } else {
+        // Fallback to local state only
+        setProjects(projects.map(p => 
+          p.id === id ? { ...p, featured: newFeaturedStatus } : p
+        ));
+      }
+    } catch (error) {
+      console.error('Error toggling featured status:', error);
+      alert(`Failed to ${newFeaturedStatus ? 'feature' : 'unfeature'} project: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   };
 
   return (
@@ -624,11 +672,7 @@ export function ProjectsManager() {
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => {
-                    setProjects(prev => prev.map(p => 
-                      p.id === project.id ? { ...p, featured: !p.featured } : p
-                    ));
-                  }}
+                  onClick={() => toggleFeatured(project.id)}
                   className={project.featured ? 'bg-primary/10 text-primary' : ''}
                 >
                   <Tag className="w-3 h-3" />
@@ -802,18 +846,32 @@ export function ProjectsManager() {
                 />
               </div>
 
-              {/* Featured */}
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="featured"
-                  checked={formData.featured}
-                  onChange={(e) => setFormData(prev => ({ ...prev, featured: e.target.checked }))}
-                  className="w-4 h-4 text-primary bg-muted border-border rounded focus:ring-primary/50"
-                />
-                <label htmlFor="featured" className="text-sm font-medium">
-                  Mark as featured project
-                </label>
+              {/* Status and Featured */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Project Status</label>
+                  <select
+                    value={formData.status || 'In Progress'}
+                    onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value as 'In Progress' | 'Completed' | 'Planned' }))}
+                    className="w-full px-3 py-2 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  >
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Planned">Planned</option>
+                  </select>
+                </div>
+                <div className="flex items-center gap-2 pt-6">
+                  <input
+                    type="checkbox"
+                    id="featured"
+                    checked={formData.featured}
+                    onChange={(e) => setFormData(prev => ({ ...prev, featured: e.target.checked }))}
+                    className="w-4 h-4 text-primary bg-muted border-border rounded focus:ring-primary/50"
+                  />
+                  <label htmlFor="featured" className="text-sm font-medium">
+                    Mark as featured project
+                  </label>
+                </div>
               </div>
 
               {/* Buttons */}

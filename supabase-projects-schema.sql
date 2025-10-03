@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS projects (
   demo_url TEXT,
   github_url TEXT,
   technologies TEXT[], -- Array of technology strings
+  status VARCHAR(50) DEFAULT 'In Progress' CHECK (status IN ('In Progress', 'Completed', 'Planned')),
   featured BOOLEAN DEFAULT false,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
@@ -75,6 +76,7 @@ CREATE TRIGGER update_projects_updated_at
 -- Create indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_projects_category ON projects(category);
 CREATE INDEX IF NOT EXISTS idx_projects_featured ON projects(featured);
+CREATE INDEX IF NOT EXISTS idx_projects_status ON projects(status);
 CREATE INDEX IF NOT EXISTS idx_projects_created_at ON projects(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_projects_year ON projects(year);
 

@@ -23,6 +23,7 @@ interface Project {
   status: string;
   category: string;
   createdAt: string;
+  featured: boolean;
 }
 
 export function DevelopmentSection() {
@@ -59,9 +60,10 @@ export function DevelopmentSection() {
             year: project.year,
             githubUrl: project.github_url,
             liveUrl: project.demo_url,
-            status: project.featured ? 'Completed' : 'In Progress',
+            status: project.status || 'In Progress',
             category: 'development',
-            createdAt: project.created_at || new Date().toISOString()
+            createdAt: project.created_at || new Date().toISOString(),
+            featured: project.featured
           }))
           .sort((a, b) => {
             // Sort by creation date: newest first (descending order)
@@ -86,7 +88,8 @@ export function DevelopmentSection() {
           liveUrl: project.liveUrl,
           status: project.status,
           category: project.category,
-          createdAt: `${project.year}-01-01T00:00:00Z` // Use year as approximate creation date
+          createdAt: `${project.year}-01-01T00:00:00Z`, // Use year as approximate creation date
+          featured: project.status === 'Completed' // Assume completed projects are featured
         }));
         setProjects(staticProjects);
         setUseDatabase(false);
@@ -106,7 +109,8 @@ export function DevelopmentSection() {
         liveUrl: project.liveUrl,
         status: project.status,
         category: project.category,
-        createdAt: `${project.year}-01-01T00:00:00Z` // Use year as approximate creation date
+        createdAt: `${project.year}-01-01T00:00:00Z`, // Use year as approximate creation date
+        featured: project.status === 'Completed' // Assume completed projects are featured
       }));
       setProjects(staticProjects);
       setUseDatabase(false);
@@ -230,14 +234,6 @@ export function DevelopmentSection() {
         </div>
       )}
 
-      {/* Database Status Indicator */}
-      {!isLoading && (
-        <div className="text-center mb-4">
-          <Badge variant={useDatabase ? "default" : "secondary"} className="text-xs">
-            {useDatabase ? "🟢 Live Data" : "📁 Static Data"}
-          </Badge>
-        </div>
-      )}
 
       {/* Development Projects Grid */}
       {!isLoading && (
@@ -272,9 +268,16 @@ export function DevelopmentSection() {
                 <Code className="w-16 h-16 text-muted-foreground/30" />
               </div>
               
-              {/* Status Badge */}
-              <div className={`absolute top-3 left-3 text-xs px-2 py-1 rounded-full ${getStatusColor(project.status)}`}>
-                {project.status}
+              {/* Status & Featured Badges */}
+              <div className="absolute top-3 left-3 flex gap-2">
+                <div className={`text-xs px-2 py-1 rounded-full ${getStatusColor(project.status)}`}>
+                  {project.status}
+                </div>
+                {project.featured && (
+                  <div className="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400 font-medium">
+                    ⭐ Featured
+                  </div>
+                )}
               </div>
             </div>
 
