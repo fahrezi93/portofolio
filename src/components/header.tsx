@@ -7,10 +7,12 @@ import { useLanguage } from '@/context/language-context';
 import Link from 'next/link';
 import { LanguageSwitcher } from "./language-switcher";
 import { Button } from "./ui/button";
+import { useActiveSection } from '@/hooks/use-active-section';
 
 export function Header() {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const activeSection = useActiveSection();
   
   // Use try-catch to prevent context errors
   let t;
@@ -69,16 +71,28 @@ export function Header() {
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="relative text-base font-medium text-muted-foreground transition-colors hover:text-primary group"
-            >
-              {link.label}
-              <span className="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 ease-out group-hover:w-full group-hover:left-0 transform -translate-x-1/2 group-hover:translate-x-0"></span>
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const sectionId = link.href.replace('#', '');
+            const isActive = activeSection === sectionId && activeSection !== '';
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`relative text-base font-medium transition-colors group ${
+                  isActive 
+                    ? 'text-primary' 
+                    : 'text-muted-foreground hover:text-primary'
+                }`}
+              >
+                {link.label}
+                <span className={`absolute -bottom-1 h-0.5 bg-primary transition-all duration-300 ease-out ${
+                  isActive 
+                    ? 'w-full left-0' 
+                    : 'w-0 left-1/2 -translate-x-1/2 group-hover:w-full group-hover:left-0 group-hover:translate-x-0'
+                }`}></span>
+              </Link>
+            );
+          })}
           <LanguageSwitcher />
         </nav>
 
@@ -135,16 +149,27 @@ export function Header() {
             
             <nav className="flex-1 p-6">
               <div className="flex flex-col gap-6">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={handleLinkClick}
-                    className="text-2xl font-medium text-foreground transition-colors hover:text-primary"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
+                {navLinks.map((link) => {
+                  const sectionId = link.href.replace('#', '');
+                  const isActive = activeSection === sectionId && activeSection !== '';
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={handleLinkClick}
+                      className={`text-2xl font-medium transition-colors relative ${
+                        isActive 
+                          ? 'text-primary' 
+                          : 'text-foreground hover:text-primary'
+                      }`}
+                    >
+                      {link.label}
+                      {isActive && (
+                        <span className="absolute -left-3 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-primary rounded-full"></span>
+                      )}
+                    </Link>
+                  );
+                })}
               </div>
             </nav>
             

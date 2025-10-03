@@ -64,19 +64,19 @@ export default function Home() {
               <motion.div initial="hidden" animate="visible" variants={sectionVariants}>
                 <HeroSection />
               </motion.div>
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants} className="z-10 relative">
+              <div className="z-10 relative">
                 <PortfolioTabs />
-              </motion.div>
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants}>
+              </div>
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05, margin: "0px 0px -100px 0px" }} variants={sectionVariants}>
                 <AboutSection />
               </motion.div>
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants}>
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05, margin: "0px 0px -100px 0px" }} variants={sectionVariants}>
                 <ExperienceSection />
               </motion.div>
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants}>
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05, margin: "0px 0px -100px 0px" }} variants={sectionVariants}>
                 <SkillsSection />
               </motion.div>
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants}>
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05, margin: "0px 0px -100px 0px" }} variants={sectionVariants}>
                 <Suspense fallback={
                   <div className="flex items-center justify-center py-20">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
@@ -85,7 +85,7 @@ export default function Home() {
                   <GitHubStats />
                 </Suspense>
               </motion.div>
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants}>
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05, margin: "0px 0px -100px 0px" }} variants={sectionVariants}>
                 <Suspense fallback={
                   <div className="flex items-center justify-center py-20">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
@@ -94,7 +94,7 @@ export default function Home() {
                   <CommentsSection />
                 </Suspense>
               </motion.div>
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} variants={sectionVariants}>
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05, margin: "0px 0px -100px 0px" }} variants={sectionVariants}>
                 <ContactSection />
               </motion.div>
             </main>

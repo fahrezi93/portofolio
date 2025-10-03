@@ -66,7 +66,10 @@ export function DevelopmentSection() {
             featured: project.featured
           }))
           .sort((a, b) => {
-            // Sort by creation date: newest first (descending order)
+            // Sort by featured first, then by creation date
+            if (a.featured && !b.featured) return -1;
+            if (!a.featured && b.featured) return 1;
+            // If both have same featured status, sort by creation date: newest first
             return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
           });
         
@@ -181,12 +184,31 @@ export function DevelopmentSection() {
   }, [projects]);
 
   const filteredProjects = useMemo(() => {
-    if (selectedCategory === "All") return projects;
-    return projects.filter(project => project.type === selectedCategory);
+    const filtered = selectedCategory === "All" ? projects : projects.filter(project => project.type === selectedCategory);
+    // Sort filtered projects to ensure featured are always first
+    return filtered.sort((a, b) => {
+      // Featured projects first
+      if (a.featured && !b.featured) return -1;
+      if (!a.featured && b.featured) return 1;
+      // If both have same featured status, sort by creation date: newest first
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
   }, [selectedCategory, projects]);
 
   const displayedProjects = useMemo(() => {
-    return showAll ? filteredProjects : filteredProjects.slice(0, 4);
+    if (showAll) {
+      return filteredProjects;
+    }
+    
+    // When not showing all, prioritize featured projects
+    const featuredProjects = filteredProjects.filter(p => p.featured);
+    const nonFeaturedProjects = filteredProjects.filter(p => !p.featured);
+    
+    // Show all featured projects + fill remaining slots with non-featured
+    const remainingSlots = Math.max(0, 4 - featuredProjects.length);
+    const displayedNonFeatured = nonFeaturedProjects.slice(0, remainingSlots);
+    
+    return [...featuredProjects, ...displayedNonFeatured];
   }, [filteredProjects, showAll]);
 
   const getStatusColor = (status: string) => {

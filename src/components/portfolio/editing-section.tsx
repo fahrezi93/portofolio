@@ -23,13 +23,31 @@ export function EditingSection() {
   }, []);
 
   const filteredProjects = useMemo(() => {
-    if (selectedCategory === "All") return videoProjects;
-    return videoProjects.filter(project => project.type === selectedCategory);
+    const filtered = selectedCategory === "All" ? videoProjects : videoProjects.filter(project => project.type === selectedCategory);
+    // Sort filtered projects to ensure featured are always first
+    return filtered.sort((a, b) => {
+      // Featured projects first
+      if (a.featured && !b.featured) return -1;
+      if (!a.featured && b.featured) return 1;
+      // If both have same featured status, sort by year: newest first
+      return parseInt(b.year) - parseInt(a.year);
+    });
   }, [selectedCategory]);
 
   const displayedProjects = useMemo(() => {
-    if (showAll) return filteredProjects;
-    return filteredProjects.slice(0, 4);
+    if (showAll) {
+      return filteredProjects;
+    }
+    
+    // When not showing all, prioritize featured projects
+    const featuredProjects = filteredProjects.filter(p => p.featured);
+    const nonFeaturedProjects = filteredProjects.filter(p => !p.featured);
+    
+    // Show all featured projects + fill remaining slots with non-featured
+    const remainingSlots = Math.max(0, 4 - featuredProjects.length);
+    const displayedNonFeatured = nonFeaturedProjects.slice(0, remainingSlots);
+    
+    return [...featuredProjects, ...displayedNonFeatured];
   }, [filteredProjects, showAll]);
 
   return (

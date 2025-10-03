@@ -132,7 +132,7 @@ export function PortfolioTabs() {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.05, margin: "0px 0px -200px 0px" }}
           variants={containerVariants}
         >
           {/* Header */}

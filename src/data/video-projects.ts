@@ -11,6 +11,7 @@ export type VideoProject = {
   year: string;
   software: string[];
   category: string;
+  featured?: boolean;
 };
 
 export const videoProjects: VideoProject[] = [
@@ -26,7 +27,8 @@ export const videoProjects: VideoProject[] = [
     duration: "1:30",
     year: "2024",
     software: ["After Effects", "Premiere Pro", "Cinema 4D", "Illustrator"],
-    category: "Commercial"
+    category: "Commercial",
+    featured: true
   },
   {
     id: "video-2",

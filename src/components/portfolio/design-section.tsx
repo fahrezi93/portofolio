@@ -77,12 +77,31 @@ export function DesignSection() {
   }, []);
 
   const filteredProjects = useMemo(() => {
-    if (selectedCategory === "All") return designProjects;
-    return designProjects.filter(project => project.type === selectedCategory);
+    const filtered = selectedCategory === "All" ? designProjects : designProjects.filter(project => project.type === selectedCategory);
+    // Sort filtered projects to ensure featured are always first
+    return filtered.sort((a, b) => {
+      // Featured projects first
+      if (a.featured && !b.featured) return -1;
+      if (!a.featured && b.featured) return 1;
+      // If both have same featured status, sort by year: newest first
+      return parseInt(b.year) - parseInt(a.year);
+    });
   }, [selectedCategory]);
 
   const displayedProjects = useMemo(() => {
-    return showAll ? filteredProjects : filteredProjects.slice(0, 4);
+    if (showAll) {
+      return filteredProjects;
+    }
+    
+    // When not showing all, prioritize featured projects
+    const featuredProjects = filteredProjects.filter(p => p.featured);
+    const nonFeaturedProjects = filteredProjects.filter(p => !p.featured);
+    
+    // Show all featured projects + fill remaining slots with non-featured
+    const remainingSlots = Math.max(0, 4 - featuredProjects.length);
+    const displayedNonFeatured = nonFeaturedProjects.slice(0, remainingSlots);
+    
+    return [...featuredProjects, ...displayedNonFeatured];
   }, [filteredProjects, showAll]);
 
   return (
@@ -141,9 +160,16 @@ export function DesignSection() {
                   <h3 className="font-semibold text-xl mb-1">{project.title}</h3>
                   <p className="text-sm text-muted-foreground">{project.type} • {project.year}</p>
                 </div>
-                <Badge variant="outline" className="text-xs">
-                  Design
-                </Badge>
+                <div className="flex flex-col gap-1">
+                  <Badge variant="outline" className="text-xs">
+                    Design
+                  </Badge>
+                  {project.featured && (
+                    <Badge variant="default" className="text-xs bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400">
+                      ⭐ Featured
+                    </Badge>
+                  )}
+                </div>
               </div>
 
               <p className="text-muted-foreground mb-4 text-sm leading-relaxed">

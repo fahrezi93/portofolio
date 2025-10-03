@@ -11,6 +11,7 @@ export type DesignProject = {
   dribbbleUrl?: string;
   figmaUrl?: string;
   category: string;
+  featured?: boolean;
 };
 
 export const designProjects: DesignProject[] = [
@@ -25,7 +26,8 @@ export const designProjects: DesignProject[] = [
     tools: ["Figma", "Adobe Photoshop"],
     figmaUrl: "#",
     behanceUrl: "#",
-    category: "Certificate Design"
+    category: "Certificate Design",
+    featured: true
   },
   {
     id: "design-3",
@@ -51,7 +53,8 @@ export const designProjects: DesignProject[] = [
     tools: ["Figma", "Adobe Photoshop"],
     figmaUrl: "#",
     behanceUrl: "#",
-    category: "Social Media Design"
+    category: "Social Media Design",
+    featured: true
   },
   {
     id: "design-5",
