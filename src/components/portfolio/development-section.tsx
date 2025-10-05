@@ -246,17 +246,6 @@ export function DevelopmentSection() {
         ))}
       </div>
 
-      {/* Loading State */}
-      {isLoading && (
-        <div className="flex items-center justify-center py-12">
-          <div className="text-center">
-            <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading development projects...</p>
-          </div>
-        </div>
-      )}
-
-
       {/* Development Projects Grid */}
       {!isLoading && (
         <motion.div 
@@ -286,7 +275,7 @@ export function DevelopmentSection() {
                   e.currentTarget.nextElementSibling?.classList.remove('hidden');
                 }}
               />
-              <div className="absolute inset-0 flex items-center justify-center hidden">
+              <div className="absolute inset-0 hidden">
                 <Code className="w-16 h-16 text-muted-foreground/30" />
               </div>
               

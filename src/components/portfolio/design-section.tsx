@@ -148,7 +148,7 @@ export function DesignSection() {
                   e.currentTarget.nextElementSibling?.classList.remove('hidden');
                 }}
               />
-              <div className="absolute inset-0 flex items-center justify-center hidden">
+              <div className="absolute inset-0 hidden">
                 <Palette className="w-16 h-16 text-muted-foreground/30" />
               </div>
             </div>
