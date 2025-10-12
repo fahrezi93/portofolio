@@ -208,21 +208,45 @@
 
 /* Optimized marquee animation for skills */
 @keyframes marquee-scroll {
-  0% { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(-50%, 0, 0); }
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-25%, 0, 0); }
+}
+
+@keyframes marquee-scroll-reverse {
+  from { transform: translate3d(-25%, 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
 }
 
 .animate-scroll {
-  animation: marquee-scroll 30s linear infinite;
-  /* Optimasi performa */
+  animation: marquee-scroll 60s linear infinite;
+  /* Optimasi performa untuk smooth animation */
   will-change: transform;
   backface-visibility: hidden;
+  transform: translateZ(0);
+  /* Prevent any pausing or stuttering */
+  animation-fill-mode: both;
+  animation-play-state: running;
+}
+
+.animate-scroll-reverse {
+  animation: marquee-scroll-reverse 55s linear infinite;
+  /* Optimasi performa untuk smooth animation */
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  /* Prevent any pausing or stuttering */
+  animation-fill-mode: both;
+  animation-play-state: running;
 }
 
 /* Disable animations untuk mobile jika diperlukan */
 @media (max-width: 768px) and (prefers-reduced-motion: no-preference) {
   .animate-scroll {
-    animation-duration: 40s; /* Lebih lambat di mobile */
+    animation-duration: 80s; /* Lebih lambat di mobile untuk smooth experience */
+  }
+  
+  .animate-scroll-reverse {
+    animation-duration: 75s; /* Lebih lambat di mobile untuk smooth experience */
   }
 }
 
@@ -230,6 +254,29 @@
   .animate-scroll {
     animation: none;
   }
+  
+  .animate-scroll-reverse {
+    animation: none;
+  }
+}
+
+/* Skills container optimization */
+.skills-container {
+  /* Ensure smooth rendering */
+  position: relative;
+  overflow: hidden;
+  /* GPU acceleration for smooth scrolling */
+  will-change: scroll-position;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Skill item optimization */
+.skill-item {
+  /* Prevent layout shifts */
+  flex-shrink: 0;
+  /* Smooth transitions */
+  transition: none;
 }
 
 /* Shimmer loading animation */

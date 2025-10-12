@@ -16,14 +16,21 @@ import {
   SiNodedotjs,
   SiExpress,
   SiSupabase,
+  SiAdobephotoshop,
+  SiAdobeillustrator,
+  SiAdobepremierepro,
+  SiAdobeaftereffects,
+  SiCanva,
 } from "react-icons/si";
+import { CapCutIcon } from "@/components/icons/capcut-icon";
 
 export type Skill = {
   name: string;
   icon: IconType;
 };
 
-export const skills: Skill[] = [
+// Programming & Development Skills
+export const programmingSkills: Skill[] = [
   {
     name: "React",
     icon: SiReact,
@@ -65,10 +72,6 @@ export const skills: Skill[] = [
     icon: SiPython,
   },
   {
-    name: "Figma",
-    icon: SiFigma,
-  },
-  {
     name: "Firebase",
     icon: SiFirebase,
   },
@@ -92,5 +95,39 @@ export const skills: Skill[] = [
     name: "Google Cloud",
     icon: SiGooglecloud,
   },
-
 ];
+
+// Design & Creative Skills
+export const creativeSkills: Skill[] = [
+  {
+    name: "Figma",
+    icon: SiFigma,
+  },
+  {
+    name: "Photoshop",
+    icon: SiAdobephotoshop,
+  },
+  {
+    name: "Illustrator",
+    icon: SiAdobeillustrator,
+  },
+  {
+    name: "Premiere Pro",
+    icon: SiAdobepremierepro,
+  },
+  {
+    name: "After Effects",
+    icon: SiAdobeaftereffects,
+  },
+  {
+    name: "Canva",
+    icon: SiCanva,
+  },
+  {
+    name: "CapCut",
+    icon: CapCutIcon,
+  },
+];
+
+// Backward compatibility - gabungkan semua skills
+export const skills: Skill[] = [...programmingSkills, ...creativeSkills];
