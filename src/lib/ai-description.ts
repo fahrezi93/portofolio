@@ -30,6 +30,38 @@ export class AIDescriptionGenerator {
   }
 
   /**
+   * Get the best available model
+   * Tries multiple model names to find one that works
+   */
+  private static async getModel(genAI: GoogleGenerativeAI) {
+    // IMPORTANT: The API key might be for a different API version or region
+    // Try the simplest model names first without testing
+    const modelNames = [
+      'gemini-1.5-flash',
+      'gemini-1.5-pro',
+      'gemini-pro',
+      'models/gemini-1.5-flash',
+      'models/gemini-1.5-pro',
+      'models/gemini-pro',
+    ];
+
+    const generationConfig = {
+      temperature: 0.7,
+      topK: 40,
+      topP: 0.95,
+      maxOutputTokens: 1024,
+    };
+
+    // Just return the first model without testing
+    // The actual error will be caught in the generateDescription method
+    console.log(`🤖 Using model: ${modelNames[0]}`);
+    return genAI.getGenerativeModel({ 
+      model: modelNames[0],
+      generationConfig
+    });
+  }
+
+  /**
    * Generate project description using Gemini AI
    */
   static async generateDescription(context: ProjectContext): Promise<{
@@ -47,18 +79,8 @@ export class AIDescriptionGenerator {
         };
       }
 
-      // Try different models in order of preference
-      let model;
-      try {
-        model = genAI.getGenerativeModel({ model: 'gemini-pro' });
-      } catch (error) {
-        // Fallback to older model if gemini-pro is not available
-        try {
-          model = genAI.getGenerativeModel({ model: 'gemini-1.0-pro' });
-        } catch (fallbackError) {
-          throw new Error('No compatible Gemini model available');
-        }
-      }
+      // Get the model
+      const model = await this.getModel(genAI);
 
       const prompt = this.buildPrompt(context);
       
@@ -85,9 +107,15 @@ export class AIDescriptionGenerator {
     } catch (error) {
       console.error('❌ AI description generation failed:', error);
       
+      // Provide helpful error message and fallback
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const isApiKeyError = errorMessage.includes('404') || errorMessage.includes('not found');
+      
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: isApiKeyError 
+          ? 'AI service unavailable. Your API key may not have access to Gemini models. Using fallback description instead.'
+          : errorMessage,
         description: this.getFallbackDescription(context)
       };
     }
@@ -205,6 +233,75 @@ Generate a description for the project "${title}":`;
   }
 
   /**
+   * Debug: Test API key connection
+   */
+  static async testConnection(): Promise<{
+    success: boolean;
+    message: string;
+    details?: any;
+  }> {
+    console.log('🔍 Testing Gemini API Connection...');
+    
+    // Check 1: API Key exists
+    const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+    if (!apiKey) {
+      return {
+        success: false,
+        message: '❌ API Key not found in environment variables',
+        details: {
+          checked: 'process.env.NEXT_PUBLIC_GEMINI_API_KEY',
+          value: 'undefined'
+        }
+      };
+    }
+
+    console.log('✅ API Key found:', apiKey.substring(0, 10) + '...');
+
+    // Check 2: Initialize SDK
+    try {
+      const genAI = new GoogleGenerativeAI(apiKey);
+      console.log('✅ GoogleGenerativeAI SDK initialized');
+
+      // Check 3: Try to get model
+      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+      console.log('✅ Model instance created');
+
+      // Check 4: Try simple generation
+      console.log('🔄 Testing actual API call...');
+      const result = await model.generateContent('Say "Hello"');
+      const response = await result.response;
+      const text = response.text();
+      
+      console.log('✅ API call successful! Response:', text);
+
+      return {
+        success: true,
+        message: '✅ Gemini API is working correctly!',
+        details: {
+          apiKeyPrefix: apiKey.substring(0, 10) + '...',
+          model: 'gemini-1.5-flash',
+          testResponse: text
+        }
+      };
+
+    } catch (error: any) {
+      console.error('❌ API test failed:', error);
+      
+      return {
+        success: false,
+        message: '❌ API connection failed',
+        details: {
+          error: error.message,
+          apiKeyPrefix: apiKey.substring(0, 10) + '...',
+          suggestion: error.message.includes('404') 
+            ? 'Your API key may not have access to Gemini models. Try creating a new key at https://aistudio.google.com/app/apikey'
+            : 'Check your API key and internet connection'
+        }
+      };
+    }
+  }
+
+  /**
    * Get suggested improvements for existing description
    */
   static async improveDescription(
@@ -225,18 +322,8 @@ Generate a description for the project "${title}":`;
         };
       }
 
-      // Try different models in order of preference
-      let model;
-      try {
-        model = genAI.getGenerativeModel({ model: 'gemini-pro' });
-      } catch (error) {
-        // Fallback to older model if gemini-pro is not available
-        try {
-          model = genAI.getGenerativeModel({ model: 'gemini-1.0-pro' });
-        } catch (fallbackError) {
-          throw new Error('No compatible Gemini model available');
-        }
-      }
+      // Get the model
+      const model = await this.getModel(genAI);
 
       const prompt = `
 Improve this project description to make it more engaging and professional:

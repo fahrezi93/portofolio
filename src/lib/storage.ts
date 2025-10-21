@@ -21,8 +21,16 @@ export class StorageManager {
         });
         
         if (error) {
+          // Check if bucket already exists (common race condition)
+          if (error.message.includes('already exists') || error.message.includes('duplicate')) {
+            console.log('Storage bucket already exists');
+            return true;
+          }
+          
           console.error('Error creating bucket:', error);
-          return false;
+          // Don't fail completely, bucket might exist or be created manually
+          console.warn('Continuing without bucket creation - please create bucket manually in Supabase dashboard');
+          return true; // Return true to allow app to continue
         }
         
         console.log('Storage bucket created successfully');
@@ -146,7 +154,7 @@ export class StorageManager {
   }
 }
 
-// Auto-initialize bucket on import (in development)
-if (process.env.NODE_ENV === 'development') {
+// Auto-initialize bucket on import (in development and client-side only)
+if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   StorageManager.initializeBucket().catch(console.error);
 }

@@ -330,8 +330,8 @@ export class DataMigration {
   }
 }
 
-// Development helper functions (only available in development)
-if (process.env.NODE_ENV === 'development') {
+// Development helper functions (only available in development and client-side)
+if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   // Add migration functions to window for easy access in browser console
   (window as any).DataMigration = DataMigration;
   

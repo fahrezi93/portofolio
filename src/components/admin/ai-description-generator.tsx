@@ -31,6 +31,7 @@ export function AIDescriptionGeneratorComponent({
   const [generatedDescription, setGeneratedDescription] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showPreview, setShowPreview] = useState(false);
+  const [isTesting, setIsTesting] = useState(false);
 
   const isAIAvailable = AIDescriptionGenerator.isAvailable();
   const hasRequiredFields = context.title.trim().length > 0;
@@ -53,11 +54,14 @@ export function AIDescriptionGeneratorComponent({
         setGeneratedDescription(result.description);
         setShowPreview(true);
       } else {
-        setError(result.error || 'Failed to generate description');
-        // Show fallback description if available
+        // Show fallback description if available (even if AI failed)
         if (result.description) {
           setGeneratedDescription(result.description);
           setShowPreview(true);
+          // Show a warning instead of error if we have fallback
+          setError('⚠️ AI unavailable - using smart fallback description. You can edit it as needed.');
+        } else {
+          setError(result.error || 'Failed to generate description');
         }
       }
     } catch (error) {
@@ -110,6 +114,28 @@ export function AIDescriptionGeneratorComponent({
     setError(null);
   };
 
+  const testAPIConnection = async () => {
+    setIsTesting(true);
+    setError(null);
+    
+    try {
+      const result = await AIDescriptionGenerator.testConnection();
+      
+      if (result.success) {
+        setError(`✅ ${result.message}\n\nModel: ${result.details?.model}\nTest Response: "${result.details?.testResponse}"`);
+      } else {
+        setError(`❌ ${result.message}\n\n${result.details?.suggestion || result.details?.error}`);
+      }
+      
+      console.log('API Test Result:', result);
+    } catch (error) {
+      console.error('Test error:', error);
+      setError('Failed to test API connection');
+    } finally {
+      setIsTesting(false);
+    }
+  };
+
   if (!isAIAvailable) {
     return (
       <div className={`p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg ${className}`}>
@@ -132,7 +158,7 @@ export function AIDescriptionGeneratorComponent({
           variant="outline"
           size="sm"
           onClick={generateDescription}
-          disabled={isGenerating || !hasRequiredFields}
+          disabled={isGenerating || !hasRequiredFields || isTesting}
           className="flex items-center gap-2"
         >
           {isGenerating ? (
@@ -149,7 +175,7 @@ export function AIDescriptionGeneratorComponent({
             variant="outline"
             size="sm"
             onClick={improveDescription}
-            disabled={isGenerating}
+            disabled={isGenerating || isTesting}
             className="flex items-center gap-2"
           >
             {isGenerating ? (
@@ -160,20 +186,49 @@ export function AIDescriptionGeneratorComponent({
             Improve Description
           </Button>
         )}
+
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={testAPIConnection}
+          disabled={isGenerating || isTesting}
+          className="flex items-center gap-2 text-blue-600 hover:text-blue-700"
+          title="Test Gemini API Connection"
+        >
+          {isTesting ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <AlertCircle className="w-4 h-4" />
+          )}
+          {isTesting ? 'Testing...' : 'Test API'}
+        </Button>
       </div>
 
-      {/* Error Message */}
+      {/* Error/Warning Message */}
       <AnimatePresence>
         {error && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg"
+            className={`p-3 rounded-lg border ${
+              error.includes('✅')
+                ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
+                : error.includes('⚠️') || error.includes('fallback')
+                ? 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800'
+                : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
+            }`}
           >
-            <div className="flex items-center gap-2 text-red-700 dark:text-red-400">
-              <AlertCircle className="w-4 h-4" />
-              <span className="text-sm">{error}</span>
+            <div className={`flex items-start gap-2 ${
+              error.includes('✅')
+                ? 'text-green-700 dark:text-green-400'
+                : error.includes('⚠️') || error.includes('fallback')
+                ? 'text-yellow-700 dark:text-yellow-400'
+                : 'text-red-700 dark:text-red-400'
+            }`}>
+              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+              <span className="text-sm whitespace-pre-line">{error}</span>
             </div>
           </motion.div>
         )}
