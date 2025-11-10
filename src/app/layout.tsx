@@ -86,14 +86,14 @@ export default function RootLayout({
         />
         
         {/* Google Analytics (gtag.js) */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y9VMP58QGN"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-TYY6QMXHLF"></script>
         <script
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'G-Y9VMP58QGN');
+              gtag('config', 'G-TYY6QMXHLF');
             `,
           }}
         />
