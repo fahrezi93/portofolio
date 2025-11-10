@@ -34,15 +34,17 @@ export class AIDescriptionGenerator {
    * Tries multiple model names to find one that works
    */
   private static async getModel(genAI: GoogleGenerativeAI) {
-    // IMPORTANT: The API key might be for a different API version or region
-    // Try the simplest model names first without testing
+    // Updated model list based on API availability (Nov 2025)
+    // Using latest Gemini 2.5 and 2.0 models
     const modelNames = [
-      'gemini-1.5-flash',
-      'gemini-1.5-pro',
-      'gemini-pro',
-      'models/gemini-1.5-flash',
-      'models/gemini-1.5-pro',
-      'models/gemini-pro',
+      'gemini-2.5-flash',           // Latest fast model
+      'gemini-2.0-flash',           // Stable fast model
+      'gemini-flash-latest',        // Always latest flash
+      'gemini-2.5-pro',             // Latest pro model
+      'gemini-pro-latest',          // Always latest pro
+      'models/gemini-2.5-flash',
+      'models/gemini-2.0-flash',
+      'models/gemini-flash-latest',
     ];
 
     const generationConfig = {
@@ -263,7 +265,7 @@ Generate a description for the project "${title}":`;
       console.log('✅ GoogleGenerativeAI SDK initialized');
 
       // Check 3: Try to get model
-      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+      const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
       console.log('✅ Model instance created');
 
       // Check 4: Try simple generation
@@ -279,7 +281,7 @@ Generate a description for the project "${title}":`;
         message: '✅ Gemini API is working correctly!',
         details: {
           apiKeyPrefix: apiKey.substring(0, 10) + '...',
-          model: 'gemini-1.5-flash',
+          model: 'gemini-2.5-flash',
           testResponse: text
         }
       };
