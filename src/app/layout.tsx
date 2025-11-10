@@ -18,14 +18,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://fahrezi-portofolio.vercel.app'),
+  metadataBase: new URL('https://www.fahrezidev.my.id'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'id_ID',
-    url: 'https://fahrezi-portofolio.vercel.app',
+    url: 'https://www.fahrezidev.my.id',
     title: 'Mohammad Fahrezi - Fullstack Developer & UI/UX Designer',
     description: 'Passionate Computer Science student at Sriwijaya University specializing in Front-End Development and UI/UX Design. Creating modern, intuitive web applications with cutting-edge technologies.',
     siteName: 'Mohammad Fahrezi Portfolio',
@@ -57,9 +57,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    google: 'your-google-verification-code',
-  },
 };
 
 export default function RootLayout({
@@ -73,6 +70,34 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
         <meta name="color-scheme" content="dark light" />
+        <meta name="google-site-verification" content="_mZK8Y9n3es-OvV7qgyAu4k7mWtxKJDJBeKQ9FOarQ0" />
+        
+        {/* Google Tag Manager */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','GTM-PMN9QPFH');
+            `,
+          }}
+        />
+        
+        {/* Google Analytics (gtag.js) */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y9VMP58QGN"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-Y9VMP58QGN');
+            `,
+          }}
+        />
+        
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/images/thumbnail-porto.png" />
         <meta property="og:image" content="/images/thumbnail-porto.png" />
@@ -93,7 +118,7 @@ export default function RootLayout({
               "name": "Mohammad Fahrezi",
               "jobTitle": "Fullstack Developer & UI/UX Designer",
               "description": "Passionate Computer Science student at Sriwijaya University specializing in Fullstack Development and UI/UX Design",
-              "url": "https://fahrezi-portofolio.vercel.app",
+              "url": "https://www.fahrezidev.my.id",
               "sameAs": [
                 "https://github.com/fahrezi93",
                 "https://linkedin.com/in/fahrezi93",
@@ -124,6 +149,16 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe 
+            src="https://www.googletagmanager.com/ns.html?id=GTM-PMN9QPFH"
+            height="0" 
+            width="0" 
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
+        </noscript>
+        
         <AdminProvider>
           <LanguageProvider>
             <AppLoading>

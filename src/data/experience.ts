@@ -10,6 +10,16 @@ export type Experience = {
 export const experiences: { en: Experience[]; id: Experience[] } = {
   en: [
     {
+      jobTitle: "Website & Design Services",
+      company: "KreativLabs.id",
+      duration: "Nov 2025 - Present",
+      description: [
+        "Providing professional website development and design services for clients.",
+        "Creating modern, responsive, and user-friendly web applications tailored to client needs.",
+        "Delivering comprehensive design solutions including UI/UX design and branding materials.",
+      ],
+    },
+    {
       jobTitle: "Head of Multimedia Division",
       company: "HMIF UNSRI",
       duration: "Jan 2024 - Dec 2024",
@@ -61,6 +71,16 @@ export const experiences: { en: Experience[]; id: Experience[] } = {
     },
   ],
   id: [
+    {
+      jobTitle: "Jasa Website & Desain",
+      company: "KreativLabs.id",
+      duration: "Nov 2025 - Sekarang",
+      description: [
+        "Menyediakan layanan pengembangan website dan desain profesional untuk klien.",
+        "Membuat aplikasi web modern, responsif, dan user-friendly yang disesuaikan dengan kebutuhan klien.",
+        "Memberikan solusi desain komprehensif termasuk desain UI/UX dan materi branding.",
+      ],
+    },
     {
       jobTitle: "Kepala Divisi Multimedia",
       company: "HMIF UNSRI",

@@ -1,0 +1,10 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin or private paths (if any)
+Disallow: /api/
+Disallow: /admin/
+
+# Sitemap location
+Sitemap: https://www.fahrezidev.my.id/sitemap.xml
