@@ -128,11 +128,12 @@ export function PortfolioTabs() {
 
   return (
     <section id="portfolio" className="w-full py-16 md:py-24 lg:py-32 bg-transparent">
+      <div id="portfolio-title" className="scroll-mt-32"></div>
       <div className="container mx-auto max-w-7xl px-4 md:px-6">
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.05, margin: "0px 0px -200px 0px" }}
+          viewport={{ once: true, amount: 0.05 }}
           variants={containerVariants}
         >
           {/* Header */}
@@ -217,7 +218,11 @@ export function PortfolioTabs() {
           </motion.div>
 
           {/* Tab Content */}
-          <motion.div variants={contentVariants} className="min-h-[600px]">
+          <motion.div
+            id="portfolio-content"
+            variants={contentVariants}
+            className="min-h-[600px] scroll-mt-28"
+          >
             {renderTabContent()}
           </motion.div>
         </motion.div>

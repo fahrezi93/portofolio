@@ -9,6 +9,12 @@ import { LanguageSwitcher } from "./language-switcher";
 import { Button } from "./ui/button";
 import { useActiveSection } from '@/hooks/use-active-section';
 
+type NavLink = {
+  href: string;
+  label: string;
+  scrollTarget?: string;
+};
+
 export function Header() {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -30,8 +36,8 @@ export function Header() {
   }, []);
 
   // Fallback values if translations are not available
-  const navLinks = [
-    { href: "#portfolio", label: t?.nav_work || "Work" },
+  const navLinks: NavLink[] = [
+    { href: "#portfolio", label: t?.nav_work || "Work", scrollTarget: "portfolio-title" },
     { href: "#about", label: t?.nav_about || "About" },
     { href: "#experience", label: t?.nav_experience || "Experience" },
     { href: "#contact", label: t?.nav_contact || "Contact" },
@@ -39,6 +45,24 @@ export function Header() {
 
   const handleLinkClick = () => {
     setMenuOpen(false);
+  };
+
+  const handleNavClick = (event: React.MouseEvent<HTMLAnchorElement>, link: NavLink) => {
+    if (!link.href.startsWith('#')) {
+      return;
+    }
+
+    event.preventDefault();
+    const targetId = link.scrollTarget || link.href.replace('#', '');
+    const targetElement = document.getElementById(targetId);
+
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const newUrl = `${window.location.pathname}${link.href}`;
+      window.history.replaceState(null, '', newUrl);
+    } else {
+      window.location.hash = link.href;
+    }
   };
 
   // Don't render until mounted to prevent hydration issues
@@ -78,6 +102,7 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
+                onClick={(event) => handleNavClick(event, link)}
                 className={`relative text-base font-medium transition-colors group ${
                   isActive 
                     ? 'text-primary' 
@@ -156,7 +181,10 @@ export function Header() {
                     <Link
                       key={link.href}
                       href={link.href}
-                      onClick={handleLinkClick}
+                      onClick={(event) => {
+                        handleNavClick(event, link);
+                        handleLinkClick();
+                      }}
                       className={`text-2xl font-medium transition-colors relative ${
                         isActive 
                           ? 'text-primary' 

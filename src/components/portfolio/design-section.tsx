@@ -127,7 +127,7 @@ export function DesignSection() {
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
+        viewport={{ once: true, amount: 0.05 }}
         onAnimationComplete={() => setHasAnimated(true)}
       >
         {displayedProjects.map((project, index) => (
