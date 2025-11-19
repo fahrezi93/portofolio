@@ -13,6 +13,7 @@ import { ScrollProgress } from "@/components/scroll-progress";
 import { LanguageProvider } from "@/context/language-context";
 import ModernBackground from "@/components/modern-background";
 import AuroraBackground from "@/components/aurora-background";
+import { useLenis } from "@/hooks/use-lenis";
 import { useEffect, useState, lazy, Suspense } from "react";
 
 // Lazy load komponen berat
@@ -21,6 +22,9 @@ const CommentsSection = lazy(() => import("@/components/comments-section").then(
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+
+  // Initialize Lenis for smooth scrolling
+  useLenis();
 
   useEffect(() => {
     const checkMobile = () => {
