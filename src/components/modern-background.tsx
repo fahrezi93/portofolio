@@ -3,6 +3,59 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
+// Separate component for particles to avoid hydration mismatch
+function FloatingParticles() {
+  const [particles, setParticles] = useState<Array<{
+    x: number;
+    y: number;
+    size: number;
+    opacity: number;
+    color: string;
+  }>>([]);
+
+  useEffect(() => {
+    // Generate particles only on client side
+    const newParticles = Array.from({ length: 8 }).map((_, i) => ({
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 3 + 1,
+      opacity: 0.1 + Math.random() * 0.15,
+      color: i % 3 === 0 ? '59, 130, 246' : i % 3 === 1 ? '147, 51, 234' : '236, 72, 153',
+    }));
+    setParticles(newParticles);
+  }, []);
+
+  if (particles.length === 0) return null;
+
+  return (
+    <div className="absolute inset-0">
+      {particles.map((particle, i) => (
+        <motion.div
+          key={`particle-${i}`}
+          className="absolute rounded-full"
+          style={{
+            width: particle.size,
+            height: particle.size,
+            left: `${particle.x}%`,
+            top: `${particle.y}%`,
+            background: `rgba(${particle.color}, ${particle.opacity})`,
+          }}
+          animate={{
+            y: [0, -20, 0],
+            opacity: [0.1, 0.3, 0.1],
+          }}
+          transition={{
+            duration: 8 + i * 2,
+            repeat: Infinity,
+            delay: i * 0.5,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function ModernBackground() {
   const [isMobile, setIsMobile] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -12,14 +65,14 @@ export default function ModernBackground() {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     const checkReducedMotion = () => {
       setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     };
 
     checkMobile();
     checkReducedMotion();
-    
+
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
@@ -29,7 +82,7 @@ export default function ModernBackground() {
       {/* Base gradient background - static untuk performa */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-950 to-slate-950" />
       <div className="absolute inset-0 bg-gradient-to-tr from-blue-950/20 via-transparent to-purple-950/15" />
-      
+
       {/* Simplified gradient orbs - hanya 2 orb untuk mobile, 3 untuk desktop */}
       {!reducedMotion && (
         <div className="absolute inset-0">
@@ -52,7 +105,7 @@ export default function ModernBackground() {
               ease: "easeInOut",
             }}
           />
-          
+
           {/* Secondary purple orb - selalu ada */}
           <motion.div
             className="absolute -top-30 -right-50 w-[500px] h-[400px] md:w-[700px] md:h-[600px] rounded-full"
@@ -72,7 +125,7 @@ export default function ModernBackground() {
               ease: "easeInOut",
             }}
           />
-          
+
           {/* Third orb - hanya untuk desktop */}
           {!isMobile && (
             <motion.div
@@ -96,43 +149,12 @@ export default function ModernBackground() {
           )}
         </div>
       )}
-      
+
       {/* Optimized floating particles - drastis dikurangi */}
       {!isMobile && !reducedMotion && (
-        <div className="absolute inset-0">
-          {Array.from({ length: 8 }).map((_, i) => {
-            const randomX = Math.random() * 100;
-            const randomY = Math.random() * 100;
-            const randomSize = Math.random() * 3 + 1;
-            const randomOpacity = 0.1 + Math.random() * 0.15;
-            
-            return (
-              <motion.div
-                key={`particle-${i}`}
-                className="absolute rounded-full"
-                style={{
-                  width: randomSize,
-                  height: randomSize,
-                  left: `${randomX}%`,
-                  top: `${randomY}%`,
-                  background: `rgba(${i % 3 === 0 ? '59, 130, 246' : i % 3 === 1 ? '147, 51, 234' : '236, 72, 153'}, ${randomOpacity})`,
-                }}
-                animate={{
-                  y: [0, -20, 0],
-                  opacity: [0.1, 0.3, 0.1],
-                }}
-                transition={{
-                  duration: 8 + i * 2,
-                  repeat: Infinity,
-                  delay: i * 0.5,
-                  ease: "easeInOut",
-                }}
-              />
-            );
-          })}
-        </div>
+        <FloatingParticles />
       )}
-      
+
       {/* Enhanced comet lines - 5 garis dengan timing natural */}
       {!isMobile && !reducedMotion && (
         <div className="absolute inset-0">
@@ -156,7 +178,7 @@ export default function ModernBackground() {
               repeatDelay: 2, // Jeda setelah selesai
             }}
           />
-          
+
           <motion.div
             className="absolute w-[1px] h-[100px]"
             style={{
@@ -176,7 +198,7 @@ export default function ModernBackground() {
               repeatDelay: 1.5,
             }}
           />
-          
+
           <motion.div
             className="absolute w-[1px] h-[90px]"
             style={{
@@ -196,7 +218,7 @@ export default function ModernBackground() {
               repeatDelay: 3,
             }}
           />
-          
+
           {/* 2 Garis horizontal dari samping - timing overlap */}
           <motion.div
             className="absolute w-[150px] h-[1px]"
@@ -217,7 +239,7 @@ export default function ModernBackground() {
               repeatDelay: 4,
             }}
           />
-          
+
           <motion.div
             className="absolute w-[120px] h-[1px]"
             style={{
@@ -239,7 +261,7 @@ export default function ModernBackground() {
           />
         </div>
       )}
-      
+
       {/* Minimal geometric shapes - hanya untuk desktop */}
       {!isMobile && !reducedMotion && (
         <div className="absolute inset-0">
@@ -260,7 +282,7 @@ export default function ModernBackground() {
               ease: "linear",
             }}
           />
-          
+
           {/* Single diamond */}
           <motion.div
             className="absolute w-6 h-6 bg-purple-500/6 rotate-45"
@@ -280,10 +302,10 @@ export default function ModernBackground() {
           />
         </div>
       )}
-      
+
       {/* Subtle grid pattern - opacity yang pas */}
       {!isMobile && (
-        <div 
+        <div
           className="absolute inset-0 opacity-[0.06]"
           style={{
             backgroundImage: `
@@ -294,16 +316,16 @@ export default function ModernBackground() {
           }}
         />
       )}
-      
+
       {/* Subtle noise texture - sangat ringan */}
-      <div 
+      <div
         className="absolute inset-0 opacity-[0.015]"
         style={{
           background: `radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%), 
                       radial-gradient(circle at 75% 75%, rgba(147, 51, 234, 0.08) 0%, transparent 50%)`,
         }}
       />
-      
+
     </div>
   );
 }

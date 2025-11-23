@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Loading from './loading';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface AppLoadingProps {
   children: React.ReactNode;
@@ -19,20 +20,34 @@ const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  if (isLoading) {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-background">
-        <Loading 
-          size={80} 
-          text=""
-          showCounter={true}
-          className="text-center"
-        />
-      </div>
-    );
-  }
-
-  return <>{children}</>;
+  return (
+    <>
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            key="loading-screen"
+            initial={{ y: 0 }}
+            exit={{
+              y: "-100%",
+              transition: {
+                duration: 0.8,
+                ease: [0.76, 0, 0.24, 1] // Custom bezier for smooth "premium" feel
+              }
+            }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-background"
+          >
+            <Loading
+              size={80}
+              text=""
+              showCounter={true}
+              className="text-center"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {children}
+    </>
+  );
 };
 
 export default AppLoading;

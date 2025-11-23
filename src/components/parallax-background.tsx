@@ -14,7 +14,7 @@ export function ParallaxBackground({ children, className = "" }: ParallaxBackgro
   return (
     <div className={`relative overflow-hidden ${className}`}>
       {/* Animated background elements */}
-      <div 
+      <div
         className="absolute inset-0 opacity-30"
         style={{
           transform: `translateY(${scrollOffset}px) translateX(${mouseOffset.x}px) translateY(${mouseOffset.y}px)`,
@@ -28,7 +28,7 @@ export function ParallaxBackground({ children, className = "" }: ParallaxBackgro
       </div>
 
       {/* Grid pattern */}
-      <div 
+      <div
         className="absolute inset-0 opacity-10"
         style={{
           transform: `translateY(${scrollOffset * 0.5}px)`,

@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Menu, X, Globe, Shield } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import Link from 'next/link';
 import { LanguageSwitcher } from "./language-switcher";
@@ -19,7 +19,7 @@ export function Header() {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const activeSection = useActiveSection();
-  
+
   // Use try-catch to prevent context errors
   let t;
   try {
@@ -65,6 +65,61 @@ export function Header() {
     }
   };
 
+  // Animation variants
+  const menuVariants = {
+    initial: {
+      clipPath: "inset(0 0 100% 0)",
+    },
+    animate: {
+      clipPath: "inset(0 0 0% 0)",
+      transition: {
+        duration: 0.6,
+        ease: [0.4, 0, 0.2, 1], // Smooth ease-in-out
+      },
+    },
+    exit: {
+      clipPath: "inset(0 0 100% 0)",
+      transition: {
+        delay: 0.1,
+        duration: 0.6,
+        ease: [0.4, 0, 0.2, 1], // Smooth ease-in-out
+      },
+    },
+  };
+
+  const containerVars = {
+    initial: {
+      transition: {
+        staggerChildren: 0.05,
+        staggerDirection: -1,
+      },
+    },
+    open: {
+      transition: {
+        delayChildren: 0.1,
+        staggerChildren: 0.05,
+        staggerDirection: 1,
+      },
+    },
+  };
+
+  const mobileLinkVars = {
+    initial: {
+      y: "30vh",
+      transition: {
+        duration: 0.4,
+        ease: [0.37, 0, 0.63, 1],
+      },
+    },
+    open: {
+      y: 0,
+      transition: {
+        ease: [0, 0.55, 0.45, 1],
+        duration: 0.5,
+      },
+    },
+  };
+
   // Don't render until mounted to prevent hydration issues
   if (!mounted) {
     return (
@@ -82,11 +137,11 @@ export function Header() {
 
   return (
     <header className="fixed top-0 z-30 w-full p-4">
-      <div className="container mx-auto flex h-16 max-w-5xl items-center justify-between rounded-full border border-border/30 bg-background/20 px-6 backdrop-blur-lg">
+      <div className="container mx-auto flex h-16 max-w-5xl items-center justify-between rounded-full border border-border/30 bg-background/20 px-6 backdrop-blur-lg relative z-40">
         <Link href="/" className="flex items-center gap-3">
-          <img 
-            src="/images/fahrezi_white_logo.png" 
-            alt="Fahrezi Logo" 
+          <img
+            src="/images/fahrezi_white_logo.png"
+            alt="Fahrezi Logo"
             className="h-8 w-8"
           />
           <span className="font-headline text-xl font-bold text-foreground">
@@ -103,110 +158,105 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 onClick={(event) => handleNavClick(event, link)}
-                className={`relative text-base font-medium transition-colors group ${
-                  isActive 
-                    ? 'text-primary' 
-                    : 'text-muted-foreground hover:text-primary'
-                }`}
+                className={`relative text-base font-medium transition-colors group ${isActive
+                  ? 'text-primary'
+                  : 'text-muted-foreground hover:text-primary'
+                  }`}
               >
                 {link.label}
-                <span className={`absolute -bottom-1 h-0.5 bg-primary transition-all duration-300 ease-out ${
-                  isActive 
-                    ? 'w-full left-0' 
-                    : 'w-0 left-1/2 -translate-x-1/2 group-hover:w-full group-hover:left-0 group-hover:translate-x-0'
-                }`}></span>
+                <span className={`absolute -bottom-1 h-0.5 bg-primary transition-all duration-300 ease-out ${isActive
+                  ? 'w-full left-0'
+                  : 'w-0 left-1/2 -translate-x-1/2 group-hover:w-full group-hover:left-0 group-hover:translate-x-0'
+                  }`}></span>
               </Link>
             );
           })}
           <LanguageSwitcher />
         </nav>
 
-        {/* Simple mobile menu without Sheet component */}
+        {/* Mobile Menu Button */}
         <div className="md:hidden">
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             size="icon"
-            onClick={() => setMenuOpen(!isMenuOpen)}
+            onClick={() => setMenuOpen(true)}
+            className="text-foreground"
           >
             <Menu className="h-7 w-7" />
-            <span className="sr-only">Toggle menu</span>
+            <span className="sr-only">Open menu</span>
           </Button>
         </div>
       </div>
 
-      {/* Mobile menu overlay with smooth animations */}
-      <div className={`fixed inset-0 z-50 md:hidden transition-all duration-300 ease-in-out ${
-        isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-      }`}>
-        {/* Backdrop with fade animation */}
-        <div 
-          className={`fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300 ${
-            isMenuOpen ? 'opacity-100' : 'opacity-0'
-          }`}
-          onClick={() => setMenuOpen(false)}
-        />
-        
-        {/* Menu content with slide animation */}
-        <div className={`fixed right-0 top-0 h-full w-[280px] bg-background border-l border-border/30 shadow-xl transition-transform duration-300 ease-out ${
-          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}>
-          <div className="flex h-full flex-col">
-            <div className="flex items-center justify-between border-b border-border/30 p-6">
+      {/* Full Screen Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            variants={menuVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            className="fixed inset-0 z-50 origin-top bg-background md:hidden flex flex-col"
+          >
+            <div className="flex items-center justify-between p-4 container mx-auto">
               <Link href="/" className="flex items-center gap-3" onClick={handleLinkClick}>
-                 <img 
-                   src="/images/fahrezi_white_logo.png" 
-                   alt="Fahrezi Logo" 
-                   className="h-8 w-8"
-                 />
-                 <span className="font-headline text-xl font-bold text-foreground">
-                   Fahrezi
-                 </span>
+                <img
+                  src="/images/fahrezi_white_logo.png"
+                  alt="Fahrezi Logo"
+                  className="h-8 w-8"
+                />
+                <span className="font-headline text-xl font-bold text-foreground">
+                  Fahrezi
+                </span>
               </Link>
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 size="icon"
                 onClick={() => setMenuOpen(false)}
               >
-                 <X className="h-7 w-7" />
-                 <span className="sr-only">Close menu</span>
+                <X className="h-7 w-7" />
+                <span className="sr-only">Close menu</span>
               </Button>
             </div>
-            
-            <nav className="flex-1 p-6">
-              <div className="flex flex-col gap-6">
-                {navLinks.map((link) => {
-                  const sectionId = link.href.replace('#', '');
-                  const isActive = activeSection === sectionId && activeSection !== '';
-                  return (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={(event) => {
-                        handleNavClick(event, link);
-                        handleLinkClick();
-                      }}
-                      className={`text-2xl font-medium transition-colors relative ${
-                        isActive 
-                          ? 'text-primary' 
-                          : 'text-foreground hover:text-primary'
-                      }`}
-                    >
-                      {link.label}
-                      {isActive && (
-                        <span className="absolute -left-3 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-primary rounded-full"></span>
-                      )}
-                    </Link>
-                  );
-                })}
+
+            <motion.div
+              variants={containerVars}
+              initial="initial"
+              animate="open"
+              exit="initial"
+              className="flex flex-col items-center justify-center h-full gap-8 container mx-auto pb-20"
+            >
+              {navLinks.map((link) => {
+                const sectionId = link.href.replace('#', '');
+                const isActive = activeSection === sectionId && activeSection !== '';
+                return (
+                  <div key={link.href} className="overflow-hidden">
+                    <motion.div variants={mobileLinkVars}>
+                      <Link
+                        href={link.href}
+                        onClick={(event) => {
+                          handleNavClick(event, link);
+                          handleLinkClick();
+                        }}
+                        className={`text-5xl font-headline font-bold tracking-tight transition-colors ${isActive ? 'text-primary' : 'text-foreground hover:text-primary'
+                          }`}
+                      >
+                        {link.label}
+                      </Link>
+                    </motion.div>
+                  </div>
+                );
+              })}
+
+              <div className="overflow-hidden mt-8">
+                <motion.div variants={mobileLinkVars}>
+                  <LanguageSwitcher />
+                </motion.div>
               </div>
-            </nav>
-            
-            <div className="p-6 border-t border-border/30">
-              <LanguageSwitcher />
-            </div>
-          </div>
-        </div>
-      </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
