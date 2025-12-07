@@ -6,29 +6,38 @@ import { useLanguage } from "@/context/language-context";
 import { experiences } from "@/data/experience";
 import { motion } from "framer-motion";
 import { Calendar, MapPin } from "lucide-react";
+import { useState, useEffect } from "react";
 
 export function ExperienceSection() {
   const { language, t } = useLanguage();
   const currentExperiences = experiences[language] || [];
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: isMobile ? 1 : 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.1,
+        staggerChildren: isMobile ? 0 : 0.15,
+        delayChildren: isMobile ? 0 : 0.1,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: isMobile ? 1 : 0, y: isMobile ? 0 : 30 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.6,
+        duration: isMobile ? 0 : 0.6,
         ease: [0.25, 0.46, 0.45, 0.94],
       },
     },
@@ -71,10 +80,10 @@ export function ExperienceSection() {
               variants={itemVariants}
               className="group relative"
             >
-              {/* Modern Card Design */}
-              <div className="relative p-8 rounded-2xl bg-background/80 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 hover:border-primary/30 hover:-translate-y-1">
-                {/* Gradient Accent */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              {/* Modern Card Design - optimized for mobile */}
+              <div className={`relative p-6 md:p-8 rounded-2xl bg-background border border-border/50 shadow-sm ${!isMobile ? 'md:bg-background/80 md:backdrop-blur-sm hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 hover:border-primary/30 hover:-translate-y-1' : ''}`}>
+                {/* Gradient Accent - only on desktop */}
+                {!isMobile && <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />}
                 
                 {/* Content */}
                 <div className="relative z-10">
@@ -110,8 +119,8 @@ export function ExperienceSection() {
                   </div>
                 </div>
 
-                {/* Subtle Corner Accent */}
-                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-primary/10 to-transparent rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
+                {/* Subtle Corner Accent - only on desktop */}
+                {!isMobile && <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-primary/10 to-transparent rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />}
               </div>
             </motion.div>
           ))}
