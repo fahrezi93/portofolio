@@ -41,10 +41,10 @@ export function DevelopmentSection() {
 
   const loadProjects = async () => {
     setIsLoading(true);
-    
+
     try {
       const result = await ProjectsService.getAllProjects();
-      
+
       if (result.success && result.data) {
         // Convert database projects to component format
         const dbProjects: Project[] = result.data
@@ -71,7 +71,7 @@ export function DevelopmentSection() {
             // If both have same featured status, sort by creation date: newest first
             return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
           });
-        
+
         setProjects(dbProjects);
         setUseDatabase(true);
         console.log('✅ Loaded development projects from database:', dbProjects.length);
@@ -120,14 +120,14 @@ export function DevelopmentSection() {
       setIsLoading(false);
     }
   };
-  
+
   // Handle view more with scroll position management
   const handleViewMore = () => {
     if (!showAll) {
       // Expanding: scroll to maintain position at button
       const currentScrollY = window.scrollY;
       setShowAll(true);
-      
+
       // Small delay to let DOM update, then adjust scroll
       setTimeout(() => {
         window.scrollTo({
@@ -140,7 +140,7 @@ export function DevelopmentSection() {
       setShowAll(false);
       const portfolioSection = document.getElementById('portfolio');
       if (portfolioSection) {
-        portfolioSection.scrollIntoView({ 
+        portfolioSection.scrollIntoView({
           behavior: 'smooth',
           block: 'start'
         });
@@ -148,22 +148,27 @@ export function DevelopmentSection() {
     }
   };
 
-  // Animation variants - langsung muncul dari bawah ke atas
+  // Animation variants - simple fade in
   const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      y: 0,
       transition: {
-        duration: 0.5,
-        ease: "easeOut"
+        staggerChildren: 0.1
       }
     }
   };
 
   const cardVariants = {
-    hidden: { opacity: 1 },
-    visible: { opacity: 1 }
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.4,
+        ease: "easeOut"
+      }
+    }
   };
 
   // Get unique categories from projects
@@ -191,15 +196,15 @@ export function DevelopmentSection() {
     if (showAll) {
       return filteredProjects;
     }
-    
+
     // When not showing all, prioritize featured projects
     const featuredProjects = filteredProjects.filter(p => p.featured);
     const nonFeaturedProjects = filteredProjects.filter(p => !p.featured);
-    
+
     // Show all featured projects + fill remaining slots with non-featured
     const remainingSlots = Math.max(0, 4 - featuredProjects.length);
     const displayedNonFeatured = nonFeaturedProjects.slice(0, remainingSlots);
-    
+
     return [...featuredProjects, ...displayedNonFeatured];
   }, [filteredProjects, showAll]);
 
@@ -240,7 +245,7 @@ export function DevelopmentSection() {
 
       {/* Development Projects Grid */}
       {!isLoading && (
-        <motion.div 
+        <motion.div
           key={`dev-grid-${showAll}-${selectedCategory}`} // Force re-render when showAll changes
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-start"
           variants={containerVariants}
@@ -248,117 +253,117 @@ export function DevelopmentSection() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.05 }}
         >
-        {displayedProjects.map((project, index) => (
-          <motion.div
-            key={`${project.id}-${showAll}-${index}`} // More unique key
-            className="group relative bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-[1.01] h-full flex flex-col"
-            variants={cardVariants}
-            style={{ minHeight: '500px' }}
-          >
-            {/* Project Image */}
-            <div className="relative aspect-[4/3] bg-gradient-to-br from-green-100 to-blue-100 dark:from-green-900/20 dark:to-blue-900/20 overflow-hidden">
-              <img 
-                src={project.image} 
-                alt={project.title}
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                  e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                }}
-              />
-              <div className="absolute inset-0 hidden">
-                <Code className="w-16 h-16 text-muted-foreground/30" />
-              </div>
-              
-              {/* Status & Featured Badges */}
-              <div className="absolute top-3 left-3 flex gap-2">
-                <div className={`text-xs px-2 py-1 rounded-full ${getStatusColor(project.status)}`}>
-                  {project.status}
+          {displayedProjects.map((project, index) => (
+            <motion.div
+              key={`${project.id}-${showAll}-${index}`} // More unique key
+              className="group relative bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-[1.01] h-full flex flex-col"
+              variants={cardVariants}
+              style={{ minHeight: '500px' }}
+            >
+              {/* Project Image */}
+              <div className="relative aspect-[4/3] bg-gradient-to-br from-green-100 to-blue-100 dark:from-green-900/20 dark:to-blue-900/20 overflow-hidden">
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                  }}
+                />
+                <div className="absolute inset-0 hidden">
+                  <Code className="w-16 h-16 text-muted-foreground/30" />
                 </div>
-                {project.featured && (
-                  <div className="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400 font-medium">
-                    ⭐ Featured
-                  </div>
-                )}
-              </div>
-            </div>
 
-            {/* Project Info */}
-            <div className="p-6 flex-1 flex flex-col">
-              <div className="flex items-start justify-between mb-3">
-                <div>
-                  <h3 className="font-semibold text-xl mb-1">{project.title}</h3>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    {getTypeIcon(project.type)}
-                    <span>{project.type} • {project.year}</span>
+                {/* Status & Featured Badges */}
+                <div className="absolute top-3 left-3 flex gap-2">
+                  <div className={`text-xs px-2 py-1 rounded-full ${getStatusColor(project.status)}`}>
+                    {project.status}
                   </div>
+                  {project.featured && (
+                    <div className="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400 font-medium">
+                      ⭐ Featured
+                    </div>
+                  )}
                 </div>
-                <Badge variant="outline" className="text-xs">
-                  Development
-                </Badge>
               </div>
 
-              <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
-                {project.description}
-              </p>
-
-              {/* Technologies */}
-              <div className="flex flex-wrap gap-2 mb-4">
-                {project.technologies.map((tech: string) => (
-                  <Badge key={tech} variant="secondary" className="text-xs">
-                    {tech}
+              {/* Project Info */}
+              <div className="p-6 flex-1 flex flex-col">
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <h3 className="font-semibold text-xl mb-1">{project.title}</h3>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      {getTypeIcon(project.type)}
+                      <span>{project.type} • {project.year}</span>
+                    </div>
+                  </div>
+                  <Badge variant="outline" className="text-xs">
+                    Development
                   </Badge>
-                ))}
-              </div>
+                </div>
 
-              {/* Action Buttons */}
-              <div className="flex gap-2 mb-4 mt-auto">
-                {project.githubUrl && (
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    className="flex-1"
-                    onClick={() => window.open(project.githubUrl, '_blank')}
-                  >
-                    <Github className="w-4 h-4 mr-2" />
-                    GitHub
-                  </Button>
-                )}
-                {project.liveUrl && (
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    className="flex-1"
-                    onClick={() => window.open(project.liveUrl, '_blank')}
-                  >
-                    <ExternalLink className="w-4 h-4 mr-2" />
-                    Live Demo
-                  </Button>
-                )}
-              </div>
+                <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
+                  {project.description}
+                </p>
 
-              {/* Technologies Used */}
-              <div className="border-t pt-4 mt-auto">
-                <p className="text-sm text-muted-foreground">{project.type} • {project.year}</p>
-                <div className="flex flex-wrap gap-2">
-                  {project.technologies.map((tech) => (
-                    <span key={tech} className="text-xs bg-muted px-2 py-1 rounded">
+                {/* Technologies */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {project.technologies.map((tech: string) => (
+                    <Badge key={tech} variant="secondary" className="text-xs">
                       {tech}
-                    </span>
+                    </Badge>
                   ))}
                 </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-2 mb-4 mt-auto">
+                  {project.githubUrl && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="flex-1"
+                      onClick={() => window.open(project.githubUrl, '_blank')}
+                    >
+                      <Github className="w-4 h-4 mr-2" />
+                      GitHub
+                    </Button>
+                  )}
+                  {project.liveUrl && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="flex-1"
+                      onClick={() => window.open(project.liveUrl, '_blank')}
+                    >
+                      <ExternalLink className="w-4 h-4 mr-2" />
+                      Live Demo
+                    </Button>
+                  )}
+                </div>
+
+                {/* Technologies Used */}
+                <div className="border-t pt-4 mt-auto">
+                  <p className="text-sm text-muted-foreground">{project.type} • {project.year}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.technologies.map((tech) => (
+                      <span key={tech} className="text-xs bg-muted px-2 py-1 rounded">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          ))}
         </motion.div>
       )}
 
       {/* View More Button */}
       {filteredProjects.length > 4 && (
         <div className="text-center">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={handleViewMore}
             className="group"
           >
@@ -384,7 +389,7 @@ export function DevelopmentSection() {
         <p className="text-muted-foreground mb-4">
           {t.portfolio_dev_cta_text}
         </p>
-        <Button 
+        <Button
           className="group"
           onClick={() => {
             const contactSection = document.getElementById('contact');

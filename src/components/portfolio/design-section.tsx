@@ -13,14 +13,14 @@ export function DesignSection() {
   const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [showAll, setShowAll] = useState<boolean>(false);
-  
+
   // Handle view more with scroll position management
   const handleViewMore = () => {
     if (!showAll) {
       // Expanding: scroll to maintain position at button
       const currentScrollY = window.scrollY;
       setShowAll(true);
-      
+
       // Small delay to let DOM update, then adjust scroll
       setTimeout(() => {
         window.scrollTo({
@@ -33,7 +33,7 @@ export function DesignSection() {
       setShowAll(false);
       const portfolioSection = document.getElementById('portfolio');
       if (portfolioSection) {
-        portfolioSection.scrollIntoView({ 
+        portfolioSection.scrollIntoView({
           behavior: 'smooth',
           block: 'start'
         });
@@ -41,22 +41,27 @@ export function DesignSection() {
     }
   };
 
-  // Animation variants - langsung muncul dari bawah ke atas
+  // Animation variants - simple fade in
   const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      y: 0,
       transition: {
-        duration: 0.5,
-        ease: "easeOut"
+        staggerChildren: 0.1
       }
     }
   };
 
   const cardVariants = {
-    hidden: { opacity: 1 },
-    visible: { opacity: 1 }
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.4,
+        ease: "easeOut"
+      }
+    }
   };
 
   // Get unique categories from design projects
@@ -84,15 +89,15 @@ export function DesignSection() {
     if (showAll) {
       return filteredProjects;
     }
-    
+
     // When not showing all, prioritize featured projects
     const featuredProjects = filteredProjects.filter(p => p.featured);
     const nonFeaturedProjects = filteredProjects.filter(p => !p.featured);
-    
+
     // Show all featured projects + fill remaining slots with non-featured
     const remainingSlots = Math.max(0, 4 - featuredProjects.length);
     const displayedNonFeatured = nonFeaturedProjects.slice(0, remainingSlots);
-    
+
     return [...featuredProjects, ...displayedNonFeatured];
   }, [filteredProjects, showAll]);
 
@@ -113,7 +118,7 @@ export function DesignSection() {
       </div>
 
       {/* Design Projects Grid */}
-      <motion.div 
+      <motion.div
         key={`grid-${showAll}-${selectedCategory}`} // Force re-render when showAll changes
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-start"
         variants={containerVariants}
@@ -130,8 +135,8 @@ export function DesignSection() {
           >
             {/* Project Image */}
             <div className="relative aspect-[4/3] bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 overflow-hidden">
-              <img 
-                src={project.image} 
+              <img
+                src={project.image}
                 alt={project.title}
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 onError={(e) => {
@@ -195,8 +200,8 @@ export function DesignSection() {
       {/* View More Button */}
       {filteredProjects.length > 4 && (
         <div className="text-center">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={handleViewMore}
             className="group"
           >
@@ -222,7 +227,7 @@ export function DesignSection() {
         <p className="text-muted-foreground mb-4">
           {t.portfolio_design_cta_text}
         </p>
-        <Button 
+        <Button
           className="group"
           onClick={() => {
             const contactSection = document.getElementById('contact');
