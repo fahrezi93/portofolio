@@ -46,16 +46,16 @@ export function PortfolioSettings() {
   const [settings, setSettings] = useState({
     // Personal Info
     name: 'Fahrezi',
-    email: 'fahrezi@example.com',
+    email: 'hello@fahrezi.tech',
     bio: 'Full-stack Developer & UI/UX Designer passionate about creating amazing digital experiences.',
     location: 'Indonesia',
     
     // Social Links
-    website: 'https://fahrezi.dev',
-    github: 'https://github.com/fahrezi',
-    linkedin: 'https://linkedin.com/in/fahrezi',
-    twitter: 'https://twitter.com/fahrezi',
-    instagram: 'https://instagram.com/fahrezi',
+    website: 'https://www.fahrezi.tech',
+    github: 'https://github.com/fahrezi93',
+    linkedin: 'https://linkedin.com/in/mohammad-fahrezi',
+    twitter: 'https://twitter.com/fahrrrezi',
+    instagram: 'https://instagram.com/moh.fahrezi',
     
     // Portfolio Settings
     showGithubStats: true,
@@ -96,7 +96,7 @@ export function PortfolioSettings() {
       icon: User,
       fields: [
         { key: 'name', label: 'Full Name', type: 'text', placeholder: 'Your full name' } as TextFieldType,
-        { key: 'email', label: 'Email Address', type: 'email', placeholder: 'your@email.com' } as TextFieldType,
+        { key: 'email', label: 'Email Address', type: 'email', placeholder: 'hello@fahrezi.tech' } as TextFieldType,
         { key: 'bio', label: 'Bio', type: 'textarea', placeholder: 'Tell visitors about yourself...' } as TextFieldType,
         { key: 'location', label: 'Location', type: 'text', placeholder: 'City, Country' } as TextFieldType,
       ]

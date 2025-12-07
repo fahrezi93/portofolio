@@ -18,14 +18,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://www.fahrezidev.my.id'),
+  metadataBase: new URL('https://www.fahrezi.tech'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'id_ID',
-    url: 'https://www.fahrezidev.my.id',
+    url: 'https://www.fahrezi.tech',
     title: 'Mohammad Fahrezi - Fullstack Developer & UI/UX Designer',
     description: 'Passionate Computer Science student at Sriwijaya University specializing in Front-End Development and UI/UX Design. Creating modern, intuitive web applications with cutting-edge technologies.',
     siteName: 'Mohammad Fahrezi Portfolio',
@@ -118,10 +118,10 @@ export default function RootLayout({
               "name": "Mohammad Fahrezi",
               "jobTitle": "Fullstack Developer & UI/UX Designer",
               "description": "Passionate Computer Science student at Sriwijaya University specializing in Fullstack Development and UI/UX Design",
-              "url": "https://www.fahrezidev.my.id",
+              "url": "https://www.fahrezi.tech",
               "sameAs": [
                 "https://github.com/fahrezi93",
-                "https://linkedin.com/in/fahrezi93",
+                "https://linkedin.com/in/mohammad-fahrezi",
                 "https://instagram.com/moh.fahrezi"
               ],  
               "alumniOf": {
