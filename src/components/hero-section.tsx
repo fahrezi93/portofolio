@@ -6,36 +6,75 @@ import RotatingText from "./rotating-text";
 import { useLanguage } from "@/context/language-context";
 import { ParallaxBackground } from "./parallax-background";
 import { useParallax } from "@/hooks/use-parallax";
+import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 
 export function HeroSection() {
   const { t } = useLanguage();
   const parallaxOffset = useParallax(0.2);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    // Tunggu loading screen selesai (2 detik + sedikit buffer)
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 2200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
 
   return (
     <ParallaxBackground className="relative grid w-full min-h-[calc(100vh-8rem)] place-items-center">
       <section id="home" className="relative w-full">
         <div className="container relative z-10 mx-auto flex h-full max-w-5xl flex-col items-center justify-center px-4 text-center md:px-6 min-h-[calc(100vh-8rem)]">
-          <div
+          <motion.div
             className="flex flex-col items-center space-y-6"
             style={{
               transform: `translateY(${parallaxOffset * -0.5}px)`,
             }}
+            variants={containerVariants}
+            initial="hidden"
+            animate={isLoaded ? "visible" : "hidden"}
           >
             <div className="space-y-4">
-              <p
+              <motion.p
                 className="font-headline text-lg text-primary md:text-xl"
                 style={{
                   transform: `translateY(${parallaxOffset * -0.3}px)`,
                 }}
+                variants={itemVariants}
               >
                 {t.hero_subtitle}
-              </p>
-              <div
+              </motion.p>
+              <motion.div
                 className="flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-4 font-headline text-5xl font-bold leading-relaxed tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl"
                 style={{
                   lineHeight: '1.3',
                   transform: `translateY(${parallaxOffset * -0.2}px)`,
                 }}
+                variants={itemVariants}
               >
                 <span>{t.hero_rotating_1}</span>
                 <RotatingText
@@ -51,18 +90,21 @@ export function HeroSection() {
                   rotationInterval={3000}
                 />
                 <span>digital products.</span>
-              </div>
-              <p className="mx-auto max-w-[700px] text-lg text-muted-foreground md:text-xl">
+              </motion.div>
+              <motion.p 
+                className="mx-auto max-w-[700px] text-lg text-muted-foreground md:text-xl"
+                variants={itemVariants}
+              >
                 {t.hero_tagline}
-              </p>
+              </motion.p>
             </div>
-            <div className="pt-4">
+            <motion.div className="pt-4" variants={itemVariants}>
               <StarBorder as="a" href="#portfolio-content">
                 {t.hero_cta}
                 <ArrowDown className="ml-2 h-5 w-5 animate-bounce" />
               </StarBorder>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
     </ParallaxBackground>

@@ -13,7 +13,6 @@ export function DesignSection() {
   const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [showAll, setShowAll] = useState<boolean>(false);
-  const [hasAnimated, setHasAnimated] = useState<boolean>(false);
   
   // Handle view more with scroll position management
   const handleViewMore = () => {
@@ -42,29 +41,22 @@ export function DesignSection() {
     }
   };
 
-  // Animation variants - only animate once
+  // Animation variants - langsung muncul dari bawah ke atas
   const containerVariants = {
-    hidden: { opacity: hasAnimated ? 1 : 0 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
+      y: 0,
       transition: {
-        staggerChildren: hasAnimated ? 0 : 0.1,
-        delayChildren: hasAnimated ? 0 : 0.05
+        duration: 0.5,
+        ease: "easeOut"
       }
     }
   };
 
   const cardVariants = {
-    hidden: { 
-      opacity: hasAnimated ? 1 : 0
-    },
-    visible: { 
-      opacity: 1,
-      transition: {
-        duration: hasAnimated ? 0 : 0.3,
-        ease: "easeOut"
-      }
-    }
+    hidden: { opacity: 1 },
+    visible: { opacity: 1 }
   };
 
   // Get unique categories from design projects
@@ -128,7 +120,6 @@ export function DesignSection() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.05 }}
-        onAnimationComplete={() => setHasAnimated(true)}
       >
         {displayedProjects.map((project, index) => (
           <motion.div
