@@ -9,6 +9,7 @@ import { ExternalLink, Github, Code, Globe, Smartphone, Server, ChevronDown, Eye
 import { developmentProjects, DevelopmentProject } from "@/data/development-projects";
 import { ProjectsService } from "@/lib/projects-service";
 import { ImagePreviewModal } from "../ui/image-preview-modal";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
 
 interface Project {
   id: string;
@@ -256,104 +257,114 @@ export function DevelopmentSection() {
           {displayedProjects.map((project, index) => (
             <motion.div
               key={`${project.id}-${showAll}-${index}`} // More unique key
-              className="group relative bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-[1.01] h-full flex flex-col"
               variants={cardVariants}
-              style={{ minHeight: '500px' }}
+              className="h-full"
             >
-              {/* Project Image */}
-              <div className="relative aspect-[4/3] bg-gradient-to-br from-green-100 to-blue-100 dark:from-green-900/20 dark:to-blue-900/20 overflow-hidden">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                  }}
-                />
-                <div className="absolute inset-0 hidden">
-                  <Code className="w-16 h-16 text-muted-foreground/30" />
-                </div>
-
-                {/* Status & Featured Badges */}
-                <div className="absolute top-3 left-3 flex gap-2">
-                  <div className={`text-xs px-2 py-1 rounded-full ${getStatusColor(project.status)}`}>
-                    {project.status}
+              <SpotlightCard
+                className="group h-full flex flex-col border-border/50 bg-card/50 backdrop-blur-sm"
+                style={{ minHeight: '500px' }}
+                spotlightColor="rgba(59, 130, 246, 0.15)"
+              >
+                {/* Project Image */}
+                <div className="relative aspect-[4/3] bg-gradient-to-br from-green-100 to-blue-100 dark:from-green-900/20 dark:to-blue-900/20 overflow-hidden">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                    }}
+                  />
+                  <div className="absolute inset-0 hidden">
+                    <Code className="w-16 h-16 text-muted-foreground/30" />
                   </div>
-                  {project.featured && (
-                    <div className="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400 font-medium">
-                      ⭐ Featured
-                    </div>
-                  )}
-                </div>
-              </div>
 
-              {/* Project Info */}
-              <div className="p-6 flex-1 flex flex-col">
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <h3 className="font-semibold text-xl mb-1">{project.title}</h3>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      {getTypeIcon(project.type)}
-                      <span>{project.type} • {project.year}</span>
+                  {/* Status & Featured Badges */}
+                  <div className="absolute top-3 left-3 flex gap-2">
+                    <div className={`text-xs px-2 py-1 rounded-full ${getStatusColor(project.status)}`}>
+                      {project.status}
                     </div>
+                    {project.featured && (
+                      <div className="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400 font-medium">
+                        ⭐ Featured
+                      </div>
+                    )}
                   </div>
-                  <Badge variant="outline" className="text-xs">
-                    Development
-                  </Badge>
                 </div>
 
-                <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
-                  {project.description}
-                </p>
-
-                {/* Technologies */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.technologies.map((tech: string) => (
-                    <Badge key={tech} variant="secondary" className="text-xs">
-                      {tech}
+                {/* Project Info */}
+                <div className="p-6 flex-1 flex flex-col">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <h3 className="font-semibold text-xl mb-1 group-hover:text-primary transition-colors">{project.title}</h3>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        {getTypeIcon(project.type)}
+                        <span>{project.type} • {project.year}</span>
+                      </div>
+                    </div>
+                    <Badge variant="outline" className="text-xs">
+                      Development
                     </Badge>
-                  ))}
-                </div>
+                  </div>
 
-                {/* Action Buttons */}
-                <div className="flex gap-2 mb-4 mt-auto">
-                  {project.githubUrl && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="flex-1"
-                      onClick={() => window.open(project.githubUrl, '_blank')}
-                    >
-                      <Github className="w-4 h-4 mr-2" />
-                      GitHub
-                    </Button>
-                  )}
-                  {project.liveUrl && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="flex-1"
-                      onClick={() => window.open(project.liveUrl, '_blank')}
-                    >
-                      <ExternalLink className="w-4 h-4 mr-2" />
-                      Live Demo
-                    </Button>
-                  )}
-                </div>
+                  <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
+                    {project.description}
+                  </p>
 
-                {/* Technologies Used */}
-                <div className="border-t pt-4 mt-auto">
-                  <p className="text-sm text-muted-foreground">{project.type} • {project.year}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {project.technologies.map((tech) => (
-                      <span key={tech} className="text-xs bg-muted px-2 py-1 rounded">
+                  {/* Technologies */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.technologies.map((tech: string) => (
+                      <Badge key={tech} variant="secondary" className="text-xs group-hover:bg-primary/10 transition-colors">
                         {tech}
-                      </span>
+                      </Badge>
                     ))}
                   </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-2 mb-4 mt-auto">
+                    {project.githubUrl && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="flex-1 z-30"
+                        onClick={() => window.open(project.githubUrl, '_blank')}
+                      >
+                        <Github className="w-4 h-4 mr-2" />
+                        GitHub
+                      </Button>
+                    )}
+                    {project.liveUrl && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="flex-1 z-30"
+                        onClick={() => window.open(project.liveUrl, '_blank')}
+                      >
+                        <ExternalLink className="w-4 h-4 mr-2" />
+                        Live Demo
+                      </Button>
+                    )}
+                  </div>
+
+                  {/* Technologies Used */}
+                  <div className="border-t pt-4 mt-auto">
+                    <p className="text-sm text-muted-foreground">{project.type} • {project.year}</p>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {project.technologies.slice(0, 3).map((tech) => (
+                        <span key={tech} className="text-xs bg-muted px-2 py-1 rounded">
+                          {tech}
+                        </span>
+                      ))}
+                      {project.technologies.length > 3 && (
+                        <span className="text-xs bg-muted px-2 py-1 rounded">
+                          +{project.technologies.length - 3}
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </SpotlightCard>
             </motion.div>
           ))}
         </motion.div>

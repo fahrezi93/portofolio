@@ -2,10 +2,9 @@
 
 import React, { useRef } from "react";
 import { MotionValue, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { Home, User, Briefcase, Mail, Code2, FolderGit2, Star } from "lucide-react";
+import { Home, User, Briefcase, Mail, Code2, Monitor, Star } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/context/language-context";
-import { cn } from "@/lib/utils";
 
 export function FloatingDock() {
     const { t } = useLanguage();
@@ -24,7 +23,7 @@ export function FloatingDock() {
         },
         {
             title: t?.nav_work || "Work",
-            icon: <Code2 className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
+            icon: <Monitor className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
             href: "#portfolio",
         },
         {
@@ -34,7 +33,7 @@ export function FloatingDock() {
         },
         {
             title: "Skills",
-            icon: <Star className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
+            icon: <Code2 className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
             href: "#skills",
         },
         {

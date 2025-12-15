@@ -79,7 +79,7 @@ export function HeroSection() {
                     </motion.span>
                     <RotatingText
                       texts={[t.hero_rotating_2, t.hero_rotating_3, t.hero_rotating_4]}
-                      mainClassName="px-2 sm:px-2 md:px-3 bg-gradient-to-r from-blue-400 to-blue-600 text-white overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-xl"
+                      mainClassName="px-2 sm:px-2 md:px-3 bg-gradient-to-r from-blue-400 to-blue-600 text-white overflow-hidden py-1 sm:py-2 md:py-3 justify-center rounded-xl"
                       staggerFrom={"last"}
                       initial={{ y: "100%" }}
                       animate={{ y: 0 }}
