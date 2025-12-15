@@ -150,7 +150,8 @@ export function Header() {
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">
-          {navLinks.map((link) => {
+          {/* Desktop Nav Links replaced by Floating Dock */}
+          {/* {navLinks.map((link) => {
             const sectionId = link.href.replace('#', '');
             const isActive = activeSection === sectionId && activeSection !== '';
             return (
@@ -170,7 +171,7 @@ export function Header() {
                   }`}></span>
               </Link>
             );
-          })}
+          })} */}
           <LanguageSwitcher />
         </nav>
 

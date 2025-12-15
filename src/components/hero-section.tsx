@@ -62,17 +62,16 @@ export function HeroSection() {
                   {t.hero_subtitle}
                 </motion.p>
                 <motion.div
-                  className="font-headline text-5xl font-bold leading-relaxed tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl"
-                  style={{ lineHeight: '1.3' }}
+                  className="font-headline text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl flex flex-col items-center justify-center gap-2 sm:gap-4"
                   variants={itemVariants}
                 >
                   <motion.div
-                    className="inline-flex items-center justify-center"
+                    className="flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-4"
                     layout
                     transition={{ type: "spring", damping: 30, stiffness: 200 }}
                   >
                     <motion.span
-                      className="mr-1 sm:mr-2"
+                      className=""
                       layout
                       transition={{ type: "spring", damping: 30, stiffness: 200 }}
                     >
