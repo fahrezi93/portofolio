@@ -10,8 +10,10 @@ interface AppLoadingProps {
 
 const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     // Simulate app initialization time
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -19,6 +21,11 @@ const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
 
     return () => clearTimeout(timer);
   }, []);
+
+  // During SSR and initial render, show children to prevent hydration mismatch
+  if (!isMounted) {
+    return <div suppressHydrationWarning>{children}</div>;
+  }
 
   return (
     <>
@@ -51,3 +58,4 @@ const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
 };
 
 export default AppLoading;
+

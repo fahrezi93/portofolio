@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import Link from 'next/link';
+import Image from 'next/image';
 import { LanguageSwitcher } from "./language-switcher";
 import { Button } from "./ui/button";
 import { useActiveSection } from '@/hooks/use-active-section';
@@ -139,10 +140,13 @@ export function Header() {
     <header className="fixed top-0 z-30 w-full p-4">
       <div className="container mx-auto flex h-16 max-w-5xl items-center justify-between rounded-full border border-border/30 bg-background/20 px-6 backdrop-blur-lg relative z-40">
         <Link href="/" className="flex items-center gap-3">
-          <img
-            src="/images/fahrezi_white_logo.png"
+          <Image
+            src="/images/logo-64.webp"
             alt="Fahrezi Logo"
+            width={32}
+            height={32}
             className="h-8 w-8"
+            priority
           />
           <span className="font-headline text-xl font-bold text-foreground">
             Fahrezi
@@ -201,9 +205,11 @@ export function Header() {
           >
             <div className="flex items-center justify-between p-4 container mx-auto">
               <Link href="/" className="flex items-center gap-3" onClick={handleLinkClick}>
-                <img
-                  src="/images/fahrezi_white_logo.png"
+                <Image
+                  src="/images/logo-64.webp"
                   alt="Fahrezi Logo"
+                  width={32}
+                  height={32}
                   className="h-8 w-8"
                 />
                 <span className="font-headline text-xl font-bold text-foreground">

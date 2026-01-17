@@ -7,19 +7,9 @@ import { useLanguage } from "@/context/language-context";
 import { ParallaxBackground } from "./parallax-background";
 
 import { motion, LayoutGroup } from "motion/react";
-import { useState, useEffect } from "react";
 
 export function HeroSection() {
   const { t } = useLanguage();
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    // Tunggu loading screen selesai (2 detik + sedikit buffer)
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 2200);
-    return () => clearTimeout(timer);
-  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -27,7 +17,7 @@ export function HeroSection() {
       opacity: 1,
       transition: {
         staggerChildren: 0.15,
-        delayChildren: 0.1
+        delayChildren: 2.2 // Delay matches app loading screen
       }
     }
   };
@@ -52,7 +42,7 @@ export function HeroSection() {
               className="flex flex-col items-center space-y-6"
               variants={containerVariants}
               initial="hidden"
-              animate={isLoaded ? "visible" : "hidden"}
+              animate="visible"
             >
               <div className="space-y-4">
                 <motion.p
