@@ -57,10 +57,13 @@ function FloatingParticles() {
 }
 
 export default function ModernBackground() {
+  const [isMounted, setIsMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
+
     // Deteksi mobile dan preferensi reduced motion
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -76,6 +79,16 @@ export default function ModernBackground() {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Return nothing during SSR to prevent hydration mismatch
+  if (!isMounted) {
+    return (
+      <div className="fixed inset-0 -z-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-950 to-slate-950" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-blue-950/20 via-transparent to-purple-950/15" />
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 -z-20 overflow-hidden">
