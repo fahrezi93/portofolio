@@ -1,9 +1,10 @@
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans } from "next/font/google";
 import './globals.css';
 import { AdminProvider } from "@/context/admin-context";
 import { Toaster } from "@/components/ui/toaster";
 import { LanguageProvider } from "@/context/language-context";
+import { LoadingProvider } from "@/context/loading-context";
 import AppLoading from "@/components/app-loading";
 
 export const metadata: Metadata = {
@@ -71,7 +72,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#000000" />
         <meta name="color-scheme" content="dark light" />
         <meta name="google-site-verification" content="_mZK8Y9n3es-OvV7qgyAu4k7mWtxKJDJBeKQ9FOarQ0" />
-        
+
         {/* Google Tag Manager */}
         <script
           dangerouslySetInnerHTML={{
@@ -84,7 +85,7 @@ export default function RootLayout({
             `,
           }}
         />
-        
+
         {/* Google Analytics (gtag.js) */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-TYY6QMXHLF"></script>
         <script
@@ -97,7 +98,7 @@ export default function RootLayout({
             `,
           }}
         />
-        
+
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/images/thumbnail-porto.png" />
         <meta property="og:image" content="/images/thumbnail-porto.png" />
@@ -123,7 +124,7 @@ export default function RootLayout({
                 "https://github.com/fahrezi93",
                 "https://linkedin.com/in/mohammad-fahrezi",
                 "https://instagram.com/moh.fahrezi"
-              ],  
+              ],
               "alumniOf": {
                 "@type": "EducationalOrganization",
                 "name": "Sriwijaya University"
@@ -151,19 +152,21 @@ export default function RootLayout({
       <body className="font-body antialiased">
         {/* Google Tag Manager (noscript) */}
         <noscript>
-          <iframe 
+          <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-PMN9QPFH"
-            height="0" 
-            width="0" 
+            height="0"
+            width="0"
             style={{ display: 'none', visibility: 'hidden' }}
           />
         </noscript>
-        
+
         <AdminProvider>
           <LanguageProvider>
-            <AppLoading>
-              {children}
-            </AppLoading>
+            <LoadingProvider>
+              <AppLoading>
+                {children}
+              </AppLoading>
+            </LoadingProvider>
           </LanguageProvider>
         </AdminProvider>
         <Toaster />

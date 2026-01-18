@@ -2,10 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import gsap from "gsap";
 import { Menu, X } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import Link from 'next/link';
 import Image from 'next/image';
+import { GsapLogo } from "./ui/gsap-logo";
 import { LanguageSwitcher } from "./language-switcher";
 import { Button } from "./ui/button";
 import { useActiveSection } from '@/hooks/use-active-section';
@@ -16,10 +19,15 @@ type NavLink = {
   scrollTarget?: string;
 };
 
+// ... existing imports
+
 export function Header() {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const activeSection = useActiveSection();
+  const headerRef = React.useRef<HTMLDivElement>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const navContainerRef = React.useRef<HTMLDivElement>(null);
 
   // Use try-catch to prevent context errors
   let t;
@@ -34,6 +42,7 @@ export function Header() {
   // Ensure component is mounted before rendering
   useEffect(() => {
     setMounted(true);
+    gsap.registerPlugin(ScrollTrigger);
   }, []);
 
   // Fallback values if translations are not available
@@ -121,63 +130,121 @@ export function Header() {
     },
   };
 
-  // Don't render until mounted to prevent hydration issues
+  // GSAP Animation for Header Expansion
+  useEffect(() => {
+    if (!mounted || !headerRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Initial state is set by CSS classes (floating pill)
+      // We animate TO the full-width state
+      gsap.to(headerRef.current, {
+        scrollTrigger: {
+          trigger: document.body,
+          start: "top top",
+          end: "+=150",
+          scrub: 1,
+        },
+        width: "100%",
+        maxWidth: "100%",
+        borderRadius: "0px",
+        marginTop: "0px",
+        top: "0px", // Ensure it sticks to top
+        borderTopWidth: "0px",
+        borderLeftWidth: "0px",
+        borderRightWidth: "0px",
+        borderBottomWidth: "1px",
+        backgroundColor: "rgba(3, 7, 18, 0.8)",
+        backdropFilter: "blur(12px)",
+        paddingLeft: "24px",
+        paddingRight: "24px",
+        height: "64px", // Ensure height stays consistent
+        ease: "none", // standard scrub ease
+      });
+
+      // Animate nav gap
+      if (navContainerRef.current) {
+        gsap.to(navContainerRef.current, {
+          scrollTrigger: {
+            trigger: document.body,
+            start: "top top",
+            end: "+=150",
+            scrub: 1,
+          },
+          columnGap: "32px", // Animate gap to 32px (container is flex)
+          ease: "none"
+        });
+      }
+
+      // Animate the container margin separately if needed to remove the initial gap
+      gsap.to(headerRef.current, {
+        scrollTrigger: {
+          trigger: document.body,
+          start: "top top",
+          end: "+=150",
+          scrub: 1,
+        },
+        marginTop: "0px",
+        ease: "none"
+      });
+
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, [mounted]);
+
+  // Don't render until mounted until hydration matches
   if (!mounted) {
     return (
-      <header className="fixed top-0 z-30 w-full p-4">
-        <div className="container mx-auto flex h-16 max-w-5xl items-center justify-between rounded-full border border-border/30 bg-background/20 px-6 backdrop-blur-lg">
-          <div className="flex items-center gap-3">
-            <div className="h-8 w-8 bg-gray-300 rounded animate-pulse"></div>
-            <div className="h-6 w-24 bg-gray-300 rounded animate-pulse"></div>
-          </div>
-          <div className="h-8 w-8 bg-gray-300 rounded animate-pulse"></div>
-        </div>
+      <header className="fixed top-0 z-30 w-full flex justify-center pt-4"> {/* Adjusted initial loading state */}
+        <div className="container h-16 max-w-5xl rounded-full border border-border/30 bg-background/20 backdrop-blur-lg" />
       </header>
     );
   }
 
   return (
-    <header className="fixed top-0 z-30 w-full p-4">
-      <div className="container mx-auto flex h-16 max-w-5xl items-center justify-between rounded-full border border-border/30 bg-background/20 px-6 backdrop-blur-lg relative z-40">
-        <Link href="/" className="flex items-center gap-3">
-          <Image
-            src="/images/logo-64.webp"
-            alt="Fahrezi Logo"
-            width={32}
-            height={32}
-            className="h-8 w-8"
-            priority
-          />
-          <span className="font-headline text-xl font-bold text-foreground">
-            Fahrezi
-          </span>
-        </Link>
+    <header ref={containerRef} className="fixed top-0 z-30 w-full flex justify-center pointer-events-none">
+      <div
+        ref={headerRef}
+        className="pointer-events-auto mt-4 px-6 flex h-16 w-[95%] max-w-5xl items-center justify-between rounded-full border border-border/30 bg-background/20 backdrop-blur-lg relative z-40 transition-shadow"
+      >
+        <div className="flex-1 flex justify-start">
+          <GsapLogo />
+        </div>
 
-        <nav className="hidden items-center gap-6 md:flex">
-          {/* Desktop Nav Links replaced by Floating Dock */}
-          {/* {navLinks.map((link) => {
-            const sectionId = link.href.replace('#', '');
-            const isActive = activeSection === sectionId && activeSection !== '';
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={(event) => handleNavClick(event, link)}
-                className={`relative text-base font-medium transition-colors group ${isActive
-                  ? 'text-primary'
-                  : 'text-muted-foreground hover:text-primary'
-                  }`}
-              >
-                {link.label}
-                <span className={`absolute -bottom-1 h-0.5 bg-primary transition-all duration-300 ease-out ${isActive
-                  ? 'w-full left-0'
-                  : 'w-0 left-1/2 -translate-x-1/2 group-hover:w-full group-hover:left-0 group-hover:translate-x-0'
-                  }`}></span>
-              </Link>
-            );
-          })} */}
-          <LanguageSwitcher />
+        <nav className="hidden items-center md:flex absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
+          <div ref={navContainerRef} className="flex items-center gap-2">
+            {navLinks.map((link, i) => {
+              const sectionId = link.href.replace('#', '');
+              const isActive = activeSection === sectionId && activeSection !== '';
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={(event) => handleNavClick(event, link)}
+                  className={`relative px-4 py-2 text-base font-medium transition-all duration-300 rounded-full group overflow-hidden ${isActive
+                    ? 'text-white'
+                    : 'text-muted-foreground hover:text-white hover:bg-white/5'
+                    }`}
+                >
+                  <div className="relative z-10 flex items-center gap-2">
+                    <span>{link.label}</span>
+                  </div>
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeTab"
+                      className="absolute inset-0 bg-primary/10 rounded-full border border-primary/20"
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  )}
+                </Link>
+              );
+            })}
+          </div>
         </nav>
+
+        <div className="flex-1 flex justify-end hidden md:flex">
+          <LanguageSwitcher />
+        </div>
 
         {/* Mobile Menu Button */}
         <div className="md:hidden">
@@ -201,25 +268,16 @@ export function Header() {
             initial="initial"
             animate="animate"
             exit="exit"
-            className="fixed inset-0 z-50 origin-top bg-background md:hidden flex flex-col"
+            className="fixed inset-0 z-[100] origin-top bg-background md:hidden flex flex-col pointer-events-auto"
+            style={{ touchAction: 'auto' }}
           >
-            <div className="flex items-center justify-between p-4 container mx-auto">
-              <Link href="/" className="flex items-center gap-3" onClick={handleLinkClick}>
-                <Image
-                  src="/images/logo-64.webp"
-                  alt="Fahrezi Logo"
-                  width={32}
-                  height={32}
-                  className="h-8 w-8"
-                />
-                <span className="font-headline text-xl font-bold text-foreground">
-                  Fahrezi
-                </span>
-              </Link>
+            <div className="flex items-center justify-between p-4 container mx-auto relative z-10">
+              <GsapLogo onClick={handleLinkClick} />
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setMenuOpen(false)}
+                className="relative z-10"
               >
                 <X className="h-7 w-7" />
                 <span className="sr-only">Close menu</span>
@@ -231,7 +289,7 @@ export function Header() {
               initial="initial"
               animate="open"
               exit="initial"
-              className="flex flex-col items-center justify-center h-full gap-8 container mx-auto pb-20"
+              className="flex flex-col items-center justify-center h-full gap-8 container mx-auto pb-20 relative z-10"
             >
               {navLinks.map((link) => {
                 const sectionId = link.href.replace('#', '');
@@ -239,17 +297,32 @@ export function Header() {
                 return (
                   <div key={link.href} className="overflow-hidden">
                     <motion.div variants={mobileLinkVars}>
-                      <Link
+                      <a
                         href={link.href}
                         onClick={(event) => {
-                          handleNavClick(event, link);
-                          handleLinkClick();
+                          event.preventDefault();
+                          const targetId = link.scrollTarget || link.href.replace('#', '');
+                          const targetElement = document.getElementById(targetId);
+
+                          // Close menu first
+                          setMenuOpen(false);
+
+                          // Then scroll after a short delay to allow menu to close
+                          setTimeout(() => {
+                            if (targetElement) {
+                              targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                              window.history.replaceState(null, '', link.href);
+                            } else {
+                              window.location.hash = link.href;
+                            }
+                          }, 300);
                         }}
-                        className={`text-5xl font-headline font-bold tracking-tight transition-colors ${isActive ? 'text-primary' : 'text-foreground hover:text-primary'
+                        className={`block text-5xl font-headline font-bold tracking-tight transition-colors cursor-pointer select-none ${isActive ? 'text-primary' : 'text-foreground hover:text-primary active:text-primary'
                           }`}
+                        style={{ touchAction: 'manipulation' }}
                       >
                         {link.label}
-                      </Link>
+                      </a>
                     </motion.div>
                   </div>
                 );

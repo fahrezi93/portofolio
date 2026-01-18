@@ -104,7 +104,7 @@ export default function Home() {
             </motion.div>
           </main>
           <Footer />
-          <FloatingDock />
+
         </div>
       </div>
     </LanguageProvider>

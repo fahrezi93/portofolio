@@ -4,12 +4,14 @@ import React, { useState, useEffect } from 'react';
 import Loading from './loading';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import { useLoading } from '@/context/loading-context';
+
 interface AppLoadingProps {
   children: React.ReactNode;
 }
 
 const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
-  const [isLoading, setIsLoading] = useState(true);
+  const { isLoading, setIsLoading } = useLoading();
 
   useEffect(() => {
     // Simulate app initialization time
@@ -18,7 +20,7 @@ const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
     }, 2000); // Show loading for 2 seconds
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [setIsLoading]);
 
   return (
     <>

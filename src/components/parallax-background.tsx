@@ -12,13 +12,15 @@ export function ParallaxBackground({ children, className = "" }: ParallaxBackgro
   const mouseOffset = useMouseParallax(0.05);
 
   return (
-    <div className={`relative overflow-hidden ${className}`}>
+    <div className={`relative overflow-hidden ${className}`} style={{ position: 'relative' }} suppressHydrationWarning>
       {/* Animated background elements */}
       <div
         className="absolute inset-0 opacity-30"
         style={{
-          transform: `translateY(${scrollOffset}px) translateX(${mouseOffset.x}px) translateY(${mouseOffset.y}px)`,
+          transform: `translateY(${scrollOffset}px) translateX(${mouseOffset.x}px)`,
+          willChange: 'transform',
         }}
+        suppressHydrationWarning
       >
         {/* Floating geometric shapes */}
         <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-xl animate-pulse" />

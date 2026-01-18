@@ -77,6 +77,12 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
     ref
   ) => {
     const [currentTextIndex, setCurrentTextIndex] = useState<number>(0);
+    const [mounted, setMounted] = useState(false);
+
+    // Ensure component is mounted before rendering animations
+    useEffect(() => {
+      setMounted(true);
+    }, []);
 
     const splitIntoCharacters = (text: string): string[] => {
       if (typeof Intl !== "undefined" && "Segmenter" in Intl) {
@@ -202,6 +208,48 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
       return () => clearInterval(intervalId);
     }, [next, rotationInterval, auto]);
 
+    // Show placeholder during SSR to prevent hydration mismatch
+    if (!mounted) {
+      return (
+        <span
+          className={cn(
+            "flex flex-wrap whitespace-pre-wrap relative",
+            mainClassName
+          )}
+        >
+          <span className="sr-only">{texts[currentTextIndex]}</span>
+          <span
+            className={cn(
+              splitBy === "lines"
+                ? "flex flex-col w-full"
+                : "flex flex-wrap whitespace-pre-wrap relative"
+            )}
+            aria-hidden="true"
+          >
+            {elements.map((wordObj, wordIndex) => (
+              <span
+                key={wordIndex}
+                className={cn("inline-flex", splitLevelClassName)}
+              >
+                {wordObj.characters.map((char, charIndex) => (
+                  <span
+                    key={charIndex}
+                    className={cn("inline-block", elementLevelClassName)}
+                    style={{ opacity: 0 }}
+                  >
+                    {char}
+                  </span>
+                ))}
+                {wordObj.needsSpace && (
+                  <span className="whitespace-pre"> </span>
+                )}
+              </span>
+            ))}
+          </span>
+        </span>
+      );
+    }
+
     return (
 
       <motion.span
@@ -212,6 +260,7 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
         {...rest}
         layout
         transition={transition}
+        suppressHydrationWarning
       >
         <span className="sr-only">{texts[currentTextIndex]}</span>
         <AnimatePresence
@@ -227,6 +276,7 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
             )}
             layout
             aria-hidden="true"
+            suppressHydrationWarning
           >
             {elements.map((wordObj, wordIndex, array) => {
               const previousCharsCount = array
@@ -254,6 +304,7 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
                         ),
                       }}
                       className={cn("inline-block", elementLevelClassName)}
+                      suppressHydrationWarning
                     >
                       {char}
                     </motion.span>

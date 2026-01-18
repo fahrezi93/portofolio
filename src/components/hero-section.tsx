@@ -5,6 +5,7 @@ import StarBorder from "./StarBorder";
 import RotatingText from "./rotating-text";
 import { useLanguage } from "@/context/language-context";
 import { ParallaxBackground } from "./parallax-background";
+import dynamic from "next/dynamic";
 
 import { motion, LayoutGroup } from "motion/react";
 
@@ -22,6 +23,7 @@ export function HeroSection() {
     }
   };
 
+  // Use consistent transform values that won't cause hydration mismatch
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
@@ -48,6 +50,7 @@ export function HeroSection() {
                 <motion.p
                   className="font-headline text-lg text-primary md:text-xl"
                   variants={itemVariants}
+                  suppressHydrationWarning
                 >
                   {t.hero_subtitle}
                 </motion.p>
