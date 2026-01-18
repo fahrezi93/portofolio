@@ -134,7 +134,11 @@ export function Header() {
   useEffect(() => {
     if (!mounted || !headerRef.current) return;
 
+    const navElement = navContainerRef.current; // Store ref in variable for cleanup safety
+
     const ctx = gsap.context(() => {
+      const isMobile = window.innerWidth < 768; // Simple check for mobile
+
       // Initial state is set by CSS classes (floating pill)
       // We animate TO the full-width state
       gsap.to(headerRef.current, {
@@ -142,7 +146,7 @@ export function Header() {
           trigger: document.body,
           start: "top top",
           end: "+=150",
-          scrub: 1,
+          scrub: isMobile ? 0.1 : 1, // Tight scrub on mobile to prevent "floating/bouncing", smooth on desktop
         },
         width: "100%",
         maxWidth: "100%",
@@ -162,13 +166,13 @@ export function Header() {
       });
 
       // Animate nav gap
-      if (navContainerRef.current) {
-        gsap.to(navContainerRef.current, {
+      if (navElement) {
+        gsap.to(navElement, {
           scrollTrigger: {
             trigger: document.body,
             start: "top top",
             end: "+=150",
-            scrub: 1,
+            scrub: window.innerWidth < 768 ? 0.1 : 1,
           },
           columnGap: "32px", // Animate gap to 32px (container is flex)
           ease: "none"
@@ -181,7 +185,7 @@ export function Header() {
           trigger: document.body,
           start: "top top",
           end: "+=150",
-          scrub: 1,
+          scrub: window.innerWidth < 768 ? 0.1 : 1,
         },
         marginTop: "0px",
         ease: "none"
