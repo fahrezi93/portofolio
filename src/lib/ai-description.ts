@@ -51,23 +51,73 @@ export class AIDescriptionGenerator {
   }
 
   /**
-   * Check if AI service is available (via server-side check)
+   * Check if AI service is available (synchronous check via env variable)
+   * This checks if the API key is configured in environment
    */
-  static async isAvailable(): Promise<boolean> {
+  static isAvailable(): boolean {
+    // Check if the environment variable is set (for client-side)
+    // The actual API availability is checked server-side
+    return typeof process !== 'undefined' &&
+      typeof process.env !== 'undefined' &&
+      !!process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+  }
+
+  /**
+   * Test the AI API connection
+   */
+  static async testConnection(): Promise<{
+    success: boolean;
+    message: string;
+    details?: {
+      model?: string;
+      testResponse?: string;
+      error?: string;
+      suggestion?: string;
+    };
+  }> {
     try {
       const response = await fetch('/api/ai-description', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          context: { 
-            title: 'Test', 
-            category: 'development' 
-          } 
+        body: JSON.stringify({
+          action: 'test',
+          context: {
+            title: 'Connection Test',
+            category: 'development'
+          }
         }),
       });
-      return response.ok;
-    } catch {
-      return false;
+
+      const data = await response.json();
+
+      if (response.ok) {
+        return {
+          success: true,
+          message: 'API connection successful!',
+          details: {
+            model: data.model || 'Gemini',
+            testResponse: data.description?.substring(0, 100) || 'Test passed',
+          },
+        };
+      } else {
+        return {
+          success: false,
+          message: 'API connection failed',
+          details: {
+            error: data.error || 'Unknown error',
+            suggestion: 'Please check your GEMINI_API_KEY environment variable',
+          },
+        };
+      }
+    } catch (error) {
+      return {
+        success: false,
+        message: 'Failed to connect to API',
+        details: {
+          error: error instanceof Error ? error.message : 'Network error',
+          suggestion: 'Please check your network connection and API configuration',
+        },
+      };
     }
   }
 
@@ -106,7 +156,7 @@ export class AIDescriptionGenerator {
       const response = await fetch('/api/ai-description', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           context,
           currentDescription,
           action: 'improve'
