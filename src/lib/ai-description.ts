@@ -51,15 +51,15 @@ export class AIDescriptionGenerator {
   }
 
   /**
-   * Check if AI service is available (synchronous check via env variable)
-   * This checks if the API key is configured in environment
+   * Check if AI service is available
+   * Always returns true - the actual availability is checked server-side
+   * This keeps the API key secure (never exposed to browser)
    */
   static isAvailable(): boolean {
-    // Check if the environment variable is set (for client-side)
-    // The actual API availability is checked server-side
-    return typeof process !== 'undefined' &&
-      typeof process.env !== 'undefined' &&
-      !!process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+    // Always return true to show the AI feature UI
+    // The server-side API route will handle the actual API key check
+    // and return appropriate errors if not configured
+    return true;
   }
 
   /**
