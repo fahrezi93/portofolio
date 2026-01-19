@@ -135,24 +135,42 @@ export function Header() {
     if (!mounted || !headerRef.current) return;
 
     const navElement = navContainerRef.current; // Store ref in variable for cleanup safety
+    const header = headerRef.current;
 
     const ctx = gsap.context(() => {
       const isMobile = window.innerWidth < 768; // Simple check for mobile
 
-      // Initial state is set by CSS classes (floating pill)
-      // We animate TO the full-width state
-      gsap.to(headerRef.current, {
-        scrollTrigger: {
-          trigger: document.body,
-          start: "top top",
-          end: "+=150",
-          scrub: isMobile ? 0.1 : 1, // Tight scrub on mobile to prevent "floating/bouncing", smooth on desktop
-        },
+      // Kill any existing ScrollTriggers for this element
+      ScrollTrigger.getAll().forEach(st => st.kill());
+
+      // Set initial state explicitly (pill state)
+      gsap.set(header, {
+        width: "95%",
+        maxWidth: "46rem", // Reduced to make it more compact
+        borderRadius: "9999px",
+        marginTop: "16px",
+        top: "0px",
+        borderWidth: "1px",
+        backgroundColor: "rgba(3, 7, 18, 0.2)",
+        backdropFilter: "blur(12px)",
+        paddingLeft: "24px",
+        paddingRight: "24px",
+        height: "64px",
+      });
+
+      if (navElement) {
+        gsap.set(navElement, {
+          columnGap: "8px",
+        });
+      }
+
+      // Create ScrollTrigger animation with proper from/to values
+      const headerTween = gsap.to(header, {
         width: "100%",
         maxWidth: "100%",
         borderRadius: "0px",
         marginTop: "0px",
-        top: "0px", // Ensure it sticks to top
+        top: "0px",
         borderTopWidth: "0px",
         borderLeftWidth: "0px",
         borderRightWidth: "0px",
@@ -161,46 +179,57 @@ export function Header() {
         backdropFilter: "blur(12px)",
         paddingLeft: "24px",
         paddingRight: "24px",
-        height: "64px", // Ensure height stays consistent
-        ease: "none", // standard scrub ease
+        height: "64px",
+        ease: "none",
+        paused: true, // Important: start paused
+      });
+
+      // Create ScrollTrigger that controls the tween
+      ScrollTrigger.create({
+        trigger: document.body,
+        start: "top top",
+        end: "+=150",
+        scrub: isMobile ? 0.1 : 0.5,
+        animation: headerTween,
       });
 
       // Animate nav gap
       if (navElement) {
-        gsap.to(navElement, {
-          scrollTrigger: {
-            trigger: document.body,
-            start: "top top",
-            end: "+=150",
-            scrub: window.innerWidth < 768 ? 0.1 : 1,
-          },
-          columnGap: "32px", // Animate gap to 32px (container is flex)
-          ease: "none"
+        const navTween = gsap.to(navElement, {
+          columnGap: "32px",
+          ease: "none",
+          paused: true,
         });
-      }
 
-      // Animate the container margin separately if needed to remove the initial gap
-      gsap.to(headerRef.current, {
-        scrollTrigger: {
+        ScrollTrigger.create({
           trigger: document.body,
           start: "top top",
           end: "+=150",
-          scrub: window.innerWidth < 768 ? 0.1 : 1,
-        },
-        marginTop: "0px",
-        ease: "none"
-      });
+          scrub: isMobile ? 0.1 : 0.5,
+          animation: navTween,
+        });
+      }
 
     }, containerRef);
 
-    return () => ctx.revert();
+    // Handle resize
+    const handleResize = () => {
+      ScrollTrigger.refresh();
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      ctx.revert();
+    };
   }, [mounted]);
 
   // Don't render until mounted until hydration matches
   if (!mounted) {
     return (
       <header className="fixed top-0 z-30 w-full flex justify-center pt-4"> {/* Adjusted initial loading state */}
-        <div className="container h-16 max-w-5xl rounded-full border border-border/30 bg-background/20 backdrop-blur-lg" />
+        <div className="container h-16 max-w-[46rem] rounded-full border border-border/30 bg-background/20 backdrop-blur-lg" />
       </header>
     );
   }
@@ -209,7 +238,19 @@ export function Header() {
     <header ref={containerRef} className="fixed top-0 z-30 w-full flex justify-center pointer-events-none">
       <div
         ref={headerRef}
-        className="pointer-events-auto mt-4 px-6 flex h-16 w-[95%] max-w-5xl items-center justify-between rounded-full border border-border/30 bg-background/20 backdrop-blur-lg relative z-40 transition-shadow"
+        className="pointer-events-auto flex items-center justify-between border border-border/30 relative z-40"
+        style={{
+          // Initial styles - GSAP will animate these
+          marginTop: '16px',
+          width: '95%',
+          maxWidth: '46rem',
+          height: '64px',
+          borderRadius: '9999px',
+          backgroundColor: 'rgba(3, 7, 18, 0.2)',
+          backdropFilter: 'blur(12px)',
+          paddingLeft: '24px',
+          paddingRight: '24px',
+        }}
       >
         <div className="flex-1 flex justify-start">
           <GsapLogo />

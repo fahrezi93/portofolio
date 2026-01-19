@@ -8,6 +8,7 @@ import { Button } from "../ui/button";
 import { ExternalLink, Eye, Palette, Figma, Layers, ChevronDown } from "lucide-react";
 import { designProjects, DesignProject } from "@/data/design-projects";
 import { ImagePreviewModal } from "../ui/image-preview-modal";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 
 export function DesignSection() {
   const { t } = useLanguage();
@@ -135,18 +136,14 @@ export function DesignSection() {
           >
             {/* Project Image */}
             <div className="relative aspect-[4/3] bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 overflow-hidden">
-              <img
+              <OptimizedImage
                 src={project.image}
                 alt={project.title}
+                fill
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                  e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                }}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                priority={index < 4}
               />
-              <div className="absolute inset-0 hidden">
-                <Palette className="w-16 h-16 text-muted-foreground/30" />
-              </div>
             </div>
 
             {/* Project Info */}

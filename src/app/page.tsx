@@ -14,12 +14,85 @@ import { LanguageProvider } from "@/context/language-context";
 import ModernBackground from "@/components/modern-background";
 import AuroraBackground from "@/components/aurora-background";
 import { useLenis } from "@/hooks/use-lenis";
-import { useEffect, useState, lazy, Suspense } from "react";
+import { useEffect, useState, lazy, Suspense, useCallback } from "react";
 
 // Lazy load komponen berat
 const GitHubStats = lazy(() => import("@/components/github-stats").then(module => ({ default: module.GitHubStats })));
 const CommentsSection = lazy(() => import("@/components/comments-section").then(module => ({ default: module.CommentsSection })));
 import { FloatingDock } from "@/components/floating-dock";
+
+// Animated section wrapper that handles both scroll and hash navigation
+function AnimatedSection({ 
+  children, 
+  sectionId,
+  className = ""
+}: { 
+  children: React.ReactNode; 
+  sectionId: string;
+  className?: string;
+}) {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Check initial hash
+    const hash = window.location.hash.replace('#', '');
+    if (hash === sectionId || hash.startsWith(sectionId)) {
+      // Small delay to ensure DOM is ready
+      setTimeout(() => setIsVisible(true), 100);
+    }
+
+    // Check if already in viewport
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const rect = element.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.8 && rect.bottom > 0) {
+        setIsVisible(true);
+      }
+    }
+
+    // Listen for hash changes
+    const handleHashChange = () => {
+      const newHash = window.location.hash.replace('#', '');
+      if (newHash === sectionId || newHash.startsWith(sectionId)) {
+        setIsVisible(true);
+      }
+    };
+
+    // Intersection Observer
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.05, rootMargin: '100px 0px 0px 0px' }
+    );
+
+    if (element) {
+      observer.observe(element);
+    }
+
+    window.addEventListener('hashchange', handleHashChange);
+    
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+      observer.disconnect();
+    };
+  }, [sectionId]);
+
+  return (
+    <motion.div 
+      className={className}
+      initial={{ opacity: 0, y: 20 }}
+      animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      suppressHydrationWarning
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -38,7 +111,6 @@ export default function Home() {
 
     checkMobile();
     checkReducedMotion();
-    window.scrollTo(0, 0);
 
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -62,26 +134,26 @@ export default function Home() {
       <AuroraBackground />
       {/* Scroll Progress Indicator */}
       <ScrollProgress />
-      <div className="flex min-h-screen w-full flex-col relative">
+      <div className="flex min-h-screen w-full flex-col relative" style={{ position: 'relative' }}>
         <div className="relative z-10">
           <Header />
-          <main className="flex-1 pt-24">
-            <motion.div initial="hidden" animate="visible" variants={sectionVariants}>
+          <main className="flex-1 pt-24 relative" style={{ position: 'relative' }}>
+            <motion.div initial="hidden" animate="visible" variants={sectionVariants} suppressHydrationWarning>
               <HeroSection />
             </motion.div>
-            <div className="z-10 relative">
+            <AnimatedSection sectionId="portfolio" className="z-10 relative">
               <PortfolioTabs />
-            </div>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05, margin: "0px 0px -100px 0px" }} variants={sectionVariants}>
+            </AnimatedSection>
+            <AnimatedSection sectionId="about">
               <AboutSection />
-            </motion.div>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05, margin: "0px 0px -100px 0px" }} variants={sectionVariants}>
+            </AnimatedSection>
+            <AnimatedSection sectionId="experience">
               <ExperienceSection />
-            </motion.div>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05, margin: "0px 0px -100px 0px" }} variants={sectionVariants}>
+            </AnimatedSection>
+            <AnimatedSection sectionId="skills">
               <SkillsSection />
-            </motion.div>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05, margin: "0px 0px -100px 0px" }} variants={sectionVariants}>
+            </AnimatedSection>
+            <AnimatedSection sectionId="github">
               <Suspense fallback={
                 <div className="flex items-center justify-center py-20">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
@@ -89,8 +161,8 @@ export default function Home() {
               }>
                 <GitHubStats />
               </Suspense>
-            </motion.div>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05, margin: "0px 0px -100px 0px" }} variants={sectionVariants}>
+            </AnimatedSection>
+            <AnimatedSection sectionId="comments">
               <Suspense fallback={
                 <div className="flex items-center justify-center py-20">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
@@ -98,10 +170,10 @@ export default function Home() {
               }>
                 <CommentsSection />
               </Suspense>
-            </motion.div>
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05, margin: "0px 0px -100px 0px" }} variants={sectionVariants}>
+            </AnimatedSection>
+            <AnimatedSection sectionId="contact">
               <ContactSection />
-            </motion.div>
+            </AnimatedSection>
           </main>
           <Footer />
 

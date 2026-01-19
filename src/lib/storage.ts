@@ -131,30 +131,43 @@ export class StorageManager {
   }
   
   /**
-   * Get optimized image URL with transformations
+   * Get optimized image URL with query params
+   * Note: Supabase Image Transformations require Pro Plan
+   * For free tier, we use Next.js built-in image optimization
    */
   static getOptimizedUrl(url: string, options: {
     width?: number;
     height?: number;
     quality?: number;
   } = {}): string {
-    if (!url.includes(this.BUCKET_NAME)) {
-      return url; // Return original URL if not from our storage
-    }
-    
-    const { width = 800, height, quality = 80 } = options;
-    const params = new URLSearchParams();
-    
-    params.append('width', width.toString());
-    if (height) params.append('height', height.toString());
-    params.append('quality', quality.toString());
-    params.append('format', 'webp');
-    
-    return `${url}?${params.toString()}`;
+    // For free tier Supabase, just return the original URL
+    // Next.js will handle the optimization
+    return url;
+  }
+
+  /**
+   * Get multiple URLs for responsive images
+   * Uses original URL since Next.js handles optimization
+   */
+  static getResponsiveUrls(url: string): {
+    thumbnail: string;
+    small: string;
+    medium: string;
+    large: string;
+  } {
+    return {
+      thumbnail: url,
+      small: url,
+      medium: url,
+      large: url,
+    };
   }
 }
 
-// Auto-initialize bucket on import (in development and client-side only)
-if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
-  StorageManager.initializeBucket().catch(console.error);
-}
+// NOTE: Bucket initialization removed - bucket must be created manually in Supabase Dashboard
+// Creating buckets requires service role key which should never be exposed to client-side
+// Steps to create bucket manually:
+// 1. Go to Supabase Dashboard > Storage
+// 2. Click "New bucket"
+// 3. Name: "project-images", Public: true
+// 4. Add RLS policies for upload/delete if needed

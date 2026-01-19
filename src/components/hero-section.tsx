@@ -24,6 +24,8 @@ export function HeroSection() {
   };
 
   // Use consistent transform values that won't cause hydration mismatch
+  // Note: Using transform3d for GPU acceleration, but suppress hydration warnings
+  // as framer-motion may add translateZ(0) on client but not server
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
@@ -45,6 +47,7 @@ export function HeroSection() {
               variants={containerVariants}
               initial="hidden"
               animate="visible"
+              suppressHydrationWarning
             >
               <div className="space-y-4">
                 <motion.p

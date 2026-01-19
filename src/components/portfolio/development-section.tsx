@@ -10,6 +10,7 @@ import { developmentProjects, DevelopmentProject } from "@/data/development-proj
 import { ProjectsService } from "@/lib/projects-service";
 import { ImagePreviewModal } from "../ui/image-preview-modal";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 
 interface Project {
   id: string;
@@ -267,21 +268,17 @@ export function DevelopmentSection() {
               >
                 {/* Project Image */}
                 <div className="relative aspect-[4/3] bg-gradient-to-br from-green-100 to-blue-100 dark:from-green-900/20 dark:to-blue-900/20 overflow-hidden">
-                  <img
+                  <OptimizedImage
                     src={project.image}
                     alt={project.title}
+                    fill
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                      e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                    }}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                    priority={index < 4}
                   />
-                  <div className="absolute inset-0 hidden">
-                    <Code className="w-16 h-16 text-muted-foreground/30" />
-                  </div>
 
                   {/* Status & Featured Badges */}
-                  <div className="absolute top-3 left-3 flex gap-2">
+                  <div className="absolute top-3 left-3 flex gap-2 z-10">
                     <div className={`text-xs px-2 py-1 rounded-full ${getStatusColor(project.status)}`}>
                       {project.status}
                     </div>

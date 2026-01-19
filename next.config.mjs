@@ -4,11 +4,15 @@ const nextConfig = {
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'placehold.co' },
+      { protocol: 'https', hostname: 'njenjctrbcqpgeosoiob.supabase.co' },
+      // Supabase storage uses this pattern
+      { protocol: 'https', hostname: '**.supabase.co' },
+      { protocol: 'https', hostname: '**.supabase.in' },
     ],
     // Optimasi gambar untuk performa
-    formats: ['image/webp', 'image/avif'],
-    minimumCacheTTL: 60,
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    formats: ['image/avif', 'image/webp'], // AVIF first for better compression
+    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days cache
+    deviceSizes: [320, 480, 640, 750, 828, 1080, 1200],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
   transpilePackages: ['three'],

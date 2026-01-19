@@ -73,6 +73,10 @@ export default function RootLayout({
         <meta name="color-scheme" content="dark light" />
         <meta name="google-site-verification" content="_mZK8Y9n3es-OvV7qgyAu4k7mWtxKJDJBeKQ9FOarQ0" />
 
+        {/* Preconnect to Supabase for faster image loading */}
+        <link rel="preconnect" href="https://njenjctrbcqpgeosoiob.supabase.co" />
+        <link rel="dns-prefetch" href="https://njenjctrbcqpgeosoiob.supabase.co" />
+
         {/* Google Tag Manager */}
         <script
           dangerouslySetInnerHTML={{
