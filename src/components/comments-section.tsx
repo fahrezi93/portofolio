@@ -29,7 +29,7 @@ export function CommentsSection() {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       // Check if environment variables exist
       if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
         console.warn('⚠️ Supabase credentials not found in environment');
@@ -37,7 +37,7 @@ export function CommentsSection() {
         setComments([]); // Start with empty array, comments will be added locally
         return;
       }
-      
+
       // Test connection
       const { data, error } = await supabase
         .from('comments')
@@ -48,8 +48,8 @@ export function CommentsSection() {
         console.error('❌ Supabase error:', error);
         throw error;
       }
-      
-      
+
+
       // Ensure all comments have required fields with defaults and filter out hidden comments
       const normalizedComments = (data || [])
         .map(comment => {
@@ -71,11 +71,11 @@ export function CommentsSection() {
           if (!a.pinned && b.pinned) return 1;
           return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         });
-      
-      
+
+
       setComments(normalizedComments);
       setIsSupabaseConnected(true);
-      
+
     } catch (err) {
       console.error('❌ Error in fetchComments:', err);
       setError('Supabase connection failed - comments will be stored locally');
@@ -105,7 +105,7 @@ export function CommentsSection() {
         if (newComment.profilePhoto) {
           const fileExt = newComment.profilePhoto.name.split('.').pop();
           const fileName = `${Date.now()}.${fileExt}`;
-          
+
           const { data: uploadData, error: uploadError } = await supabase.storage
             .from('profile-photos')
             .upload(fileName, newComment.profilePhoto);
@@ -116,7 +116,7 @@ export function CommentsSection() {
           const { data: { publicUrl } } = supabase.storage
             .from('profile-photos')
             .getPublicUrl(fileName);
-          
+
           profilePhotoUrl = publicUrl;
         }
 
@@ -147,17 +147,17 @@ export function CommentsSection() {
           pinned: data.pinned || false,
           hidden: data.hidden || false
         };
-        
+
 
         // Force re-render by creating new array reference
         setComments(prevComments => {
           const newCommentsArray = [newCommentData, ...prevComments];
-          
+
           // Return completely new array to force React re-render
           return [...newCommentsArray];
         });
 
-        
+
         // Reset form immediately after successful submission
         setNewComment({ name: '', message: '', profilePhoto: null });
         setError(null);
@@ -180,14 +180,14 @@ export function CommentsSection() {
           const newCommentsArray = [newCommentData, ...prevComments];
           return [...newCommentsArray]; // Force new array reference
         });
-        
+
         // Reset form
         setNewComment({ name: '', message: '', profilePhoto: null });
       }
-      
+
     } catch (err) {
       console.error('❌ Error submitting comment:', err);
-      
+
       // Fallback to local state if Supabase fails
       const newCommentData: Comment = {
         id: Date.now().toString(),
@@ -205,7 +205,7 @@ export function CommentsSection() {
         const newCommentsArray = [newCommentData, ...prevComments];
         return [...newCommentsArray]; // Force new array reference
       });
-      
+
       setError('Comment added locally - Supabase connection failed');
       setNewComment({ name: '', message: '', profilePhoto: null });
     } finally {
@@ -243,7 +243,7 @@ export function CommentsSection() {
     const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
     const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
     const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-    
+
     if (diffInMinutes < 1) {
       return 'Just now';
     } else if (diffInMinutes < 60) {
@@ -253,10 +253,10 @@ export function CommentsSection() {
     } else if (diffInDays < 7) {
       return `${diffInDays}d ago`;
     } else {
-      return date.toLocaleDateString('en-US', { 
-        month: 'short', 
-        day: 'numeric', 
-        year: 'numeric' 
+      return date.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
       });
     }
   };
@@ -283,17 +283,17 @@ export function CommentsSection() {
       }
 
       // Update local state
-      setComments(prev => prev.map(c => 
+      setComments(prev => prev.map(c =>
         c.id === commentId ? { ...c, likes: c.likes + 1 } : c
       ));
 
       // Mark this comment as liked by user
       setLikedComments(prev => new Set([...prev, commentId]));
-      
+
     } catch (err) {
       console.error('Error liking comment:', err);
       // Still update local state even if Supabase fails
-      setComments(prev => prev.map(c => 
+      setComments(prev => prev.map(c =>
         c.id === commentId ? { ...c, likes: c.likes + 1 } : c
       ));
       // Mark as liked even if Supabase fails
@@ -316,263 +316,196 @@ export function CommentsSection() {
     visible: { opacity: 1, y: 0 }
   };
 
+
+
   return (
-    <section className="w-full py-16 md:py-24 bg-slate-950/20">
-      <div className="container mx-auto max-w-4xl px-4 md:px-6">
+    <section id="comments" className="w-full py-20 relative z-20 overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full bg-blue-500/5 blur-[100px] -z-10 rounded-full pointer-events-none" />
+
+      <div className="container mx-auto max-w-3xl px-4 md:px-6">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
           variants={containerVariants}
         >
-          {/* Header */}
-          <motion.div variants={itemVariants} className="text-center mb-12">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <MessageCircle className="w-8 h-8 text-primary" />
-              <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl">
-                {t.comments_title} ({comments.length})
-              </h2>
-            </div>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          {/* Minimalist Header */}
+          <motion.div variants={itemVariants} className="mb-16 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60 mb-3">
+              Thoughts & Feedback
+            </h2>
+            <p className="text-muted-foreground/80">
               {t.comments_subtitle}
             </p>
           </motion.div>
 
-          {/* Comment Form */}
-          <motion.div variants={itemVariants} className="bg-card rounded-xl p-6 shadow-lg mb-8">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Name Input */}
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  {t.comments_form_name} <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  value={newComment.name}
-                  onChange={(e) => setNewComment(prev => ({ ...prev, name: e.target.value }))}
-                  placeholder="Enter your name"
-                  className="w-full px-4 py-3 bg-muted rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors"
-                  required
-                />
-              </div>
+          {/* Minimalist Form */}
+          <motion.div variants={itemVariants} className="mb-16">
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <div className="grid md:grid-cols-2 gap-8">
+                {/* Name Input */}
+                <div className="relative group">
+                  <input
+                    type="text"
+                    value={newComment.name}
+                    onChange={(e) => setNewComment(prev => ({ ...prev, name: e.target.value }))}
+                    placeholder=" "
+                    className="peer w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-lg focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all placeholder-transparent"
+                    required
+                  />
+                  <label className="absolute left-4 top-3 text-muted-foreground text-base transition-all peer-focus:-top-2.5 peer-focus:left-2 peer-focus:text-xs peer-focus:bg-background peer-focus:px-2 peer-focus:text-blue-500 peer-not-placeholder-shown:-top-2.5 peer-not-placeholder-shown:left-2 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:bg-background peer-not-placeholder-shown:px-2 peer-not-placeholder-shown:text-muted-foreground pointer-events-none">
+                    Your Name
+                  </label>
+                </div>
 
-              {/* Message Input */}
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  {t.comments_form_message} <span className="text-red-500">*</span>
-                </label>
-                <textarea
-                  value={newComment.message}
-                  onChange={(e) => setNewComment(prev => ({ ...prev, message: e.target.value }))}
-                  placeholder="Write your message here..."
-                  rows={4}
-                  className="w-full px-4 py-3 bg-muted rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors resize-none"
-                  required
-                />
-              </div>
-
-              {/* Profile Photo Upload */}
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  {t.comments_form_photo} <span className="text-muted-foreground">{t.comments_form_photo_optional}</span>
-                </label>
-                
-                {/* Preview Area */}
-                {newComment.profilePhoto && (
-                  <div className="mb-3 p-3 bg-muted/50 rounded-lg border border-border">
-                    <div className="flex items-center gap-3">
-                      <div className="flex-shrink-0">
-                        <img 
-                          src={URL.createObjectURL(newComment.profilePhoto)} 
-                          alt="Preview"
-                          className="w-12 h-12 rounded-full object-cover border-2 border-primary/20"
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-foreground truncate">
-                          {newComment.profilePhoto.name}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {(newComment.profilePhoto.size / 1024 / 1024).toFixed(2)} MB
-                        </p>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => setNewComment(prev => ({ ...prev, profilePhoto: null }))}
-                        className="flex-shrink-0 text-red-500 hover:text-red-700 transition-colors"
-                        title="Remove photo"
-                      >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                )}
-                
-                {/* Upload Button */}
+                {/* Profile Photo - Simplified */}
                 <div className="relative">
                   <input
                     type="file"
                     accept="image/*"
                     onChange={handleFileChange}
                     className="hidden"
-                    id="profile-photo"
+                    id="profile-photo-minimal"
                   />
                   <label
-                    htmlFor="profile-photo"
-                    className={`flex items-center justify-center gap-2 w-full py-3 px-4 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
-                      newComment.profilePhoto 
-                        ? 'border-green-500/30 bg-green-50/10 hover:border-green-500/50' 
-                        : 'border-primary/30 hover:border-primary/50'
-                    }`}
+                    htmlFor="profile-photo-minimal"
+                    className="flex items-center gap-4 cursor-pointer group opacity-70 hover:opacity-100 transition-opacity mt-2"
                   >
-                    <Upload className={`w-5 h-5 ${newComment.profilePhoto ? 'text-green-500' : 'text-primary'}`} />
-                    <span className={newComment.profilePhoto ? 'text-green-500' : 'text-primary'}>
-                      {newComment.profilePhoto ? 'Change Photo' : t.comments_form_photo_choose}
-                    </span>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${newComment.profilePhoto ? 'bg-green-500/20 text-green-500' : 'bg-white/5 text-white/50 group-hover:bg-white/10'
+                      }`}>
+                      {newComment.profilePhoto ? <User className="w-5 h-5" /> : <Upload className="w-5 h-5" />}
+                    </div>
+                    <div className="text-sm">
+                      <span className={newComment.profilePhoto ? 'text-green-500 font-medium' : 'text-muted-foreground'}>
+                        {newComment.profilePhoto ? newComment.profilePhoto.name : 'Upload photo (opt)'}
+                      </span>
+                    </div>
                   </label>
-                  <p className="text-xs text-muted-foreground mt-1">{t.comments_form_photo_limit}</p>
                 </div>
               </div>
 
+              {/* Message Input */}
+              <div className="relative group">
+                <textarea
+                  value={newComment.message}
+                  onChange={(e) => setNewComment(prev => ({ ...prev, message: e.target.value }))}
+                  placeholder=" "
+                  rows={3}
+                  className="peer w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-lg focus:outline-none focus:border-blue-500/50 focus:bg-white/10 transition-all placeholder-transparent resize-none min-h-[120px]"
+                  required
+                />
+                <label className="absolute left-4 top-3 text-muted-foreground text-base transition-all peer-focus:-top-2.5 peer-focus:left-2 peer-focus:text-xs peer-focus:bg-background peer-focus:px-2 peer-focus:text-blue-500 peer-not-placeholder-shown:-top-2.5 peer-not-placeholder-shown:left-2 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:bg-background peer-not-placeholder-shown:px-2 peer-not-placeholder-shown:text-muted-foreground pointer-events-none">
+                  Write a message to Fahrezi...
+                </label>
+              </div>
+
               {/* Submit Button */}
-              <Button
-                type="submit"
-                disabled={isSubmitting || !newComment.name.trim() || !newComment.message.trim()}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
-              >
-                {isSubmitting ? (
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    {t.comments_form_posting}
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <Send className="w-4 h-4" />
-                    {t.comments_form_submit}
-                  </div>
-                )}
-              </Button>
+              <div className="flex justify-end">
+                <Button
+                  type="submit"
+                  disabled={isSubmitting || !newComment.name.trim() || !newComment.message.trim()}
+                  className="bg-white/10 hover:bg-white/20 text-white rounded-full px-8 py-6 transition-all"
+                >
+                  {isSubmitting ? (
+                    <RefreshCw className="w-5 h-5 animate-spin mr-2" />
+                  ) : (
+                    <Send className="w-5 h-5 mr-2" />
+                  )}
+                  {isSubmitting ? 'Posting...' : 'Send Message'}
+                </Button>
+              </div>
             </form>
           </motion.div>
 
-          {/* Loading State */}
+          {/* Loading & Error States */}
           {isLoading && (
-            <motion.div variants={itemVariants} className="text-center py-12">
-              <RefreshCw className="w-8 h-8 mx-auto text-primary animate-spin mb-4" />
-              <p className="text-muted-foreground">Loading comments...</p>
-            </motion.div>
+            <div className="flex flex-col items-center justify-center py-12 text-muted-foreground/50">
+              <div className="w-1 h-12 bg-gradient-to-b from-transparent via-blue-500 to-transparent animate-pulse mb-4"></div>
+              <p className="text-sm tracking-widest uppercase">Loading Comments</p>
+            </div>
           )}
 
-          {/* Error State */}
           {error && (
-            <motion.div variants={itemVariants} className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-8">
-              <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={fetchComments}
-                className="mt-2"
-              >
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Retry
-              </Button>
-            </motion.div>
+            <div className="text-center text-red-400 bg-red-950/20 py-4 rounded-lg mb-8 border border-red-900/50">
+              {error}
+            </div>
           )}
 
-          {/* Comments List */}
+          {/* Elegant Comments List */}
           {!isLoading && (
-            <>
+            <div className="space-y-8">
               {comments.length === 0 ? (
-                <motion.div variants={itemVariants} className="text-center py-12">
-                  <MessageCircle className="w-16 h-16 mx-auto text-muted-foreground/30 mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">{t.comments_empty_title}</h3>
-                  <p className="text-muted-foreground">
-                    {t.comments_empty_subtitle}
-                  </p>
-                </motion.div>
+                <div className="text-center py-12 opacity-50">
+                  <p>No comments yet. Be the first to share your thoughts.</p>
+                </div>
               ) : (
-                <motion.div variants={itemVariants} className="space-y-4">
-                  {comments.map((comment, index) => {
-                    // Safety check - skip if essential fields are missing OR empty
-                    if (!comment.name || !comment.message || 
-                        comment.name.trim().length === 0 || 
-                        comment.message.trim().length === 0) {
-                      return null;
-                    }
-                    
-                    return (
+                comments.map((comment, index) => {
+                  if (!comment.name || !comment.message || comment.name.trim().length === 0 || comment.message.trim().length === 0) return null;
+
+                  return (
                     <motion.div
                       key={comment.id}
-                      variants={itemVariants}
-                      whileHover={{ scale: 1.01 }}
-                      className="bg-card rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300"
                       initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.1 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.05 }}
+                      className="group relative pl-8 border-l border-white/10 hover:border-blue-500/50 transition-colors pb-8 last:pb-0"
                     >
-                      <div className="flex items-start gap-4">
+                      {/* Timeline Dot */}
+                      <div className="absolute -left-[5px] top-0 w-[9px] h-[9px] rounded-full bg-slate-800 border-2 border-slate-600 group-hover:border-blue-500 group-hover:bg-blue-500 transition-all" />
+
+                      <div className="flex items-start gap-4 mb-2">
                         {/* Avatar */}
                         <div className="flex-shrink-0">
                           {comment.profile_photo_url ? (
-                            <img 
-                              src={comment.profile_photo_url} 
+                            <img
+                              src={comment.profile_photo_url}
                               alt={comment.name}
-                              className="w-12 h-12 rounded-full object-cover"
+                              className="w-10 h-10 rounded-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                             />
                           ) : (
-                            <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-primary/40 rounded-full flex items-center justify-center">
-                              <User className="w-6 h-6 text-primary" />
+                            <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/30">
+                              <span className="text-sm font-bold">{comment.name.charAt(0).toUpperCase()}</span>
                             </div>
                           )}
                         </div>
 
-                        {/* Content */}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center gap-2">
-                              <h4 className="font-semibold text-white">{comment.name}</h4>
-                              {comment.pinned && (
-                                <div className="flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 text-xs rounded-full">
-                                  <Pin className="w-3 h-3" />
-                                  <span>Pinned</span>
-                                </div>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-2 text-sm text-gray-400">
-                              <Calendar className="w-4 h-4" />
-                              <span>{formatTimeAgo(comment.created_at)}</span>
-                            </div>
+                        <div className="flex-1">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 mb-1">
+                            <h4 className="font-medium text-white group-hover:text-blue-400 transition-colors">
+                              {comment.name}
+                            </h4>
+                            <span className="text-xs text-muted-foreground/50">
+                              {formatTimeAgo(comment.created_at)}
+                            </span>
+                            {comment.pinned && (
+                              <span className="text-[10px] uppercase tracking-wider bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-full">
+                                Pinned
+                              </span>
+                            )}
                           </div>
-                          
-                          <p className="text-gray-300 mb-3 leading-relaxed">
+
+                          <p className="text-gray-400 leading-relaxed text-sm md:text-base font-light">
                             {comment.message}
                           </p>
 
-                          {/* Actions */}
-                          <div className="flex items-center gap-4">
-                            <button 
+                          <div className="mt-3 flex items-center gap-4 opacity-50 group-hover:opacity-100 transition-opacity">
+                            <button
                               onClick={() => handleLike(comment.id)}
                               disabled={likedComments.has(comment.id)}
-                              className={`flex items-center gap-1 text-sm transition-colors ${
-                                likedComments.has(comment.id)
-                                  ? 'text-red-500 cursor-not-allowed'
-                                  : 'text-gray-400 hover:text-red-500'
-                              }`}
+                              className={`flex items-center gap-1.5 text-xs hover:text-red-400 transition-colors ${likedComments.has(comment.id) ? 'text-red-400' : 'text-gray-500'}`}
                             >
-                              <Heart className={`w-4 h-4 ${likedComments.has(comment.id) ? 'fill-current' : ''}`} />
+                              <Heart className={`w-3.5 h-3.5 ${likedComments.has(comment.id) ? 'fill-current' : ''}`} />
                               <span>{comment.likes || 0}</span>
                             </button>
                           </div>
                         </div>
                       </div>
                     </motion.div>
-                    );
-                  })}
-                </motion.div>
+                  );
+                })
               )}
-            </>
+            </div>
           )}
         </motion.div>
       </div>

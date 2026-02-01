@@ -39,14 +39,14 @@ export function GitHubStats() {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     const checkReducedMotion = () => {
       setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     };
 
     checkMobile();
     checkReducedMotion();
-    
+
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
@@ -55,18 +55,13 @@ export function GitHubStats() {
     const fetchGitHubData = async () => {
       try {
         setLoading(true);
-        
-        // Fetch user stats
-        const userResponse = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}`);
-        if (!userResponse.ok) throw new Error('Failed to fetch user data');
-        const userData = await userResponse.json();
-        setStats(userData);
 
-        // Fetch repositories
-        const reposResponse = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=stars&per_page=6`);
-        if (!reposResponse.ok) throw new Error('Failed to fetch repositories');
-        const reposData = await reposResponse.json();
-        setRepos(reposData);
+        const response = await fetch('/api/github');
+        if (!response.ok) throw new Error('Failed to fetch GitHub data');
+
+        const data = await response.json();
+        setStats(data.user);
+        setRepos(data.repos);
 
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
@@ -98,10 +93,10 @@ export function GitHubStats() {
   };
 
   const itemVariants = {
-    hidden: { 
+    hidden: {
       opacity: reducedMotion ? 1 : 0
     },
-    visible: { 
+    visible: {
       opacity: 1,
       transition: {
         duration: reducedMotion ? 0 : (isMobile ? 0.4 : 0.6),
@@ -111,10 +106,10 @@ export function GitHubStats() {
   };
 
   const statsCardVariants = {
-    hidden: { 
+    hidden: {
       opacity: reducedMotion ? 1 : 0
     },
-    visible: { 
+    visible: {
       opacity: 1,
       transition: {
         duration: reducedMotion ? 0 : (isMobile ? 0.4 : 0.6),
@@ -124,13 +119,13 @@ export function GitHubStats() {
   };
 
   const repoCardVariants = {
-    hidden: { 
-      opacity: reducedMotion ? 1 : 0, 
+    hidden: {
+      opacity: reducedMotion ? 1 : 0,
       y: reducedMotion ? 0 : (isMobile ? 15 : 25),
       rotateX: reducedMotion ? 0 : (isMobile ? -8 : -15)
     },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       rotateX: 0,
       transition: {
@@ -145,7 +140,7 @@ export function GitHubStats() {
       <section className="w-full py-16 md:py-24">
         <div className="container mx-auto max-w-6xl px-4 md:px-6">
           <div className="text-center mb-12">
-            <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl mb-4">
+            <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
               {t.github_title}
             </h2>
             <div className="flex justify-center items-center space-x-2">
@@ -163,7 +158,7 @@ export function GitHubStats() {
       <section className="w-full py-16 md:py-24">
         <div className="container mx-auto max-w-6xl px-4 md:px-6">
           <div className="text-center">
-            <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl mb-4">
+            <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
               {t.github_title}
             </h2>
             <p className="text-muted-foreground">{t.github_error}</p>
@@ -174,166 +169,107 @@ export function GitHubStats() {
   }
 
   return (
-    <section className="w-full py-16 md:py-24 bg-slate-950/20">
+    <section id="github" className="w-full py-16 md:py-24 bg-slate-950/20 relative z-20 text-white">
       <div className="container mx-auto max-w-6xl px-4 md:px-6">
         <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={containerVariants}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
         >
           {/* Header */}
           <div className="text-center mb-12">
-            <motion.h2 
-              variants={itemVariants}
-              className="font-headline text-3xl font-bold tracking-tight sm:text-4xl mb-4"
-            >
+            <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
               {t.github_title}
-            </motion.h2>
-            <motion.p 
-              variants={itemVariants}
-              className="text-lg text-muted-foreground max-w-2xl mx-auto"
-            >
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               {t.github_subtitle}
-            </motion.p>
+            </p>
           </div>
 
           {/* Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-            <motion.div 
-              variants={statsCardVariants}
-              whileHover={{ 
-                scale: 1.01,
-                transition: { duration: 0.15 }
-              }}
-              className="bg-card rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow"
-            >
+            <div className="bg-card rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow border border-border">
               <Code2 className="w-8 h-8 mx-auto mb-3 text-blue-500" />
-              <div className="text-2xl font-bold">
+              <div className="text-2xl font-bold text-foreground">
                 {stats?.public_repos || 0}
               </div>
               <div className="text-sm text-muted-foreground">{t.github_repos}</div>
-            </motion.div>
-            
-            <motion.div 
-              variants={statsCardVariants}
-              whileHover={{ 
-                scale: 1.01,
-                transition: { duration: 0.15 }
-              }}
-              className="bg-card rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow"
-            >
+            </div>
+
+            <div className="bg-card rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow border border-border">
               <Users className="w-8 h-8 mx-auto mb-3 text-green-500" />
-              <div className="text-2xl font-bold">
+              <div className="text-2xl font-bold text-foreground">
                 {stats?.followers || 0}
               </div>
               <div className="text-sm text-muted-foreground">{t.github_followers}</div>
-            </motion.div>
-            
-            <motion.div 
-              variants={statsCardVariants}
-              whileHover={{ 
-                scale: 1.01,
-                transition: { duration: 0.15 }
-              }}
-              className="bg-card rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow"
-            >
+            </div>
+
+            <div className="bg-card rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow border border-border">
               <Star className="w-8 h-8 mx-auto mb-3 text-yellow-500" />
-              <div className="text-2xl font-bold">
+              <div className="text-2xl font-bold text-foreground">
                 {repos.reduce((total, repo) => total + repo.stargazers_count, 0)}
               </div>
               <div className="text-sm text-muted-foreground">{t.github_stars}</div>
-            </motion.div>
-            
-            <motion.div 
-              variants={statsCardVariants}
-              whileHover={{ 
-                scale: 1.01,
-                transition: { duration: 0.15 }
-              }}
-              className="bg-card rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow"
-            >
+            </div>
+
+            <div className="bg-card rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow border border-border">
               <Calendar className="w-8 h-8 mx-auto mb-3 text-purple-500" />
-              <div className="text-2xl font-bold">
+              <div className="text-2xl font-bold text-foreground">
                 {getYearsActive()}+
               </div>
               <div className="text-sm text-muted-foreground">{t.github_years}</div>
-            </motion.div>
+            </div>
           </div>
 
           {/* Popular Repositories */}
-          <motion.div variants={itemVariants}>
-            <h3 className="text-2xl font-bold mb-6 text-center">{t.github_popular_repos}</h3>
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start"
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-            >
+          <div>
+            <h3 className="text-2xl font-bold mb-6 text-center text-foreground">{t.github_popular_repos}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
               {repos.slice(0, 6).map((repo, index) => (
-                <motion.a
+                <a
                   key={repo.name}
                   href={repo.html_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  variants={statsCardVariants}
-                  whileHover={{ 
-                    scale: 1.01,
-                    transition: { duration: 0.15 }
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                  className="bg-card rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-border hover:border-primary/50 h-full flex flex-col"
+                  className="bg-card rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-border hover:border-primary/50 h-full flex flex-col group"
                   style={{ minHeight: '200px' }}
                 >
                   <div className="flex items-start justify-between mb-3">
                     <GitBranch className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-1" />
                     <div className="flex items-center space-x-1 text-sm text-muted-foreground">
-                      <Star className="w-4 h-4" />
+                      <Star className="w-4 h-4 text-yellow-500" />
                       <span>{repo.stargazers_count}</span>
                     </div>
                   </div>
-                  
-                  <h4 className="font-semibold text-lg mb-2 truncate">{repo.name}</h4>
+
+                  <h4 className="font-semibold text-lg mb-2 truncate text-foreground group-hover:text-primary transition-colors">{repo.name}</h4>
                   <p className="text-sm text-muted-foreground mb-3 line-clamp-2 flex-1">
                     {repo.description || 'No description available'}
                   </p>
-                  
+
                   {repo.language && (
                     <div className="flex items-center space-x-2 mt-auto">
                       <div className="w-3 h-3 rounded-full bg-blue-500"></div>
                       <span className="text-xs text-muted-foreground">{repo.language}</span>
                     </div>
                   )}
-                </motion.a>
+                </a>
               ))}
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
           {/* GitHub Profile Link */}
-          <motion.div variants={itemVariants} className="text-center mt-12">
-            <motion.a
+          <div className="text-center mt-12">
+            <a
               href={`https://github.com/${GITHUB_USERNAME}`}
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ 
-                scale: 1.05,
-                y: -2,
-                boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
-                transition: { duration: 0.2 }
-              }}
-              whileTap={{ scale: 0.95 }}
               className="inline-flex items-center space-x-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-all duration-300 shadow-lg"
             >
-              <motion.div
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.5 }}
-              >
-                <Github className="w-5 h-5" />
-              </motion.div>
+              <Github className="w-5 h-5" />
               <span>{t.github_view_profile}</span>
-            </motion.a>
-          </motion.div>
+            </a>
+          </div>
         </motion.div>
       </div>
     </section>

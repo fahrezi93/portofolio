@@ -48,19 +48,19 @@ export function ContactSection() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    
-    const serviceId = 'fahrezi_email'; 
+
+    const serviceId = 'fahrezi_email';
     const templateId = 'template_w86l3fj';
     const publicKey = 'KhbqXgjDEduLsAKJW';
-    
+
     const templateParams = {
       from_name: values.name,
       from_email: values.email,
-      message: values.message,   
-      reply_to: values.email,      
+      message: values.message,
+      reply_to: values.email,
       to_name: 'Fahrezi'
     };
-    
+
     emailjs.send(serviceId, templateId, templateParams, publicKey)
       .then((response) => {
         console.log('SUCCESS!', response.status, response.text);
@@ -87,12 +87,12 @@ export function ContactSection() {
   return (
     <section id="contact" className="w-full py-16 md:py-24 lg:py-32">
       <div className="container mx-auto max-w-2xl px-4 md:px-6 text-center">
-          <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl mb-4">
-            {t.contact_title}
-          </h2>
-          <p className="text-lg text-muted-foreground mb-12">
-            {t.contact_subtitle}
-          </p>
+        <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
+          {t.contact_title}
+        </h2>
+        <p className="text-lg text-muted-foreground mb-12">
+          {t.contact_subtitle}
+        </p>
 
         <Form {...form}>
           <form
@@ -154,10 +154,10 @@ export function ContactSection() {
               )}
             />
             <div className="text-center">
-                <StarBorder type="submit" disabled={isSubmitting}>
-                    <Send className="mr-2 h-5 w-5" />
-                    {isSubmitting ? "Mengirim..." : t.contact_form_submit}
-                </StarBorder>
+              <StarBorder type="submit" disabled={isSubmitting}>
+                <Send className="mr-2 h-5 w-5" />
+                {isSubmitting ? "Mengirim..." : t.contact_form_submit}
+              </StarBorder>
             </div>
           </form>
         </Form>

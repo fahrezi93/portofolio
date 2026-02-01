@@ -140,7 +140,7 @@ export function AboutSection() {
                 <span className="text-primary font-medium tracking-wider text-xs md:text-sm uppercase">Who I Am</span>
               </div>
 
-              <h2 className="font-headline text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight mb-4 md:mb-6">
+              <h2 className="font-headline text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight mb-4 md:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
                 {t.about_title}
               </h2>
 

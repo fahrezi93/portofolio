@@ -21,14 +21,14 @@ export function PortfolioTabs() {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     const checkReducedMotion = () => {
       setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     };
 
     checkMobile();
     checkReducedMotion();
-    
+
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
@@ -92,8 +92,8 @@ export function PortfolioTabs() {
 
   const headerVariants = {
     hidden: { opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : (isMobile ? 15 : 30) },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: {
         duration: reducedMotion ? 0 : (isMobile ? 0.4 : 0.6),
@@ -104,8 +104,8 @@ export function PortfolioTabs() {
 
   const tabsVariants = {
     hidden: { opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : (isMobile ? 10 : 20) },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: {
         duration: reducedMotion ? 0 : (isMobile ? 0.3 : 0.5),
@@ -116,8 +116,8 @@ export function PortfolioTabs() {
 
   const contentVariants = {
     hidden: { opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : (isMobile ? 10 : 20) },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: {
         duration: reducedMotion ? 0 : (isMobile ? 0.3 : 0.5),
@@ -138,7 +138,7 @@ export function PortfolioTabs() {
         >
           {/* Header */}
           <motion.div variants={headerVariants} className="text-center mb-12">
-            <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl mb-4">
+            <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
               {t.portfolio_title}
             </h2>
             <p className="max-w-2xl mx-auto text-lg text-muted-foreground">
@@ -148,73 +148,70 @@ export function PortfolioTabs() {
 
           {/* Tab Navigation - Mobile Optimized */}
           <motion.div variants={tabsVariants} className="mb-16 max-w-4xl mx-auto">
-          {/* Mobile: Compact segmented control */}
-          <div className="md:hidden">
-            <div className="bg-muted p-1 rounded-lg mx-4">
-              <div className="flex">
-                {tabs.map((tab) => {
-                  const IconComponent = tab.icon;
-                  const isActive = activeTab === tab.id;
-                  
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveTab(tab.id)}
-                      className={`flex-1 flex flex-col items-center gap-1 py-2 px-2 rounded-md transition-all duration-200 ${
-                        isActive 
-                          ? "bg-background text-foreground shadow-sm" 
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      <IconComponent className="w-5 h-5" />
-                      <span className="text-xs font-medium">{tab.label}</span>
-                    </button>
-                  );
-                })}
+            {/* Mobile: Compact segmented control */}
+            <div className="md:hidden">
+              <div className="bg-muted p-1 rounded-lg mx-4">
+                <div className="flex">
+                  {tabs.map((tab) => {
+                    const IconComponent = tab.icon;
+                    const isActive = activeTab === tab.id;
+
+                    return (
+                      <button
+                        key={tab.id}
+                        onClick={() => setActiveTab(tab.id)}
+                        className={`flex-1 flex flex-col items-center gap-1 py-2 px-2 rounded-md transition-all duration-200 ${isActive
+                            ? "bg-background text-foreground shadow-sm"
+                            : "text-muted-foreground hover:text-foreground"
+                          }`}
+                      >
+                        <IconComponent className="w-5 h-5" />
+                        <span className="text-xs font-medium">{tab.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Desktop: Full cards */}
-          <div className="hidden md:flex flex-wrap justify-center gap-6">
-            {tabs.map((tab) => {
-              const IconComponent = tab.icon;
-              const isActive = activeTab === tab.id;
-              
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`group relative rounded-full transition-all duration-300 transform hover:scale-105 min-w-[280px] ${
-                    isActive 
-                      ? "scale-105 shadow-lg" 
-                      : "hover:shadow-md"
-                  }`}
-                >
-                  <div className={`relative px-6 py-4 rounded-full border transition-all duration-300 ${
-                    isActive 
-                      ? "bg-slate-700 dark:bg-slate-600 border-slate-600 dark:border-slate-500 text-white" 
-                      : "bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
-                  }`}>
-                    <div className="flex items-center gap-3">
-                      {/* Icon */}
-                      <IconComponent className="w-5 h-5 flex-shrink-0" />
-                      
-                      {/* Content */}
-                      <div className="text-left flex-1">
-                        <h3 className="font-semibold text-base mb-0.5">
-                          {tab.label}
-                        </h3>
-                        <p className="text-xs opacity-80">
-                          {tab.description}
-                        </p>
+            {/* Desktop: Full cards */}
+            <div className="hidden md:flex flex-wrap justify-center gap-6">
+              {tabs.map((tab) => {
+                const IconComponent = tab.icon;
+                const isActive = activeTab === tab.id;
+
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`group relative rounded-full transition-all duration-300 transform hover:scale-105 min-w-[280px] ${isActive
+                        ? "scale-105 shadow-lg"
+                        : "hover:shadow-md"
+                      }`}
+                  >
+                    <div className={`relative px-6 py-4 rounded-full border transition-all duration-300 ${isActive
+                        ? "bg-slate-700 dark:bg-slate-600 border-slate-600 dark:border-slate-500 text-white"
+                        : "bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
+                      }`}>
+                      <div className="flex items-center gap-3">
+                        {/* Icon */}
+                        <IconComponent className="w-5 h-5 flex-shrink-0" />
+
+                        {/* Content */}
+                        <div className="text-left flex-1">
+                          <h3 className="font-semibold text-base mb-0.5">
+                            {tab.label}
+                          </h3>
+                          <p className="text-xs opacity-80">
+                            {tab.description}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
+                  </button>
+                );
+              })}
+            </div>
           </motion.div>
 
           {/* Tab Content */}

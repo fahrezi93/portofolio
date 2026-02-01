@@ -47,7 +47,7 @@ export function ExperienceSection() {
     <section id="experience" className="w-full py-20 md:py-28 lg:py-32 bg-gradient-to-b from-background to-secondary/30">
       <div className="container mx-auto max-w-4xl px-4 md:px-6">
         {/* Header Section */}
-        <motion.div 
+        <motion.div
           className="text-center mb-20"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -58,7 +58,7 @@ export function ExperienceSection() {
             <Calendar className="w-4 h-4" />
             {t.experience_title}
           </div>
-          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight text-foreground mb-4">
+          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
             Professional Journey
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
@@ -84,7 +84,7 @@ export function ExperienceSection() {
               <div className={`relative p-6 md:p-8 rounded-2xl bg-background border border-border/50 shadow-sm ${!isMobile ? 'md:bg-background/80 md:backdrop-blur-sm hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 hover:border-primary/30 hover:-translate-y-1' : ''}`}>
                 {/* Gradient Accent - only on desktop */}
                 {!isMobile && <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />}
-                
+
                 {/* Content */}
                 <div className="relative z-10">
                   {/* Header */}
@@ -98,7 +98,7 @@ export function ExperienceSection() {
                         {exp.company}
                       </div>
                     </div>
-                    
+
                     {/* Duration Badge */}
                     <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/80 text-muted-foreground text-sm font-medium border border-border/30">
                       <Calendar className="w-3 h-3" />
@@ -127,7 +127,7 @@ export function ExperienceSection() {
         </motion.div>
 
         {/* Bottom Decoration */}
-        <motion.div 
+        <motion.div
           className="mt-16 flex justify-center"
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}

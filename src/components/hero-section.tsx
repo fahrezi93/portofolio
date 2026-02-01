@@ -67,7 +67,7 @@ export function HeroSection() {
                     transition={{ type: "spring", damping: 30, stiffness: 200 }}
                   >
                     <motion.span
-                      className=""
+                      className="bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80"
                       layout
                       transition={{ type: "spring", damping: 30, stiffness: 200 }}
                     >
@@ -86,7 +86,7 @@ export function HeroSection() {
                       rotationInterval={3000}
                     />
                   </motion.div>
-                  <div className="text-center">digital products.</div>
+                  <div className="text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">digital products.</div>
                 </motion.div>
                 <motion.p
                   className="mx-auto max-w-[700px] text-lg text-muted-foreground md:text-xl"

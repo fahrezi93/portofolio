@@ -7,27 +7,27 @@ export function SkillsSection() {
   const { t } = useLanguage();
   // Duplikasi skills untuk infinite scroll yang mulus - lebih banyak duplikasi untuk seamless loop
   const duplicatedProgrammingSkills = [
-    ...programmingSkills, 
-    ...programmingSkills, 
-    ...programmingSkills, 
     ...programmingSkills,
-    ...programmingSkills, 
     ...programmingSkills,
-    ...programmingSkills, 
+    ...programmingSkills,
+    ...programmingSkills,
+    ...programmingSkills,
+    ...programmingSkills,
+    ...programmingSkills,
     ...programmingSkills
   ];
   const duplicatedCreativeSkills = [
-    ...creativeSkills, 
-    ...creativeSkills, 
-    ...creativeSkills, 
     ...creativeSkills,
-    ...creativeSkills, 
     ...creativeSkills,
-    ...creativeSkills, 
     ...creativeSkills,
-    ...creativeSkills, 
     ...creativeSkills,
-    ...creativeSkills, 
+    ...creativeSkills,
+    ...creativeSkills,
+    ...creativeSkills,
+    ...creativeSkills,
+    ...creativeSkills,
+    ...creativeSkills,
+    ...creativeSkills,
     ...creativeSkills
   ];
 
@@ -35,7 +35,7 @@ export function SkillsSection() {
     <section id="skills" className="w-full py-16 md:py-24 lg:py-32 skills-section-mobile">
       <div className="container mx-auto max-w-5xl px-4 md:px-6">
         <div className="text-center">
-          <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl">
+          <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
             {t.skills_title}
           </h2>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">

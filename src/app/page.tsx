@@ -22,12 +22,12 @@ const CommentsSection = lazy(() => import("@/components/comments-section").then(
 import { FloatingDock } from "@/components/floating-dock";
 
 // Animated section wrapper that handles both scroll and hash navigation
-function AnimatedSection({ 
-  children, 
+function AnimatedSection({
+  children,
   sectionId,
   className = ""
-}: { 
-  children: React.ReactNode; 
+}: {
+  children: React.ReactNode;
   sectionId: string;
   className?: string;
 }) {
@@ -73,7 +73,7 @@ function AnimatedSection({
     }
 
     window.addEventListener('hashchange', handleHashChange);
-    
+
     return () => {
       window.removeEventListener('hashchange', handleHashChange);
       observer.disconnect();
@@ -81,7 +81,7 @@ function AnimatedSection({
   }, [sectionId]);
 
   return (
-    <motion.div 
+    <motion.div
       className={className}
       initial={{ opacity: 0, y: 20 }}
       animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -153,7 +153,8 @@ export default function Home() {
             <AnimatedSection sectionId="skills">
               <SkillsSection />
             </AnimatedSection>
-            <AnimatedSection sectionId="github">
+            {/* AnimatedSection removed to fix visibility issues, GitHubStats handles its own animation/layout */}
+            <div className="relative z-10 w-full">
               <Suspense fallback={
                 <div className="flex items-center justify-center py-20">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
@@ -161,16 +162,17 @@ export default function Home() {
               }>
                 <GitHubStats />
               </Suspense>
-            </AnimatedSection>
-            <AnimatedSection sectionId="comments">
+            </div>
+            {/* AnimatedSection removed to fix visibility issues */}
+            <div className="relative z-10 w-full">
               <Suspense fallback={
                 <div className="flex items-center justify-center py-20">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
                 </div>
               }>
                 <CommentsSection />
               </Suspense>
-            </AnimatedSection>
+            </div>
             <AnimatedSection sectionId="contact">
               <ContactSection />
             </AnimatedSection>

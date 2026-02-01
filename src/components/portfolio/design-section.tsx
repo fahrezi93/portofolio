@@ -178,17 +178,7 @@ export function DesignSection() {
                 ))}
               </div>
 
-              {/* Tools Used */}
-              <div className="border-t pt-4">
-                <p className="text-xs text-muted-foreground mb-2">Tools Used:</p>
-                <div className="flex flex-wrap gap-2">
-                  {project.tools.map((tool) => (
-                    <span key={tool} className="text-xs bg-muted px-2 py-1 rounded">
-                      {tool}
-                    </span>
-                  ))}
-                </div>
-              </div>
+
             </div>
           </motion.div>
         ))}

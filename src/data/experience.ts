@@ -10,6 +10,16 @@ export type Experience = {
 export const experiences: { en: Experience[]; id: Experience[] } = {
   en: [
     {
+      jobTitle: "Cloud Computing Cohort",
+      company: "Bangkit Academy led by Google, Tokopedia, Gojek, & Traveloka",
+      duration: "Sep 2024 - Dec 2024",
+      description: [
+        "Participated in an intensive cloud computing training program focused on Google Cloud Platform.",
+        "Developing scalable and efficient cloud-based applications and infrastructure.",
+        "Collaborated with cross-functional teams on capstone projects using modern web and cloud technologies.",
+      ],
+    },
+    {
       jobTitle: "Website & Design Services",
       company: "KreativLabs.id",
       duration: "Nov 2025 - Present",
@@ -71,6 +81,16 @@ export const experiences: { en: Experience[]; id: Experience[] } = {
     },
   ],
   id: [
+    {
+      jobTitle: "Cloud Computing Cohort",
+      company: "Bangkit Academy led by Google, Tokopedia, Gojek, & Traveloka",
+      duration: "Sep 2024 - Des 2024",
+      description: [
+        "Berpartisipasi dalam program pelatihan cloud computing intensif yang berfokus pada Google Cloud Platform.",
+        "Mengembangkan aplikasi dan infrastruktur berbasis cloud yang skalabel dan efisien.",
+        "Berkolaborasi dengan tim lintas fungsi dalam proyek akhir (capstone project) menggunakan teknologi web dan cloud modern.",
+      ],
+    },
     {
       jobTitle: "Jasa Website & Desain",
       company: "KreativLabs.id",

@@ -344,22 +344,7 @@ export function DevelopmentSection() {
                     )}
                   </div>
 
-                  {/* Technologies Used */}
-                  <div className="border-t pt-4 mt-auto">
-                    <p className="text-sm text-muted-foreground">{project.type} • {project.year}</p>
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {project.technologies.slice(0, 3).map((tech) => (
-                        <span key={tech} className="text-xs bg-muted px-2 py-1 rounded">
-                          {tech}
-                        </span>
-                      ))}
-                      {project.technologies.length > 3 && (
-                        <span className="text-xs bg-muted px-2 py-1 rounded">
-                          +{project.technologies.length - 3}
-                        </span>
-                      )}
-                    </div>
-                  </div>
+
                 </div>
               </SpotlightCard>
             </motion.div>
