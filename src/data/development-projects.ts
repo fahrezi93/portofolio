@@ -1,4 +1,4 @@
-export type DevelopmentProject = {
+﻿export type DevelopmentProject = {
   id: string;
   title: string;
   description: string;
@@ -18,7 +18,7 @@ export const developmentProjects: DevelopmentProject[] = [
     id: "dev-1",
     title: "Chatbot AI",
     description: "A chatbot AI that can answer questions and help with tasks using natural language processing",
-    image: "/images/development/aksara-ai.jpg",
+    image: "/images/development/aksara-ai.webp",
     tags: ["HTML", "CSS", "JavaScript", "Python", "Flask", "Firebase"],
     type: "Full Stack",
     year: "2025",
@@ -32,7 +32,7 @@ export const developmentProjects: DevelopmentProject[] = [
     id: "dev-2",
     title: "Waste Classifier",
     description: "A waste classifier that can classify waste into different categories using machine learning",
-    image: "/images/development/waste-classifier.png",
+    image: "/images/development/waste-classifier.webp",
     tags: ["Python", "Flask", "TensorFlow", "Keras", "React", "Tailwind CSS"],
     type: "Full Stack",
     year: "2025",
@@ -46,7 +46,7 @@ export const developmentProjects: DevelopmentProject[] = [
     id: "dev-3",
     title: "NutriSuggest",
     description: "A food recommendation system that suggests healthy and nutritious foods based on user preferences and health goals",
-    image: "/images/development/nutrisuggest.png",
+    image: "/images/development/nutrisuggest.webp",
     tags: ["React", "Tailwind CSS", "TypeScript", "Python", "Flask"],
     type: "Full Stack",
     year: "2025",
@@ -60,7 +60,7 @@ export const developmentProjects: DevelopmentProject[] = [
     id: "dev-4",
     title: "Thrift Haven",
     description: "A thrift store website that allows users to buy and sell second-hand items with secure payment system",
-    image: "/images/development/thrift-haven.png",
+    image: "/images/development/thrift-haven.webp",
     tags: ["React", "Tailwind CSS", "TypeScript", "Next.js", "Firebase", "PostgreSQL"],
     type: "Full Stack",
     year: "2025",
@@ -74,7 +74,7 @@ export const developmentProjects: DevelopmentProject[] = [
     id: "dev-5",
     title: "Talent Path",
     description: "A career guidance website that provides resources and advice for students and professionals in the tech industry",
-    image: "/images/development/talent-path.png",
+    image: "/images/development/talent-path.webp",
     tags: ["React", "CSS", "TypeScript", "Vite"],
     type: "Web App",
     year: "2025",
@@ -88,7 +88,7 @@ export const developmentProjects: DevelopmentProject[] = [
     id: "dev-6",
     title: "Smart Attendance",
     description: "A smart attendance system that uses face recognition to mark attendance automatically",
-    image: "/images/development/smartattedance.png",
+    image: "/images/development/smartattedance.webp",
     tags: ["Python", "OpenCV", "Flask", "React", "Tailwind CSS"],
     type: "Full Stack",
     year: "2025",
@@ -102,7 +102,7 @@ export const developmentProjects: DevelopmentProject[] = [
     id: "dev-7",
     title: "Hoax Detector",
     description: "A hoax detector that can detect fake news and misinformation using natural language processing with IndoBERT",
-    image: "/images/development/hoaxdetector.png",
+    image: "/images/development/hoaxdetector.webp",
     tags: ["Python", "Flask", "IndoBERT", "Transformers", "React", "Tailwind CSS"],
     type: "Full Stack",
     year: "2025",
@@ -116,7 +116,7 @@ export const developmentProjects: DevelopmentProject[] = [
     id: "dev-8",
     title: "Simpan Cepat",
     description: "A note taking app that can help you save your notes and ideas with AI-powered features",
-    image: "/images/development/simpancepat.png",
+    image: "/images/development/simpancepat.webp",
     tags: ["Next.js", "React", "Tailwind CSS", "TypeScript", "Firebase", "Genkit"],
     type: "Web App",
     year: "2025",
@@ -130,7 +130,7 @@ export const developmentProjects: DevelopmentProject[] = [
     id: "dev-9",
     title: "Portfolio Website",
     description: "A personal portfolio to showcase my skills and projects, built with a focus on performance and aesthetics",
-    image: "/images/development/portofolio.png",
+    image: "/images/development/portofolio.webp",
     tags: ["React", "Tailwind CSS", "TypeScript", "Next.js"],
     type: "Web App",
     year: "2025",
@@ -141,3 +141,4 @@ export const developmentProjects: DevelopmentProject[] = [
     category: "Web App"
   }
 ];
+

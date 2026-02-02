@@ -2,16 +2,17 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Upload, 
-  X, 
-  Image as ImageIcon, 
+import {
+  Upload,
+  X,
+  Image as ImageIcon,
   Loader2,
   AlertCircle,
   Check
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { StorageManager } from '@/lib/storage';
+import { convertToWebP, supportsWebP } from '@/lib/image-converter';
 
 interface PhotoUploadProps {
   value?: string;
@@ -37,7 +38,7 @@ export function PhotoUpload({
   const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(value || null);
-  
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dragCounter = useRef(0);
 
@@ -76,7 +77,21 @@ export function PhotoUpload({
       const previewUrl = URL.createObjectURL(file);
       setPreview(previewUrl);
 
-      // Simulate upload progress
+      // Convert to WebP if browser supports it and file is not already WebP
+      let fileToUpload = file;
+      if (supportsWebP() && file.type !== 'image/webp') {
+        setUploadProgress(10);
+        console.log('🔄 Converting image to WebP...');
+        try {
+          fileToUpload = await convertToWebP(file, { quality: 0.8, maxWidth: 2048, maxHeight: 2048 });
+          setUploadProgress(30);
+        } catch (conversionError) {
+          console.warn('WebP conversion failed, uploading original:', conversionError);
+          // Continue with original file if conversion fails
+        }
+      }
+
+      // Simulate remaining upload progress
       const progressInterval = setInterval(() => {
         setUploadProgress(prev => {
           if (prev >= 90) {
@@ -88,19 +103,19 @@ export function PhotoUpload({
       }, 100);
 
       // Upload to Supabase
-      const result = await StorageManager.uploadFile(file, folder);
-      
+      const result = await StorageManager.uploadFile(fileToUpload, folder);
+
       clearInterval(progressInterval);
       setUploadProgress(100);
 
       if (result.success && result.url) {
         // Clean up preview URL
         URL.revokeObjectURL(previewUrl);
-        
+
         // Set the actual uploaded URL
         setPreview(result.url);
         onChange(result.url);
-        
+
         // Show success briefly
         setTimeout(() => {
           setUploadProgress(0);
@@ -122,7 +137,7 @@ export function PhotoUpload({
 
   const handleFileSelect = useCallback((files: FileList | null) => {
     if (!files || files.length === 0) return;
-    
+
     const file = files[0];
     uploadFile(file);
   }, [uploadFile]);
@@ -155,7 +170,7 @@ export function PhotoUpload({
     e.stopPropagation();
     setIsDragging(false);
     dragCounter.current = 0;
-    
+
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       handleFileSelect(e.dataTransfer.files);
     }
@@ -176,12 +191,12 @@ export function PhotoUpload({
         }
       }
     }
-    
+
     setPreview(null);
     onChange(null);
     setError(null);
     setUploadProgress(0);
-    
+
     // Reset file input
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -198,8 +213,8 @@ export function PhotoUpload({
       <div
         className={`
           relative border-2 border-dashed rounded-xl p-6 transition-all duration-200
-          ${isDragging 
-            ? 'border-primary bg-primary/5 scale-105' 
+          ${isDragging
+            ? 'border-primary bg-primary/5 scale-105'
             : 'border-border hover:border-primary/50 hover:bg-muted/30'
           }
           ${isUploading ? 'pointer-events-none' : 'cursor-pointer'}
@@ -232,7 +247,7 @@ export function PhotoUpload({
                 alt="Preview"
                 className="w-full h-48 object-cover rounded-lg"
               />
-              
+
               {/* Remove Button */}
               <Button
                 type="button"
@@ -254,7 +269,7 @@ export function PhotoUpload({
                     <Loader2 className="w-8 h-8 animate-spin mx-auto mb-2" />
                     <div className="text-sm font-medium">Uploading...</div>
                     <div className="w-32 h-2 bg-white/20 rounded-full mt-2">
-                      <div 
+                      <div
                         className="h-full bg-primary rounded-full transition-all duration-300"
                         style={{ width: `${uploadProgress}%` }}
                       />
@@ -290,7 +305,7 @@ export function PhotoUpload({
                   <div>
                     <div className="text-lg font-medium">Uploading...</div>
                     <div className="w-48 h-2 bg-muted rounded-full mt-2 mx-auto">
-                      <div 
+                      <div
                         className="h-full bg-primary rounded-full transition-all duration-300"
                         style={{ width: `${uploadProgress}%` }}
                       />
@@ -310,7 +325,7 @@ export function PhotoUpload({
                       <ImageIcon className="w-8 h-8" />
                     )}
                   </div>
-                  
+
                   <div>
                     <div className="text-lg font-medium">
                       {isDragging ? 'Drop image here' : 'Upload project image'}
