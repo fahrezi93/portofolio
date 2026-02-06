@@ -51,9 +51,11 @@ export function Footer() {
       </div>
 
       {/* Massive Parallax Text */}
-      <div className="relative w-full flex justify-center items-end mt-2 z-10 select-none pointer-events-none">
-        {/* Radiant Gradient Overlay - Adjusted height for visibility */}
-        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[#0B1121] via-[#0B1121]/80 to-transparent z-20"></div>
+      <div className="relative w-full flex justify-center items-end mt-2 z-0 select-none pointer-events-none">
+        {/* Gradient Overlay - Mobile */}
+        <div className="absolute bottom-0 left-0 right-0 h-[70%] bg-gradient-to-t from-[#0B1121] via-[#0B1121]/80 to-transparent z-10 sm:hidden"></div>
+        {/* Gradient Overlay - Desktop */}
+        <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-[#0B1121] via-[#0B1121]/80 to-transparent z-10 hidden sm:block"></div>
         <div className="flex justify-center items-baseline w-full px-4 overflow-hidden leading-none">
           {text.split('').map((char, i) => {
             const y = i % 3 === 0 ? y2 : (i % 2 === 0 ? y1 : y4);
@@ -62,7 +64,7 @@ export function Footer() {
               <motion.span
                 key={i}
                 style={{ y }}
-                className="text-[18vw] font-black text-transparent bg-clip-text bg-gradient-to-b from-foreground/40 to-foreground/10 tracking-tighter transform-gpu opacity-80"
+                className="text-[20vw] sm:text-[18vw] font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-foreground/50 to-foreground/5 tracking-tighter transform-gpu"
               >
                 {char}
               </motion.span>
@@ -72,13 +74,9 @@ export function Footer() {
       </div>
 
       {/* Bottom Copyright */}
-      <div className="container mx-auto px-4 md:px-6 z-20 relative mt-4 border-t border-white/5 pt-6">
+      <div className="container mx-auto px-4 md:px-6 z-20 relative border-t border-white/5 pt-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground/60">
           <p>© {new Date().getFullYear()} Mohammad Fahrezi. All rights reserved.</p>
-          <div className="flex gap-6">
-            <span className="hover:text-foreground transition-colors cursor-pointer">Privacy Policy</span>
-            <span className="hover:text-foreground transition-colors cursor-pointer">Terms of Service</span>
-          </div>
         </div>
       </div>
     </footer>

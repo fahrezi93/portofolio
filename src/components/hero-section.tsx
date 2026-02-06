@@ -58,16 +58,16 @@ export function HeroSection() {
                   {t.hero_subtitle}
                 </motion.p>
                 <motion.div
-                  className="font-headline text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl flex flex-col items-center justify-center gap-2 sm:gap-4"
+                  className="font-headline text-[2.5rem] font-bold leading-tight tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl flex flex-col items-center justify-center gap-0"
                   variants={itemVariants}
                 >
                   <motion.div
-                    className="flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-4"
+                    className="flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-4 -mb-2 sm:-mb-6"
                     layout
                     transition={{ type: "spring", damping: 30, stiffness: 200 }}
                   >
                     <motion.span
-                      className="bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80"
+                      className="bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80 pb-2 sm:pb-6"
                       layout
                       transition={{ type: "spring", damping: 30, stiffness: 200 }}
                     >
@@ -75,18 +75,18 @@ export function HeroSection() {
                     </motion.span>
                     <RotatingText
                       texts={[t.hero_rotating_2, t.hero_rotating_3, t.hero_rotating_4]}
-                      mainClassName="px-2 sm:px-2 md:px-3 bg-gradient-to-r from-blue-400 to-blue-600 text-white overflow-hidden py-1 sm:py-2 md:py-3 justify-center rounded-xl"
+                      mainClassName="px-2 sm:px-2 md:px-3 bg-gradient-to-r from-blue-400 to-blue-600 text-white overflow-hidden py-1 sm:py-2 justify-center rounded-xl"
                       staggerFrom={"last"}
                       initial={{ y: "100%" }}
-                      animate={{ y: 0 }}
+                      animate={{ y: "0%" }}
                       exit={{ y: "-120%" }}
                       staggerDuration={0.025}
-                      splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
+                      splitLevelClassName="overflow-hidden pb-2 sm:pb-6"
                       transition={{ type: "spring", damping: 30, stiffness: 200 }}
                       rotationInterval={3000}
                     />
                   </motion.div>
-                  <div className="text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">digital products.</div>
+                  <div className="text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80 pb-2 sm:pb-6 leading-none pt-1 sm:pt-4">digital products.</div>
                 </motion.div>
                 <motion.p
                   className="mx-auto max-w-[700px] text-lg text-muted-foreground md:text-xl"

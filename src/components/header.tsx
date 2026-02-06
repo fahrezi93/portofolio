@@ -145,16 +145,16 @@ export function Header() {
 
       // Set initial state explicitly (pill state)
       gsap.set(header, {
-        width: "95%",
-        maxWidth: "46rem", // Reduced to make it more compact
+        width: isMobile ? "92%" : "95%",
+        maxWidth: isMobile ? "100%" : "46rem", // Reduced to make it more compact
         borderRadius: "9999px",
         marginTop: "16px",
         top: "0px",
         borderWidth: "1px",
         backgroundColor: "rgba(3, 7, 18, 0.2)",
         backdropFilter: "blur(12px)",
-        paddingLeft: "24px",
-        paddingRight: "24px",
+        paddingLeft: isMobile ? "16px" : "24px",
+        paddingRight: isMobile ? "16px" : "24px",
         height: "64px",
       });
 
@@ -242,14 +242,13 @@ export function Header() {
         style={{
           // Initial styles - GSAP will animate these
           marginTop: '16px',
-          width: '95%',
-          maxWidth: '46rem',
+          width: 'min(92%, 46rem)',
           height: '64px',
           borderRadius: '9999px',
           backgroundColor: 'rgba(3, 7, 18, 0.2)',
           backdropFilter: 'blur(12px)',
-          paddingLeft: '24px',
-          paddingRight: '24px',
+          paddingLeft: '16px',
+          paddingRight: '16px',
         }}
       >
         <div className="flex-1 flex justify-start">
