@@ -25,6 +25,7 @@ interface DesignProject {
   figmaUrl?: string;
   category: string;
   featured?: boolean;
+  created_at?: string;
 }
 
 export function DesignSection() {
@@ -52,7 +53,8 @@ export function DesignSection() {
             year: project.year,
             tools: project.technologies || [],
             category: project.category || 'Design',
-            featured: project.featured
+            featured: project.featured,
+            created_at: project.created_at
           }));
           setDesignProjects(transformedProjects);
         }
@@ -129,13 +131,15 @@ export function DesignSection() {
     const filtered = selectedCategory === "All"
       ? designProjects
       : designProjects.filter((project: DesignProject) => project.type === selectedCategory);
-    // Sort filtered projects: featured first, then alphabetically by title (A-Z)
+    // Sort filtered projects: featured first, then by created_at (newest first)
     return [...filtered].sort((a: DesignProject, b: DesignProject) => {
       // Featured projects first
       if (a.featured && !b.featured) return -1;
       if (!a.featured && b.featured) return 1;
-      // If both have same featured status, sort alphabetically by title (A-Z)
-      return a.title.localeCompare(b.title);
+      // If both have same featured status, sort by created_at (newest first)
+      const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
+      const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
+      return dateB - dateA;
     });
   }, [selectedCategory, designProjects]);
 
