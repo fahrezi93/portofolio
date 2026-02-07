@@ -57,7 +57,7 @@ export function HeroSection() {
                 >
                   {t.hero_subtitle}
                 </motion.p>
-                <motion.div
+                <motion.h1
                   className="font-headline text-[2.5rem] font-bold leading-tight tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl flex flex-col items-center justify-center gap-0"
                   variants={itemVariants}
                 >
@@ -87,7 +87,7 @@ export function HeroSection() {
                     />
                   </motion.div>
                   <div className="text-center bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80 pb-2 sm:pb-6 leading-none pt-1 sm:pt-4">digital products.</div>
-                </motion.div>
+                </motion.h1>
                 <motion.p
                   className="mx-auto max-w-[700px] text-lg text-muted-foreground md:text-xl"
                   variants={itemVariants}

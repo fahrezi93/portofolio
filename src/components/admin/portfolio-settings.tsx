@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Save, 
-  User, 
-  Mail, 
-  Globe, 
-  Github, 
+import {
+  Save,
+  User,
+  Mail,
+  Globe,
+  Github,
   Linkedin,
   Twitter,
   Instagram,
@@ -47,26 +47,26 @@ export function PortfolioSettings() {
     // Personal Info
     name: 'Fahrezi',
     email: 'hello@fahrezi.tech',
-    bio: 'Full-stack Developer & UI/UX Designer passionate about creating amazing digital experiences.',
+    bio: 'Full-stack Developer & Graphic Designer passionate about creating amazing digital experiences.',
     location: 'Indonesia',
-    
+
     // Social Links
     website: 'https://www.fahrezi.tech',
     github: 'https://github.com/fahrezi93',
     linkedin: 'https://linkedin.com/in/mohammad-fahrezi',
     twitter: 'https://twitter.com/fahrrrezi',
     instagram: 'https://instagram.com/moh.fahrezi',
-    
+
     // Portfolio Settings
     showGithubStats: true,
     showComments: true,
     allowCommentUploads: true,
     moderateComments: false,
-    
+
     // Theme Settings
     primaryColor: '#3b82f6',
     darkMode: true,
-    
+
     // Notifications
     emailNotifications: true,
     commentNotifications: true,
@@ -91,54 +91,54 @@ export function PortfolioSettings() {
     icon: React.ComponentType<any>;
     fields: FieldType[];
   }> = [
-    {
-      title: 'Personal Information',
-      icon: User,
-      fields: [
-        { key: 'name', label: 'Full Name', type: 'text', placeholder: 'Your full name' } as TextFieldType,
-        { key: 'email', label: 'Email Address', type: 'email', placeholder: 'hello@fahrezi.tech' } as TextFieldType,
-        { key: 'bio', label: 'Bio', type: 'textarea', placeholder: 'Tell visitors about yourself...' } as TextFieldType,
-        { key: 'location', label: 'Location', type: 'text', placeholder: 'City, Country' } as TextFieldType,
-      ]
-    },
-    {
-      title: 'Social Links',
-      icon: Globe,
-      fields: [
-        { key: 'website', label: 'Website', type: 'url', placeholder: 'https://yourwebsite.com', icon: Globe } as TextFieldType,
-        { key: 'github', label: 'GitHub', type: 'url', placeholder: 'https://github.com/username', icon: Github } as TextFieldType,
-        { key: 'linkedin', label: 'LinkedIn', type: 'url', placeholder: 'https://linkedin.com/in/username', icon: Linkedin } as TextFieldType,
-        { key: 'twitter', label: 'Twitter', type: 'url', placeholder: 'https://twitter.com/username', icon: Twitter } as TextFieldType,
-        { key: 'instagram', label: 'Instagram', type: 'url', placeholder: 'https://instagram.com/username', icon: Instagram } as TextFieldType,
-      ]
-    },
-    {
-      title: 'Portfolio Features',
-      icon: Settings,
-      fields: [
-        { key: 'showGithubStats', label: 'Show GitHub Statistics', type: 'toggle', description: 'Display GitHub activity and repository stats' } as ToggleFieldType,
-        { key: 'showComments', label: 'Enable Comments Section', type: 'toggle', description: 'Allow visitors to leave comments' } as ToggleFieldType,
-        { key: 'allowCommentUploads', label: 'Allow Profile Photo Uploads', type: 'toggle', description: 'Let users upload profile photos with comments' } as ToggleFieldType,
-        { key: 'moderateComments', label: 'Moderate Comments', type: 'toggle', description: 'Require approval before comments are published' } as ToggleFieldType,
-      ]
-    },
-    {
-      title: 'Appearance',
-      icon: Palette,
-      fields: [
-        { key: 'primaryColor', label: 'Primary Color', type: 'color', description: 'Main accent color for your portfolio' } as ColorFieldType,
-        { key: 'darkMode', label: 'Dark Mode Default', type: 'toggle', description: 'Set dark mode as the default theme' } as ToggleFieldType,
-      ]
-    },
-    {
-      title: 'Notifications',
-      icon: Bell,
-      fields: [
-        { key: 'emailNotifications', label: 'Email Notifications', type: 'toggle', description: 'Receive email updates about your portfolio' } as ToggleFieldType,
-        { key: 'commentNotifications', label: 'Comment Notifications', type: 'toggle', description: 'Get notified when someone leaves a comment' } as ToggleFieldType,
-      ]
-    }
-  ];
+      {
+        title: 'Personal Information',
+        icon: User,
+        fields: [
+          { key: 'name', label: 'Full Name', type: 'text', placeholder: 'Your full name' } as TextFieldType,
+          { key: 'email', label: 'Email Address', type: 'email', placeholder: 'hello@fahrezi.tech' } as TextFieldType,
+          { key: 'bio', label: 'Bio', type: 'textarea', placeholder: 'Tell visitors about yourself...' } as TextFieldType,
+          { key: 'location', label: 'Location', type: 'text', placeholder: 'City, Country' } as TextFieldType,
+        ]
+      },
+      {
+        title: 'Social Links',
+        icon: Globe,
+        fields: [
+          { key: 'website', label: 'Website', type: 'url', placeholder: 'https://yourwebsite.com', icon: Globe } as TextFieldType,
+          { key: 'github', label: 'GitHub', type: 'url', placeholder: 'https://github.com/username', icon: Github } as TextFieldType,
+          { key: 'linkedin', label: 'LinkedIn', type: 'url', placeholder: 'https://linkedin.com/in/username', icon: Linkedin } as TextFieldType,
+          { key: 'twitter', label: 'Twitter', type: 'url', placeholder: 'https://twitter.com/username', icon: Twitter } as TextFieldType,
+          { key: 'instagram', label: 'Instagram', type: 'url', placeholder: 'https://instagram.com/username', icon: Instagram } as TextFieldType,
+        ]
+      },
+      {
+        title: 'Portfolio Features',
+        icon: Settings,
+        fields: [
+          { key: 'showGithubStats', label: 'Show GitHub Statistics', type: 'toggle', description: 'Display GitHub activity and repository stats' } as ToggleFieldType,
+          { key: 'showComments', label: 'Enable Comments Section', type: 'toggle', description: 'Allow visitors to leave comments' } as ToggleFieldType,
+          { key: 'allowCommentUploads', label: 'Allow Profile Photo Uploads', type: 'toggle', description: 'Let users upload profile photos with comments' } as ToggleFieldType,
+          { key: 'moderateComments', label: 'Moderate Comments', type: 'toggle', description: 'Require approval before comments are published' } as ToggleFieldType,
+        ]
+      },
+      {
+        title: 'Appearance',
+        icon: Palette,
+        fields: [
+          { key: 'primaryColor', label: 'Primary Color', type: 'color', description: 'Main accent color for your portfolio' } as ColorFieldType,
+          { key: 'darkMode', label: 'Dark Mode Default', type: 'toggle', description: 'Set dark mode as the default theme' } as ToggleFieldType,
+        ]
+      },
+      {
+        title: 'Notifications',
+        icon: Bell,
+        fields: [
+          { key: 'emailNotifications', label: 'Email Notifications', type: 'toggle', description: 'Receive email updates about your portfolio' } as ToggleFieldType,
+          { key: 'commentNotifications', label: 'Comment Notifications', type: 'toggle', description: 'Get notified when someone leaves a comment' } as ToggleFieldType,
+        ]
+      }
+    ];
 
   return (
     <div className="space-y-8">
@@ -174,7 +174,7 @@ export function PortfolioSettings() {
                       <label className="block text-sm font-medium text-foreground mb-2">
                         {field.label}
                       </label>
-                      
+
                       {(field.type === 'text' || field.type === 'email' || field.type === 'url') ? (
                         <div className="relative">
                           {(field as TextFieldType).icon && React.createElement((field as TextFieldType).icon!, {
@@ -219,23 +219,21 @@ export function PortfolioSettings() {
                           </div>
                           <button
                             onClick={() => handleInputChange(field.key, !settings[field.key as keyof typeof settings])}
-                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                              settings[field.key as keyof typeof settings] 
-                                ? 'bg-primary' 
+                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${settings[field.key as keyof typeof settings]
+                                ? 'bg-primary'
                                 : 'bg-gray-300 dark:bg-gray-600'
-                            }`}
+                              }`}
                           >
                             <span
-                              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                                settings[field.key as keyof typeof settings] 
-                                  ? 'translate-x-6' 
+                              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${settings[field.key as keyof typeof settings]
+                                  ? 'translate-x-6'
                                   : 'translate-x-1'
-                              }`}
+                                }`}
                             />
                           </button>
                         </div>
                       ) : null}
-                      
+
                       {field.type === 'color' && (
                         <p className="text-xs text-muted-foreground mt-1">{(field as ColorFieldType).description}</p>
                       )}
@@ -250,7 +248,7 @@ export function PortfolioSettings() {
 
       {/* Save Button */}
       <div className="flex justify-end">
-        <Button 
+        <Button
           onClick={handleSave}
           disabled={isSaving}
           className="flex items-center gap-2 px-8"

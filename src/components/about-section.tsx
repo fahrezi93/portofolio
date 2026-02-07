@@ -15,10 +15,9 @@ export function AboutSection() {
 
   const roles = [
     { label: "Front-End Developer", icon: Code2 },
-    { label: "UI/UX Enthusiast", icon: Palette },
+    { label: "Graphic Designer", icon: Palette },
     { label: "Full-Stack Developer", icon: Terminal },
-    { label: "Graphic Designer", icon: Pen },
-    { label: "Video Editor", icon: Video },
+    { label: "Motion Graphics", icon: Video },
     { label: "ML Engineer", icon: Brain },
     { label: "Creative Coder", icon: Globe },
   ];

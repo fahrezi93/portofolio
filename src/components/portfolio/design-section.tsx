@@ -203,7 +203,7 @@ export function DesignSection() {
               <div className="relative aspect-[4/3] bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 overflow-hidden">
                 <OptimizedImage
                   src={project.image}
-                  alt={project.title}
+                  alt={`Mohammad Fahrezi Portfolio - ${project.title}`}
                   fill
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"

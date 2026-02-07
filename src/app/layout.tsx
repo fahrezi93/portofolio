@@ -8,9 +8,9 @@ import { LoadingProvider } from "@/context/loading-context";
 import AppLoading from "@/components/app-loading";
 
 export const metadata: Metadata = {
-  title: 'Mohammad Fahrezi - Fullstack Developer & UI/UX Designer',
-  description: 'Passionate Computer Science student at Sriwijaya University specializing in Front-End Development and UI/UX Design. Creating modern, intuitive web applications with cutting-edge technologies.',
-  keywords: ['Mohammad Fahrezi', 'Fullstack Developer', 'UI/UX Designer', 'React', 'Next.js', 'TypeScript', 'Web Developer', 'Sriwijaya University', 'Portfolio'],
+  title: 'Mohammad Fahrezi - Portofolio Fullstack Developer & Graphic Designer',
+  description: "Mohammad Fahrezi's Portfolio. A Computer Science student at Sriwijaya University focused on Fullstack Development and Graphic Design. Building modern and intuitive web applications.",
+  keywords: ['Mohammad Fahrezi', 'Portfolio Mohammad Fahrezi', 'Fullstack Developer', 'Graphic Designer', 'React', 'Next.js', 'TypeScript', 'Web Developer', 'Universitas Sriwijaya', 'Portfolio Mohammad Fahrezi'],
   authors: [{ name: 'Mohammad Fahrezi' }],
   creator: 'Mohammad Fahrezi',
   publisher: 'Mohammad Fahrezi',
@@ -25,25 +25,25 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: 'website',
-    locale: 'id_ID',
+    locale: 'en_US',
     url: 'https://www.fahrezi.tech',
-    title: 'Mohammad Fahrezi - Fullstack Developer & UI/UX Designer',
-    description: 'Passionate Computer Science student at Sriwijaya University specializing in Front-End Development and UI/UX Design. Creating modern, intuitive web applications with cutting-edge technologies.',
+    title: 'Mohammad Fahrezi - Portfolio Fullstack Developer & Graphic Designer',
+    description: "Mohammad Fahrezi's Portfolio. A Computer Science student at Sriwijaya University focused on Fullstack Development and Graphic Design.",
     siteName: 'Mohammad Fahrezi Portfolio',
     images: [
       {
         url: '/images/thumbnail-porto.png',
         width: 1200,
         height: 630,
-        alt: 'Mohammad Fahrezi Portfolio - Fullstack Developer & UI/UX Designer',
+        alt: 'Mohammad Fahrezi Portfolio - Fullstack Developer & Graphic Designer',
         type: 'image/png',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Mohammad Fahrezi - Fullstack Developer & UI/UX Designer',
-    description: 'Passionate Computer Science student specializing in Front-End Development and UI/UX Design.',
+    title: 'Mohammad Fahrezi - Portfolio Fullstack Developer & Graphic Designer',
+    description: "Mohammad Fahrezi's Portfolio. A Computer Science student focused on Fullstack Development and Graphic Design.",
     images: ['/images/thumbnail-porto.png'],
     creator: '@fahrezi93',
   },
@@ -110,46 +110,59 @@ export default function RootLayout({
         <meta property="og:image:height" content="630" />
         <meta property="og:image:type" content="image/png" />
         <meta name="twitter:image" content="/images/thumbnail-porto.png" />
-        <meta name="twitter:image:alt" content="Mohammad Fahrezi Portfolio - Front-End Developer & UI/UX Designer" />
+        <meta name="twitter:image:alt" content="Mohammad Fahrezi Portofolio - Front-End Developer & Graphic Designer" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              "name": "Mohammad Fahrezi",
-              "jobTitle": "Fullstack Developer & UI/UX Designer",
-              "description": "Passionate Computer Science student at Sriwijaya University specializing in Fullstack Development and UI/UX Design",
-              "url": "https://www.fahrezi.tech",
-              "sameAs": [
-                "https://github.com/fahrezi93",
-                "https://linkedin.com/in/mohammad-fahrezi",
-                "https://instagram.com/moh.fahrezi"
-              ],
-              "alumniOf": {
-                "@type": "EducationalOrganization",
-                "name": "Sriwijaya University"
+            __html: JSON.stringify([
+              {
+                "@context": "https://schema.org",
+                "@type": "Person",
+                "name": "Mohammad Fahrezi",
+                "jobTitle": "Fullstack Developer & Graphic Designer",
+                "description": "Mohammad Fahrezi's Portfolio. A Computer Science student at Sriwijaya University focused on Fullstack Development and Graphic Design",
+                "url": "https://www.fahrezi.tech",
+                "sameAs": [
+                  "https://github.com/fahrezi93",
+                  "https://linkedin.com/in/mohammad-fahrezi",
+                  "https://instagram.com/moh.fahrezi"
+                ],
+                "alumniOf": {
+                  "@type": "EducationalOrganization",
+                  "name": "Sriwijaya University"
+                },
+                "knowsAbout": [
+                  "Fullstack Development",
+                  "Graphic Design",
+                  "React",
+                  "Next.js",
+                  "TypeScript",
+                  "JavaScript",
+                  "HTML",
+                  "CSS",
+                  "Node.js",
+                  "Express.js",
+                  "Python",
+                  "Git",
+                  "Figma",
+                  "Web Development"
+                ]
               },
-              "knowsAbout": [
-                "Fullstack Development",
-                "UI/UX Design",
-                "React",
-                "Next.js",
-                "TypeScript",
-                "JavaScript",
-                "HTML",
-                "CSS",
-                "Node.js",
-                "Express.js",
-                "Python",
-                "Git",
-                "Figma",
-                "Web Development"
-              ]
-            })
+              {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "Mohammad Fahrezi Portfolio",
+                "url": "https://www.fahrezi.tech",
+                "potentialAction": {
+                  "@type": "SearchAction",
+                  "target": "https://www.fahrezi.tech/?s={search_term_string}",
+                  "query-input": "required name=search_term_string"
+                }
+              }
+            ])
           }}
         />
       </head>
