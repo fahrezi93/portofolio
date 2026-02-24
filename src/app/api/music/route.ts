@@ -13,10 +13,11 @@ export async function GET() {
         const firstTrack = recentTracks[0];
         const isPlaying = firstTrack?.['@attr']?.nowplaying === 'true';
 
+        const artistName = firstTrack?.artist?.['#text'] || firstTrack?.artist?.name;
         const nowEnded = {
             isPlaying,
-            artist: firstTrack?.artist?.['#text'] || firstTrack?.artist?.name,
-            songUrl: firstTrack?.url,
+            artist: artistName,
+            songUrl: `https://open.spotify.com/search/${encodeURIComponent(`${artistName} ${firstTrack?.name}`)}`,
             title: firstTrack?.name,
             albumArt: firstTrack?.image?.find((img: any) => img.size === 'large')?.['#text'] || '',
         };
@@ -27,13 +28,16 @@ export async function GET() {
         // Usually recenttracks includes the current playing one as the first item.
         // We want to show the *previous* songs in the list.
         // So we take tracks 1 to 5.
-        const historyTracks = recentTracks.slice(1, 6).map((track: any) => ({
-            artist: track.artist['#text'] || track.artist.name,
-            songUrl: track.url,
-            title: track.name,
-            albumArt: track.image.find((img: any) => img.size === 'large')?.['#text'] || '',
-            playcount: '0' // Not available in recent tracks
-        }));
+        const historyTracks = recentTracks.slice(1, 6).map((track: any) => {
+            const artistName = track.artist['#text'] || track.artist.name;
+            return {
+                artist: artistName,
+                songUrl: `https://open.spotify.com/search/${encodeURIComponent(`${artistName} ${track.name}`)}`,
+                title: track.name,
+                albumArt: track.image.find((img: any) => img.size === 'large')?.['#text'] || '',
+                playcount: '0' // Not available in recent tracks
+            };
+        });
 
         return NextResponse.json({
             nowPlaying: nowEnded,
