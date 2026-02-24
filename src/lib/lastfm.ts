@@ -15,14 +15,14 @@ export const getRecentTracks = async (limit = 1) => {
     return response.json();
 };
 
-export const getTopTracks = async () => {
+export const getTopTracks = async (period = '1month', limit = 10) => {
     const query = new URLSearchParams({
         method: 'user.gettoptracks',
         user: USERNAME as string,
         api_key: API_KEY as string,
         format: 'json',
-        period: 'overall', // Changed to overall for new accounts
-        limit: '5',
+        period: period,
+        limit: limit.toString(),
     });
 
     const response = await fetch(`${BASE_URL}?${query.toString()}`, { cache: 'no-store' });
