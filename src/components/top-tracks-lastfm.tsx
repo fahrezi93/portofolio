@@ -66,9 +66,8 @@ export function TopTracksLastfm() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 initial={{ opacity: 0 }}
-                                whileInView={{ opacity: 1 }}
-                                viewport={{ once: true, margin: "-10%" }}
-                                transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 1.2, delay: index * 0.15, ease: "easeInOut" }}
                                 className="group relative flex items-center justify-between p-2 sm:p-3 rounded-xl hover:bg-white/[0.03] transition-colors"
                             >
                                 <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">

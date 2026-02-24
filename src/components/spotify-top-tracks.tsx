@@ -27,6 +27,8 @@ export function SpotifyTopTracks() {
 
     useEffect(() => {
         const fetchData = async () => {
+            if (document.hidden) return; // Tab visibility check
+
             try {
                 const res = await fetch("/api/music");
                 const data = await res.json();
@@ -44,8 +46,21 @@ export function SpotifyTopTracks() {
         };
 
         fetchData();
+
+        // Check immediately when user comes back to the tab
+        const handleVisibilityChange = () => {
+            if (!document.hidden) {
+                fetchData();
+            }
+        };
+        document.addEventListener("visibilitychange", handleVisibilityChange);
+
         const interval = setInterval(fetchData, 10000); // Poll every 10s for faster updates
-        return () => clearInterval(interval);
+
+        return () => {
+            clearInterval(interval);
+            document.removeEventListener("visibilitychange", handleVisibilityChange);
+        };
     }, []);
 
     if (loading || !nowPlaying?.isPlaying) return null;

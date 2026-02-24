@@ -9,6 +9,7 @@ const nextConfig = {
       { protocol: 'https', hostname: '**.supabase.co' },
       { protocol: 'https', hostname: '**.supabase.in' },
       { protocol: 'https', hostname: 'lastfm.freetls.fastly.net' }, // Last.fm CDN
+      { protocol: 'https', hostname: '**.mzstatic.com' }, // iTunes / Apple Music CDN
     ],
     // Optimasi gambar untuk performa
     formats: ['image/avif', 'image/webp'], // AVIF first for better compression

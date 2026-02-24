@@ -10,6 +10,16 @@ export type Experience = {
 export const experiences: { en: Experience[]; id: Experience[] } = {
   en: [
     {
+      jobTitle: "Graphic Designer",
+      company: "Teago Indonesia",
+      duration: "Feb 2026 - Present",
+      description: [
+        "Produced high-quality visual designs and marketing materials to support the marketing team's campaigns.",
+        "Created engaging Instagram feeds and edited dynamic Reels content for the brand's social media.",
+        "Collaborated on shaping compelling digital brand presence through creative and consistent visual storytelling.",
+      ],
+    },
+    {
       jobTitle: "Cloud Computing Cohort",
       company: "Bangkit Academy led by Google, Tokopedia, Gojek, & Traveloka",
       duration: "Sep 2024 - Dec 2024",
@@ -81,6 +91,16 @@ export const experiences: { en: Experience[]; id: Experience[] } = {
     },
   ],
   id: [
+    {
+      jobTitle: "Graphic Designer",
+      company: "Teago Indonesia",
+      duration: "Feb 2026 - Sekarang",
+      description: [
+        "Menghasilkan desain visual dan materi pemasaran berkualitas tinggi untuk mendukung kampanye tim marketing.",
+        "Membuat konten Instagram feed yang menarik dan mengedit konten Reels yang dinamis untuk media sosial perusahaan.",
+        "Berkolaborasi dalam membentuk kehadiran digital brand yang kuat melalui penceritaan visual yang kreatif dan konsisten.",
+      ],
+    },
     {
       jobTitle: "Cloud Computing Cohort",
       company: "Bangkit Academy led by Google, Tokopedia, Gojek, & Traveloka",

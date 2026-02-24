@@ -13,16 +13,27 @@ export async function GET(request: Request) {
         const data = await getTopTracks('1month', limit);
         const topTracksApi = data?.toptracks?.track || [];
 
-        const formattedTracks = topTracksApi.map((track: any) => {
+        const formattedTracks = await Promise.all(topTracksApi.map(async (track: any) => {
             const artistName = track.artist?.name || track.artist?.['#text'];
 
             // Get highest resolution image available
             let albumArt = track.image?.find((img: any) => img.size === 'extralarge')?.['#text'] ||
                 track.image?.find((img: any) => img.size === 'large')?.['#text'] || '';
 
-            // Filter out Last.fm default placeholder (star image)
-            if (albumArt.includes('2a96cbd8b46e442fc41c2b')) {
-                albumArt = '';
+            // Filter out Last.fm default placeholder (star image) and fetch iTunes backup
+            if (!albumArt || albumArt.includes('2a96cbd8b46e442fc41c2b')) {
+                try {
+                    const itunesRes = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(artistName + ' ' + track.name)}&limit=1&entity=song`);
+                    const itunesData = await itunesRes.json();
+                    if (itunesData.results && itunesData.results.length > 0) {
+                        albumArt = itunesData.results[0].artworkUrl100.replace('100x100bb', '600x600bb');
+                    } else {
+                        albumArt = '';
+                    }
+                } catch (e) {
+                    console.error('Failed to fetch iTunes album art', e);
+                    albumArt = '';
+                }
             }
 
             return {
@@ -32,7 +43,7 @@ export async function GET(request: Request) {
                 albumArt: albumArt,
                 playcount: track.playcount || '0'
             };
-        });
+        }));
 
         return NextResponse.json({
             topTracks: formattedTracks

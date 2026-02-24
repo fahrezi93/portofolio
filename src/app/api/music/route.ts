@@ -44,7 +44,7 @@ export async function GET() {
             recentTracks: historyTracks
         }, {
             headers: {
-                'Cache-Control': 'public, s-maxage=0, no-store'
+                'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=10'
             }
         });
     } catch (error) {
