@@ -8,6 +8,7 @@ const nextConfig = {
       // Supabase storage uses this pattern
       { protocol: 'https', hostname: '**.supabase.co' },
       { protocol: 'https', hostname: '**.supabase.in' },
+      { protocol: 'https', hostname: 'lastfm.freetls.fastly.net' }, // Last.fm CDN
     ],
     // Optimasi gambar untuk performa
     formats: ['image/avif', 'image/webp'], // AVIF first for better compression

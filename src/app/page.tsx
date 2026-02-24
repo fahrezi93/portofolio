@@ -19,6 +19,7 @@ import { useEffect, useState, lazy, Suspense, useCallback } from "react";
 // Lazy load komponen berat
 const GitHubStats = lazy(() => import("@/components/github-stats").then(module => ({ default: module.GitHubStats })));
 const CommentsSection = lazy(() => import("@/components/comments-section").then(module => ({ default: module.CommentsSection })));
+const SpotifyTopTracks = lazy(() => import("@/components/spotify-top-tracks").then(module => ({ default: module.SpotifyTopTracks })));
 import { FloatingDock } from "@/components/floating-dock";
 
 // Animated section wrapper that handles both scroll and hash navigation
@@ -161,6 +162,15 @@ export default function Home() {
                 </div>
               }>
                 <GitHubStats />
+              </Suspense>
+            </div>
+            <div className="relative z-10 w-full">
+              <Suspense fallback={
+                <div className="flex items-center justify-center py-20">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500"></div>
+                </div>
+              }>
+                <SpotifyTopTracks />
               </Suspense>
             </div>
             {/* AnimatedSection removed to fix visibility issues */}
