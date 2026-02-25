@@ -76,7 +76,7 @@ export function AboutSection() {
               {/* Main Image Container */}
               <div className="relative h-full w-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
                 <Image
-                  src="/images/profile.jpg"
+                  src="/images/profile.webp"
                   alt="Mohammad Fahrezi"
                   fill
                   className="object-cover object-[center_100%] scale-125 transition-transform duration-700 group-hover:scale-[1.35]"
