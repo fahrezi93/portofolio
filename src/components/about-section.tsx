@@ -168,7 +168,7 @@ export function AboutSection() {
                 className="w-full sm:w-auto group relative overflow-hidden border-primary/20 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 h-[50px]"
               >
                 <a
-                  href="/images/CV-Fahrezi.pdf"
+                  href="/CV-Fahrezi-new.pdf"
                   download
                   className="flex items-center justify-center gap-2 px-6 md:px-8"
                 >

@@ -9,26 +9,10 @@ export function SkillsSection() {
   const duplicatedProgrammingSkills = [
     ...programmingSkills,
     ...programmingSkills,
-    ...programmingSkills,
-    ...programmingSkills,
-    ...programmingSkills,
-    ...programmingSkills,
-    ...programmingSkills,
-    ...programmingSkills
   ];
   const duplicatedCreativeSkills = [
     ...creativeSkills,
     ...creativeSkills,
-    ...creativeSkills,
-    ...creativeSkills,
-    ...creativeSkills,
-    ...creativeSkills,
-    ...creativeSkills,
-    ...creativeSkills,
-    ...creativeSkills,
-    ...creativeSkills,
-    ...creativeSkills,
-    ...creativeSkills
   ];
 
   return (
@@ -55,17 +39,21 @@ export function SkillsSection() {
                 "linear-gradient(to right, transparent, white 10%, white 90%, transparent)",
             }}
           >
-            <div className="flex min-w-[800%] shrink-0 animate-scroll gap-8">
-              {duplicatedProgrammingSkills.map((skill, index) => (
-                <div
-                  key={`prog-${skill.name}-${index}`}
-                  className="flex flex-col items-center justify-center gap-3 flex-shrink-0 skill-item"
-                  style={{ width: "120px", minWidth: "120px" }}
-                >
-                  <skill.icon className="w-16 h-16 skill-icon" />
-                  <p className="text-lg font-medium text-foreground text-center skill-name">
-                    {skill.name}
-                  </p>
+            <div className="flex w-max animate-scroll">
+              {[...Array(2)].map((_, i) => (
+                <div key={i} className="flex gap-8 px-4 justify-around w-max">
+                  {duplicatedProgrammingSkills.map((skill, index) => (
+                    <div
+                      key={`prog-${skill.name}-${index}`}
+                      className="flex flex-col items-center justify-center gap-3 flex-shrink-0 skill-item"
+                      style={{ width: "120px", minWidth: "120px" }}
+                    >
+                      <skill.icon className="w-16 h-16 skill-icon" />
+                      <p className="text-lg font-medium text-foreground text-center skill-name">
+                        {skill.name}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>
@@ -84,17 +72,21 @@ export function SkillsSection() {
                 "linear-gradient(to right, transparent, white 10%, white 90%, transparent)",
             }}
           >
-            <div className="flex min-w-[1200%] shrink-0 animate-scroll-reverse gap-8">
-              {duplicatedCreativeSkills.map((skill, index) => (
-                <div
-                  key={`creative-${skill.name}-${index}`}
-                  className="flex flex-col items-center justify-center gap-3 flex-shrink-0 skill-item"
-                  style={{ width: "120px", minWidth: "120px" }}
-                >
-                  <skill.icon className="w-16 h-16 skill-icon" />
-                  <p className="text-lg font-medium text-foreground text-center skill-name">
-                    {skill.name}
-                  </p>
+            <div className="flex w-max animate-scroll-reverse">
+              {[...Array(2)].map((_, i) => (
+                <div key={i} className="flex gap-8 px-4 justify-around w-max">
+                  {duplicatedCreativeSkills.map((skill, index) => (
+                    <div
+                      key={`creative-${skill.name}-${index}`}
+                      className="flex flex-col items-center justify-center gap-3 flex-shrink-0 skill-item"
+                      style={{ width: "120px", minWidth: "120px" }}
+                    >
+                      <skill.icon className="w-16 h-16 skill-icon" />
+                      <p className="text-lg font-medium text-foreground text-center skill-name">
+                        {skill.name}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>
