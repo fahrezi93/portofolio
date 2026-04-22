@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Loading from './loading';
 import { motion, AnimatePresence } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 
 import { useLoading } from '@/context/loading-context';
 
@@ -12,6 +13,10 @@ interface AppLoadingProps {
 
 const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
   const { isLoading, setIsLoading } = useLoading();
+  const pathname = usePathname();
+
+  // Matikan loading global untuk halaman /minimalist
+  const isMinimalist = pathname?.startsWith('/minimalist');
 
   useEffect(() => {
     // Simulate app initialization time
@@ -21,6 +26,11 @@ const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
 
     return () => clearTimeout(timer);
   }, [setIsLoading]);
+
+  // Bypass the loading screen for minimalist route
+  if (isMinimalist) {
+    return <>{children}</>;
+  }
 
   return (
     <>

@@ -27,6 +27,14 @@ export default {
   			],
   			code: [
   				'monospace'
+  			],
+  			space: [
+  				'var(--font-space)',
+  				'sans-serif'
+  			],
+  			bricolage: [
+  				'var(--font-bricolage)',
+  				'sans-serif'
   			]
   		},
   		colors: {

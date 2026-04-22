@@ -1,2 +1,5 @@
 {
+    "update.mode": "none",
+    "extensions.autoUpdate": false,
+    "extensions.autoCheckUpdates": false
 }
