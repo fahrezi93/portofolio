@@ -32,7 +32,8 @@ export function MinimalistHero() {
         <div className="flex-1 border-[1px] border-[#1a1a1a]/5 rounded-[3rem] md:rounded-[4rem] relative shadow-[inset_0_0_150px_rgba(0,0,0,0.05)] overflow-hidden bg-[#f2f0e4]">
 
           {/* Cinematic Background Video - Local Videoplayback */}
-          <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
+          {/* CSS Gradient Fallback: Loads instantly while the heavy video downloads */}
+          <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-gradient-to-br from-[#d4e1eb] via-[#e8edea] to-[#f2dfd3]">
             <video
               autoPlay
               loop
@@ -67,8 +68,8 @@ export function MinimalistHero() {
       </div>
 
       <motion.div
-        initial={{ opacity: 0, filter: "blur(10px)", y: 15 }}
-        animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+        initial={{ opacity: 0, y: 15, filter: "blur(10px)" }}
+        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 flex flex-col items-center text-center max-w-4xl"
       >

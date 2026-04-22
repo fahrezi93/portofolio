@@ -365,6 +365,11 @@
     box-shadow: none !important;
   }
   
+  /* Disable heavy Framer Motion blur filters globally on mobile for scroll performance */
+  [style*="filter: blur"] {
+    filter: none !important;
+  }
+  
   .mobile-simple-bg {
     /* Fallback simple backgrounds for mobile */
     background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.05)) !important;
