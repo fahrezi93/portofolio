@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/context/language-context";
 import { Badge } from "./ui/badge";
 import { DesignSection } from "@/components/portfolio/design-section";
@@ -127,90 +127,68 @@ export function PortfolioTabs() {
   };
 
   return (
-    <section id="portfolio" className="w-full py-16 md:py-24 lg:py-32 bg-transparent">
-      <div id="portfolio-title" className="scroll-mt-32"></div>
-      <div className="container mx-auto max-w-7xl px-4 md:px-6">
+    <section id="portfolio" className="w-full pt-12 md:pt-16 pb-24 md:pb-32 relative overflow-hidden bg-[#0B1121]">
+      {/* Background Atmosphere */}
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] pointer-events-none" />
+      
+      <div className="container mx-auto px-6 relative z-10">
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.05 }}
           variants={containerVariants}
+          className="max-w-6xl mx-auto"
         >
           {/* Header */}
-          <motion.div variants={headerVariants} className="text-center mb-12">
-            <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
-              {t.portfolio_title}
+          <motion.div variants={headerVariants} className="space-y-6 mb-20">
+            <div className="flex items-center gap-3">
+              <span className="w-8 h-[1px] bg-blue-500/50" />
+              <span className="text-[10px] font-medium tracking-[0.3em] text-blue-400 uppercase">Selected Works</span>
+            </div>
+            <h2 className="text-4xl md:text-6xl font-light tracking-tighter text-white leading-tight">
+              A collection of <br />
+              <span className="italic font-serif text-white/90">digital craft</span> & design.
             </h2>
-            <p className="max-w-2xl mx-auto text-lg text-muted-foreground">
-              {t.portfolio_subtitle}
-            </p>
           </motion.div>
 
-          {/* Tab Navigation - Mobile Optimized */}
-          <motion.div variants={tabsVariants} className="mb-16 max-w-4xl mx-auto">
-            {/* Mobile: Compact segmented control */}
-            <div className="md:hidden">
-              <div className="bg-muted p-1 rounded-lg mx-4">
-                <div className="flex">
-                  {tabs.map((tab) => {
-                    const IconComponent = tab.icon;
-                    const isActive = activeTab === tab.id;
-
-                    return (
+          {/* Tab Navigation - Minimalist Architectural */}
+          <motion.div variants={tabsVariants} className="mb-20">
+            <div className="flex flex-col md:flex-row items-center justify-between border-b border-white/5 pb-8 gap-8">
+              <div className="flex flex-wrap items-center gap-2 md:gap-8">
+                {tabs.map((tab, i) => {
+                  const isActive = activeTab === tab.id;
+                  return (
+                    <div key={tab.id} className="flex items-center gap-2 md:gap-8">
                       <button
-                        key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`flex-1 flex flex-col items-center gap-1 py-2 px-2 rounded-md transition-all duration-200 ${isActive
-                            ? "bg-background text-foreground shadow-sm"
-                            : "text-muted-foreground hover:text-foreground"
-                          }`}
+                        className={`group relative py-2 text-sm transition-all duration-500 ${
+                          isActive ? "text-white" : "text-white/40 hover:text-white/60"
+                        }`}
                       >
-                        <IconComponent className="w-5 h-5" />
-                        <span className="text-xs font-medium">{tab.label}</span>
+                        <span className="relative z-10 flex items-center gap-2">
+                          <span className="text-[10px] font-serif italic text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">0{i+1}</span>
+                          {tab.label}
+                        </span>
+                        {isActive && (
+                          <motion.div 
+                            layoutId="activeTab"
+                            className="absolute -bottom-[33px] left-0 right-0 h-[2px] bg-blue-500 z-20"
+                            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                          />
+                        )}
                       </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            {/* Desktop: Full cards */}
-            <div className="hidden md:flex flex-wrap justify-center gap-6">
-              {tabs.map((tab) => {
-                const IconComponent = tab.icon;
-                const isActive = activeTab === tab.id;
-
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`group relative rounded-full transition-all duration-300 transform hover:scale-105 min-w-[280px] ${isActive
-                        ? "scale-105 shadow-lg"
-                        : "hover:shadow-md"
-                      }`}
-                  >
-                    <div className={`relative px-6 py-4 rounded-full border transition-all duration-300 ${isActive
-                        ? "bg-slate-700 dark:bg-slate-600 border-slate-600 dark:border-slate-500 text-white"
-                        : "bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
-                      }`}>
-                      <div className="flex items-center gap-3">
-                        {/* Icon */}
-                        <IconComponent className="w-5 h-5 flex-shrink-0" />
-
-                        {/* Content */}
-                        <div className="text-left flex-1">
-                          <h3 className="font-semibold text-base mb-0.5">
-                            {tab.label}
-                          </h3>
-                          <p className="text-xs opacity-80">
-                            {tab.description}
-                          </p>
-                        </div>
-                      </div>
+                      {i < tabs.length - 1 && (
+                        <div className="hidden md:block w-[1px] h-3 bg-white/10" />
+                      )}
                     </div>
-                  </button>
-                );
-              })}
+                  );
+                })}
+              </div>
+
+              {/* Stats/Counter */}
+              <div className="hidden lg:block text-[10px] font-medium tracking-[0.2em] text-white/20 uppercase">
+                Active Archive / 2024 — 2025
+              </div>
             </div>
           </motion.div>
 
@@ -218,12 +196,23 @@ export function PortfolioTabs() {
           <motion.div
             id="portfolio-content"
             variants={contentVariants}
-            className="min-h-[600px] scroll-mt-28"
+            className="min-h-[600px]"
           >
-            {renderTabContent()}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {renderTabContent()}
+              </motion.div>
+            </AnimatePresence>
           </motion.div>
         </motion.div>
       </div>
     </section>
+
   );
 }

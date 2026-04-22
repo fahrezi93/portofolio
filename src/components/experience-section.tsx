@@ -44,99 +44,95 @@ export function ExperienceSection() {
   };
 
   return (
-    <section id="experience" className="w-full py-20 md:py-28 lg:py-32 bg-gradient-to-b from-background to-secondary/30">
-      <div className="container mx-auto max-w-4xl px-4 md:px-6">
-        {/* Header Section */}
-        <motion.div
-          className="text-center mb-20"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-            <Calendar className="w-4 h-4" />
-            {t.experience_title}
-          </div>
-          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
-            Professional Journey
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            {t.experience_subtitle}
-          </p>
-        </motion.div>
-
-        {/* Experience Cards */}
-        <motion.div
-          className="space-y-8"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          {currentExperiences.map((exp, index) => (
-            <motion.div
-              key={index}
-              variants={itemVariants}
-              className="group relative"
+    <section id="experience" className="w-full py-24 md:py-32 relative bg-[#0B1121] overflow-hidden">
+      {/* Background Atmosphere */}
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] pointer-events-none" />
+      
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-6xl mx-auto">
+          
+          {/* Section Header */}
+          <div className="mb-32 space-y-6">
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-3"
             >
-              {/* Modern Card Design - optimized for mobile */}
-              <div className={`relative p-6 md:p-8 rounded-2xl bg-background border border-border/50 shadow-sm ${!isMobile ? 'md:bg-background/80 md:backdrop-blur-sm hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 hover:border-primary/30 hover:-translate-y-1' : ''}`}>
-                {/* Gradient Accent - only on desktop */}
-                {!isMobile && <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />}
+              <span className="w-8 h-[1px] bg-blue-500/50" />
+              <span className="text-[10px] font-medium tracking-[0.3em] text-blue-400 uppercase">Chronicle / Experience</span>
+            </motion.div>
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-white leading-tight"
+            >
+              Professional <span className="italic font-serif text-white/90">Pathways</span>.
+            </motion.h2>
+          </div>
 
-                {/* Content */}
-                <div className="relative z-10">
-                  {/* Header */}
-                  <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
-                    <div className="flex-1">
-                      <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
-                        {exp.jobTitle}
-                      </h3>
-                      <div className="flex items-center gap-2 text-primary font-semibold mb-2">
-                        <MapPin className="w-4 h-4" />
-                        {exp.company}
-                      </div>
-                    </div>
-
-                    {/* Duration Badge */}
-                    <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/80 text-muted-foreground text-sm font-medium border border-border/30">
-                      <Calendar className="w-3 h-3" />
+          {/* Timeline List */}
+          <div className="space-y-0">
+            {currentExperiences.map((exp, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="group relative border-t border-white/5 py-12 md:py-16 grid md:grid-cols-[1fr_2fr_1fr] lg:grid-cols-[0.8fr_2fr_0.5fr] gap-8 items-start hover:bg-white/[0.01] transition-colors duration-500 px-4 -mx-4 rounded-xl"
+              >
+                {/* Column 1: Duration */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <span className="w-2 h-2 rounded-full bg-blue-500/40 group-hover:bg-blue-400 transition-colors" />
+                    <span className="text-[10px] font-semibold tracking-[0.2em] text-blue-400 uppercase">
                       {exp.duration}
-                    </div>
+                    </span>
                   </div>
+                </div>
 
-                  {/* Description */}
-                  <div className="space-y-3">
+                {/* Column 2: Job Title & Company */}
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <h3 className="text-2xl md:text-3xl font-light text-white tracking-tight group-hover:translate-x-2 transition-transform duration-500">
+                      {exp.jobTitle}
+                    </h3>
+                    <p className="text-lg italic font-serif text-white/50 group-hover:text-white/80 transition-colors">
+                      {exp.company}
+                    </p>
+                  </div>
+                  
+                  {/* Description List */}
+                  <div className="space-y-4 max-w-xl">
                     {exp.description.map((desc, i) => (
-                      <div key={i} className="flex items-start gap-3">
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-2.5 flex-shrink-0" />
-                        <p className="text-muted-foreground leading-relaxed">
-                          {desc}
-                        </p>
-                      </div>
+                      <p 
+                        key={i} 
+                        className="text-sm text-gray-500 font-light leading-relaxed group-hover:text-gray-400 transition-colors"
+                      >
+                        {desc}
+                      </p>
                     ))}
                   </div>
                 </div>
 
-                {/* Subtle Corner Accent - only on desktop */}
-                {!isMobile && <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-primary/10 to-transparent rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />}
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Bottom Decoration */}
-        <motion.div
-          className="mt-16 flex justify-center"
-          initial={{ opacity: 0, scale: 0.8 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
-          <div className="w-16 h-1 bg-gradient-to-r from-primary to-accent rounded-full" />
-        </motion.div>
+                {/* Column 3: Optional Meta / Index */}
+                <div className="hidden lg:flex justify-end">
+                  <span className="text-[40px] font-serif italic text-white/[0.03] group-hover:text-white/[0.07] transition-colors select-none">
+                    0{index + 1}
+                  </span>
+                </div>
+              </motion.div>
+            ))}
+            {/* Bottom Border */}
+            <div className="border-t border-white/5 w-full" />
+          </div>
+        </div>
       </div>
     </section>
+
+
   );
 }

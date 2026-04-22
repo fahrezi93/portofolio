@@ -160,139 +160,114 @@ export function DesignSection() {
   }, [filteredProjects, showAll]);
 
   return (
-    <div className="space-y-8">
-      {/* Category Filter */}
-      <div className="flex flex-wrap justify-center gap-2">
+    <div className="space-y-24 bg-transparent">
+      {/* Category Filter - Minimalist */}
+      <div className="flex flex-wrap items-center gap-6 border-b border-white/5 pb-8">
         {categories.map((category) => (
-          <Badge
+          <button
             key={category}
-            variant={selectedCategory === category ? "default" : "secondary"}
             onClick={() => setSelectedCategory(category)}
-            className="cursor-pointer text-sm py-2 px-4 hover:scale-105 transition-transform"
+            className={`text-xs font-medium tracking-widest uppercase transition-all ${
+              selectedCategory === category 
+                ? "text-blue-400" 
+                : "text-white/20 hover:text-white/40"
+            }`}
           >
             {category}
-          </Badge>
+          </button>
         ))}
       </div>
 
-      {/* Loading State */}
-      {isLoading && (
-        <div className="flex justify-center items-center py-16">
-          <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
-        </div>
-      )}
-
-      {/* Design Projects Grid */}
+      {/* Design Projects - Editorial Gallery */}
       {!isLoading && (
         <motion.div
-          key={`grid-${showAll}-${selectedCategory}`} // Force re-render when showAll changes
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-start"
+          key={`design-grid-${showAll}-${selectedCategory}`}
+          className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-24"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.05 }}
         >
-          {displayedProjects.map((project: DesignProject, index: number) => (
+          {displayedProjects.map((project, index) => (
             <motion.div
-              key={`${project.id}-${showAll}-${index}`} // More unique key
-              className="group relative bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-[1.01] h-full flex flex-col"
+              key={project.id}
               variants={cardVariants}
-              style={{ minHeight: '450px' }}
+              className={`group flex flex-col ${index % 2 === 0 ? 'md:pt-24' : ''}`}
             >
-              {/* Project Image */}
-              <div className="relative aspect-[4/3] bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/20 dark:to-purple-900/20 overflow-hidden">
+              {/* Image Frame - Gallery Style */}
+              <div className="relative aspect-[16/11] w-full overflow-hidden border border-white/5 bg-white/[0.02] rounded-lg mb-8 shadow-2xl">
                 <OptimizedImage
                   src={project.image}
-                  alt={`Mohammad Fahrezi Portfolio - ${project.title}`}
+                  alt={project.title}
                   fill
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                  className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
+                  sizes="(max-width: 768px) 100vw, 600px"
                   priority={index < 4}
                 />
+                
+                {/* Visual Accent */}
+                <div className="absolute inset-0 border-[20px] border-black/0 group-hover:border-black/20 transition-all duration-700 pointer-events-none" />
               </div>
 
-              {/* Project Info */}
-              <div className="p-6 flex-1 flex flex-col">
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <h3 className="font-semibold text-xl mb-1">{project.title}</h3>
-                    <p className="text-sm text-muted-foreground">{project.type} • {project.year}</p>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <Badge variant="outline" className="text-xs">
-                      Design
-                    </Badge>
-                    {project.featured && (
-                      <Badge variant="default" className="text-xs bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400">
-                        ⭐ Featured
-                      </Badge>
-                    )}
-                  </div>
+              {/* Content - Editorial */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <span className="text-[10px] font-medium tracking-[0.2em] text-blue-400 uppercase">{project.type}</span>
+                  <span className="w-4 h-[1px] bg-white/10" />
+                  <span className="text-[10px] font-medium tracking-[0.2em] text-white/20 uppercase">{project.year}</span>
                 </div>
 
-                <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
+                <h3 className="text-3xl font-light tracking-tighter text-white group-hover:text-blue-400 transition-colors duration-500">
+                  {project.title}
+                </h3>
+
+                <p className="text-sm text-white/40 leading-relaxed max-w-md">
                   {project.description}
                 </p>
 
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tags.map((tag: string) => (
-                    <Badge key={tag} variant="secondary" className="text-xs">
-                      {tag}
-                    </Badge>
+                <div className="flex flex-wrap gap-4 pt-4">
+                  {project.tools.slice(0, 3).map((tool: string) => (
+                    <span key={tool} className="text-[9px] font-bold tracking-widest text-white/20 uppercase group-hover:text-white/60 transition-colors duration-500">
+                      {tool}
+                    </span>
                   ))}
                 </div>
-
-
               </div>
             </motion.div>
           ))}
         </motion.div>
       )}
 
-      {/* View More Button */}
+      {/* View More Button - Minimalist */}
       {filteredProjects.length > 4 && (
-        <div className="text-center">
-          <Button
-            variant="outline"
+        <div className="text-center pt-12">
+          <button
             onClick={handleViewMore}
-            className="group"
+            className="group relative inline-flex items-center gap-4 py-4 px-12 border border-white/10 rounded-full hover:bg-white/5 transition-all overflow-hidden"
           >
-            {showAll ? t.projects_show_less : `${t.projects_view_more} (${filteredProjects.length - 4} more)`}
-            <ChevronDown className={`w-4 h-4 ml-2 transition-transform ${showAll ? 'rotate-180' : ''}`} />
+            <span className="relative z-10 text-xs font-bold tracking-[0.3em] text-white uppercase">
+              {showAll ? "Show Less" : "View Entire Gallery"}
+            </span>
+            <ChevronDown className={`w-4 h-4 text-blue-400 transition-transform ${showAll ? 'rotate-180' : ''}`} />
+          </button>
+        </div>
+      )}
+
+      {/* CTA Section - Design Focused */}
+      <div className="pt-24 text-center">
+        <div className="max-w-2xl mx-auto p-12 border border-white/5 rounded-3xl bg-white/[0.01] backdrop-blur-sm">
+          <p className="text-xl font-light text-white/60 mb-8 italic font-serif leading-relaxed">
+            "Design is not just what it looks like and feels like. Design is how it works."
+          </p>
+          <Button
+            className="h-14 px-10 bg-white text-black hover:bg-white/90 rounded-full font-bold tracking-widest uppercase text-[10px] transition-all"
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            Start a design project
           </Button>
         </div>
-      )}
-
-      {/* Empty State */}
-      {filteredProjects.length === 0 && (
-        <div className="text-center py-12">
-          <Layers className="w-16 h-16 mx-auto text-muted-foreground/30 mb-4" />
-          <h3 className="text-lg font-semibold mb-2">No designs found</h3>
-          <p className="text-muted-foreground">
-            No design projects found for the selected category.
-          </p>
-        </div>
-      )}
-
-      {/* Call to Action */}
-      <div className="text-center pt-8">
-        <p className="text-muted-foreground mb-4">
-          {t.portfolio_design_cta_text}
-        </p>
-        <Button
-          className="group"
-          onClick={() => {
-            const contactSection = document.getElementById('contact');
-            if (contactSection) {
-              contactSection.scrollIntoView({ behavior: 'smooth' });
-            }
-          }}
-        >
-          <Figma className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform" />
-          {t.portfolio_design_cta_button}
-        </Button>
       </div>
     </div>
+
   );
 }

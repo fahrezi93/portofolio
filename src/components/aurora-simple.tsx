@@ -152,6 +152,9 @@ export default function AuroraSimple(props: AuroraSimpleProps) {
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     gl.canvas.style.backgroundColor = "transparent";
+    gl.canvas.style.position = "absolute";
+    gl.canvas.style.top = "0";
+    gl.canvas.style.left = "0";
     
     // Set size
     const resize = () => {
@@ -204,6 +207,10 @@ export default function AuroraSimple(props: AuroraSimpleProps) {
     };
     
     // Start animation and handle resize
+    const resizeObserver = new ResizeObserver(() => {
+      resize();
+    });
+    resizeObserver.observe(container);
     window.addEventListener('resize', resize);
     resize();
     animationId = requestAnimationFrame(animate);
@@ -211,6 +218,7 @@ export default function AuroraSimple(props: AuroraSimpleProps) {
     // Cleanup
     return () => {
       cancelAnimationFrame(animationId);
+      resizeObserver.disconnect();
       window.removeEventListener('resize', resize);
       if (container && gl.canvas.parentNode === container) {
         container.removeChild(gl.canvas);
@@ -219,5 +227,5 @@ export default function AuroraSimple(props: AuroraSimpleProps) {
     };
   }, [amplitude, blend, colorStops, speed]);
 
-  return <div ref={containerRef} className="w-full h-full" />;
+  return <div ref={containerRef} className="relative w-full h-full" />;
 }

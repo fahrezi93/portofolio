@@ -70,6 +70,10 @@ export interface Translation {
     comments_form_posting: string;
     comments_empty_title: string;
     comments_empty_subtitle: string;
+    music_now_playing: string;
+    music_top_tracks: string;
+    music_heavy_rotation: string;
+    music_curated_sounds: string;
   };
   id: {
     nav_work: string;
@@ -142,6 +146,10 @@ export interface Translation {
     comments_form_posting: string;
     comments_empty_title: string;
     comments_empty_subtitle: string;
+    music_now_playing: string;
+    music_top_tracks: string;
+    music_heavy_rotation: string;
+    music_curated_sounds: string;
   };
 }
 
@@ -217,6 +225,10 @@ export const translations: Translation = {
     comments_form_posting: "Posting...",
     comments_empty_title: "No comments yet",
     comments_empty_subtitle: "Be the first to leave a comment about this portfolio!",
+    music_now_playing: "Currently Playing",
+    music_top_tracks: "Top Tracks",
+    music_heavy_rotation: "Heavy Rotation",
+    music_curated_sounds: "Curated sounds that shaped my focus and fueled the creative process.",
   },
   id: {
     nav_work: "Karya",
@@ -289,5 +301,9 @@ export const translations: Translation = {
     comments_form_posting: "Mengirim...",
     comments_empty_title: "Belum ada komentar",
     comments_empty_subtitle: "Jadilah yang pertama memberikan komentar tentang portofolio ini!",
+    music_now_playing: "Sedang Diputar",
+    music_top_tracks: "Lagu Teratas",
+    music_heavy_rotation: "Sering Diputar",
+    music_curated_sounds: "Suara pilihan yang membentuk fokus saya dan mendorong proses kreatif.",
   },
 };

@@ -26,7 +26,7 @@ export default function AuroraBackground() {
   // Disable aurora hanya jika user prefer reduced motion
   if (reducedMotion) {
     return (
-      <div className="pointer-events-none absolute inset-0 -z-10 w-full h-screen">
+      <div className="pointer-events-none absolute inset-0 -z-10 w-full h-full">
         {/* Static gradient fallback untuk reduced motion */}
         <div className="absolute inset-0 bg-gradient-to-b from-blue-950/10 via-purple-950/5 to-transparent" />
       </div>
@@ -34,9 +34,9 @@ export default function AuroraBackground() {
   }
 
   return (
-    <div className="pointer-events-none absolute inset-0 -z-10 w-full h-screen">
+    <div className="pointer-events-none absolute inset-0 -z-10 w-full h-full">
       <AuroraSimple 
-        colorStops={["#3B82F6", "#9333EA", "#EC4899"]} 
+        colorStops={["#1E3A8A", "#3B82F6", "#60A5FA"]} 
         blend={isMobile ? 0.15 : 0.2} 
         amplitude={isMobile ? 0.4 : 0.6} 
         speed={isMobile ? 0.03 : 0.05} 

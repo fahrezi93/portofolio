@@ -9,29 +9,31 @@ export function LanguageSwitcher() {
   const { language, setLanguage } = useLanguage();
 
   return (
-    <div className="flex items-center gap-1 rounded-full border border-border/50 bg-background/50 p-1">
-      <Button
-        variant="ghost"
-        size="sm"
+    <div className="flex items-center gap-1 p-1 bg-white/5 rounded-full">
+      <button
         onClick={() => setLanguage("en")}
         className={cn(
-          "rounded-full w-12 text-base transition-colors",
-          language === "en" ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground" : "hover:bg-accent"
+          "px-5 py-2 rounded-full text-[10px] font-space font-bold tracking-[0.05em] transition-all duration-500",
+          language === "en"
+            ? "bg-white text-black shadow-lg"
+            : "text-white/40 hover:text-white"
         )}
       >
         EN
-      </Button>
-      <Button
-        variant="ghost"
-        size="sm"
+      </button>
+      <button
         onClick={() => setLanguage("id")}
         className={cn(
-          "rounded-full w-12 text-base transition-colors",
-          language === "id" ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground" : "hover:bg-accent"
+          "px-5 py-2 rounded-full text-[10px] font-space font-bold tracking-[0.05em] transition-all duration-500",
+          language === "id"
+            ? "bg-white text-black shadow-lg"
+            : "text-white/40 hover:text-white"
         )}
       >
         ID
-      </Button>
+      </button>
     </div>
+
   );
 }
+

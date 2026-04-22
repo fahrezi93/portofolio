@@ -36,144 +36,139 @@ export function AboutSection() {
   const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
 
   return (
-    <section
-      id="about"
-      ref={containerRef}
-      className="w-full py-16 md:py-24 lg:py-32 relative overflow-hidden bg-background/50"
-    >
-      {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[100px] -translate-y-1/2" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px] translate-y-1/2" />
+    <section id="about" ref={containerRef} className="w-full py-24 md:py-32 relative overflow-hidden bg-[#0B1121]">
+      {/* Background Atmosphere */}
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-blue-500/[0.02] blur-[120px] rounded-full pointer-events-none translate-x-1/4 translate-y-1/4" />
 
-        {/* Giant Background Text */}
-        <motion.div
-          style={{ y }}
-          className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none select-none"
-        >
-          <span className="text-[20vw] font-bold font-headline uppercase tracking-tighter text-foreground">
-            About
-          </span>
-        </motion.div>
-      </div>
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-[0.8fr_1.2fr] gap-16 lg:gap-24 items-start">
 
-      <div className="container mx-auto px-6 md:px-8 lg:px-6 relative z-10">
-        <div className="grid lg:grid-cols-12 gap-10 md:gap-12 items-center max-w-6xl mx-auto">
+          {/* Image & Roles Column */}
+          <div className="space-y-12">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden border border-white/5 group shadow-2xl"
+            >
+              <Image
+                src="/images/profile.webp"
+                alt="Mohammad Fahrezi"
+                fill
+                className="object-cover object-bottom grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0B1121] via-transparent to-transparent opacity-60" />
 
-          {/* Image Column */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="lg:col-span-4 relative group"
-          >
-            <div className="relative w-full aspect-[3/4] max-w-[280px] sm:max-w-xs mx-auto lg:max-w-sm">
-              {/* Decorative Frames */}
-              <div className="absolute inset-0 border-2 border-primary/20 rounded-3xl transform rotate-6 transition-transform duration-500 group-hover:rotate-3" />
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-emerald-500/10 rounded-3xl transform -rotate-6 transition-transform duration-500 group-hover:-rotate-3 backdrop-blur-sm" />
-
-              {/* Main Image Container */}
-              <div className="relative h-full w-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-                <Image
-                  src="/images/profile.webp"
-                  alt="Mohammad Fahrezi"
-                  fill
-                  className="object-cover object-[center_100%] scale-125 transition-transform duration-700 group-hover:scale-[1.35]"
-                  priority
-                />
-
-                {/* Floating Badge with Auto-Swipe */}
-                <div className="absolute bottom-6 left-6 right-6 p-4 bg-background/80 backdrop-blur-md border border-white/10 rounded-xl shadow-lg overflow-hidden">
-                  <div className="flex justify-between items-center">
-                    <div className="h-10 flex flex-col justify-center w-full">
-                      <p className="text-xs text-muted-foreground font-medium mb-0.5">Experience</p>
-                      <div className="relative h-6 w-full overflow-hidden">
-                        <AnimatePresence mode="wait">
-                          <motion.p
-                            key={currentRoleIndex}
-                            initial={{ y: 20, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            exit={{ y: -20, opacity: 0 }}
-                            transition={{ duration: 0.5, ease: "easeInOut" }}
-                            className="text-sm font-bold text-foreground absolute w-full truncate"
-                          >
-                            {roles[currentRoleIndex].label}
-                          </motion.p>
-                        </AnimatePresence>
-                      </div>
-                    </div>
-                    <div className="h-10 w-10 shrink-0 rounded-full bg-primary/20 flex items-center justify-center text-primary ml-3">
-                      <AnimatePresence mode="wait">
-                        <motion.div
-                          key={currentRoleIndex}
-                          initial={{ scale: 0, rotate: -90 }}
-                          animate={{ scale: 1, rotate: 0 }}
-                          exit={{ scale: 0, rotate: 90 }}
-                          transition={{ duration: 0.5 }}
-                        >
-                          {(() => {
-                            const Icon = roles[currentRoleIndex].icon;
-                            return <Icon className="w-5 h-5" />;
-                          })()}
-                        </motion.div>
-                      </AnimatePresence>
-                    </div>
-                  </div>
+              {/* Gallery-style metadata label */}
+              <div className="absolute bottom-6 left-6 right-6">
+                <div className="p-4 bg-white/[0.03] backdrop-blur-md border border-white/10 rounded-xl space-y-1">
+                  <p className="text-[8px] font-bold tracking-[0.2em] text-white/40 uppercase">Digital Persona</p>
+                  <p className="text-sm font-light text-white">Mohammad Fahrezi</p>
                 </div>
               </div>
+            </motion.div>
+
+            {/* Expertise List - Deconstructed */}
+            <div className="space-y-6">
+              <p className="text-[10px] font-medium tracking-[0.3em] text-blue-400 uppercase">Focus Areas</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {roles.slice(0, 4).map((role, i) => (
+                  <motion.div
+                    key={role.label}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="flex items-center gap-3 py-3 border-b border-white/5 group hover:border-white/20 transition-colors"
+                  >
+                    <role.icon className="w-4 h-4 text-white/20 group-hover:text-blue-400 transition-colors" />
+                    <span className="text-xs font-light text-white/60 group-hover:text-white transition-colors">
+                      {role.label}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Content Column */}
-          <div className="lg:col-span-8 space-y-6 md:space-y-8">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center lg:text-left"
-            >
-              <div className="flex items-center justify-center lg:justify-start gap-2 mb-3 md:mb-4">
-                <span className="h-px w-8 bg-primary" />
-                <span className="text-primary font-medium tracking-wider text-xs md:text-sm uppercase">Who I Am</span>
-              </div>
+          <div className="space-y-12">
+            <div className="space-y-8">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="flex items-center gap-3"
+              >
+                <span className="w-8 h-[1px] bg-blue-500/50" />
+                <span className="text-[10px] font-medium tracking-[0.3em] text-blue-400 uppercase">Narrative / Bio</span>
+              </motion.div>
 
-              <h2 className="font-headline text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight mb-4 md:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
-                {t.about_title}
-              </h2>
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="text-4xl md:text-6xl lg:text-7xl font-light tracking-tighter text-white leading-[1.1]"
+              >
+                Designing <br />
+                <span className="italic font-serif text-white/90">digital</span> stories.
+              </motion.h2>
 
-              <div className="space-y-4 md:space-y-6 text-base md:text-lg text-muted-foreground leading-relaxed">
-                <p>{t.about_p1}</p>
-                <p>{t.about_p2}</p>
-              </div>
-            </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="space-y-6 max-w-xl"
+              >
+                <p className="text-lg md:text-xl text-gray-300 font-light leading-relaxed">
+                  {t.about_p1.split("meaningful digital experiences").map((part, i) => (
+                    <span key={i}>
+                      {part}
+                      {i === 0 && <span className="italic font-serif text-white">meaningful digital experiences</span>}
+                    </span>
+                  ))}
+                </p>
+                <p className="text-base text-gray-500 font-light leading-relaxed">
+                  {t.about_p2}
+                </p>
+              </motion.div>
+            </div>
 
             {/* Actions */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start items-stretch sm:items-center"
+              transition={{ delay: 0.3 }}
+              className="flex flex-col sm:flex-row gap-6 pt-12 border-t border-white/5"
             >
-              <StarBorder as="a" href="#contact" className="w-full sm:w-auto text-center">
-                {t.about_cta}
-              </StarBorder>
+              <Button
+                asChild
+                className="group relative h-14 px-8 bg-white text-black hover:bg-white/90 rounded-full font-medium transition-all overflow-hidden"
+              >
+                <a href="#contact" className="flex items-center gap-2">
+                  <span className="relative z-10">{t.about_cta}</span>
+                  <div className="w-2 h-2 rounded-full bg-black group-hover:w-4 transition-all duration-300" />
+                </a>
+              </Button>
 
               <Button
                 variant="outline"
-                size="lg"
                 asChild
-                className="w-full sm:w-auto group relative overflow-hidden border-primary/20 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 h-[50px]"
+                className="h-14 px-8 bg-transparent hover:bg-white/5 border-white/10 text-white rounded-full font-medium transition-colors backdrop-blur-md"
               >
                 <a
                   href="/CV-Fahrezi-new.pdf"
                   download
-                  className="flex items-center justify-center gap-2 px-6 md:px-8"
+                  className="flex items-center gap-3"
                 >
-                  <Download className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
-                  <span className="font-medium">{t.download_cv}</span>
+                  <Download className="h-4 w-4 text-gray-400 group-hover:translate-y-1 transition-transform" />
+                  <span>{t.download_cv}</span>
                 </a>
               </Button>
             </motion.div>
@@ -182,5 +177,6 @@ export function AboutSection() {
         </div>
       </div>
     </section>
+
   );
 }

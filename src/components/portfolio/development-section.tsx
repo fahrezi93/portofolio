@@ -230,26 +230,29 @@ export function DevelopmentSection() {
   };
 
   return (
-    <div className="space-y-8">
-      {/* Category Filter */}
-      <div className="flex flex-wrap justify-center gap-2">
+    <div className="space-y-24 bg-transparent">
+      {/* Category Filter - Minimalist */}
+      <div className="flex flex-wrap items-center gap-6 border-b border-white/5 pb-8">
         {categories.map((category) => (
-          <Badge
+          <button
             key={category}
-            variant={selectedCategory === category ? "default" : "secondary"}
             onClick={() => setSelectedCategory(category)}
-            className="cursor-pointer text-sm py-2 px-4 hover:scale-105 transition-transform"
+            className={`text-xs font-medium tracking-widest uppercase transition-all ${
+              selectedCategory === category 
+                ? "text-blue-400" 
+                : "text-white/20 hover:text-white/40"
+            }`}
           >
             {category}
-          </Badge>
+          </button>
         ))}
       </div>
 
-      {/* Development Projects Grid */}
+      {/* Development Projects - Editorial List */}
       {!isLoading && (
         <motion.div
-          key={`dev-grid-${showAll}-${selectedCategory}`} // Force re-render when showAll changes
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-start"
+          key={`dev-grid-${showAll}-${selectedCategory}`}
+          className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-24"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -257,144 +260,104 @@ export function DevelopmentSection() {
         >
           {displayedProjects.map((project, index) => (
             <motion.div
-              key={`${project.id}-${showAll}-${index}`} // More unique key
+              key={project.id}
               variants={cardVariants}
-              className="h-full"
+              className={`group flex flex-col ${index % 2 === 1 ? 'md:pt-24' : ''}`}
             >
-              <SpotlightCard
-                className="group h-full flex flex-col border-border/50 bg-card/50 backdrop-blur-sm"
-                style={{ minHeight: '500px' }}
-                spotlightColor="rgba(59, 130, 246, 0.15)"
-              >
-                {/* Project Image */}
-                <div className="relative aspect-[4/3] bg-gradient-to-br from-green-100 to-blue-100 dark:from-green-900/20 dark:to-blue-900/20 overflow-hidden">
-                  <OptimizedImage
-                    src={project.image}
-                    alt={`Mohammad Fahrezi Portfolio - ${project.title}`}
-                    fill
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
-                    priority={index < 4}
-                  />
-
-                  {/* Status & Featured Badges */}
-                  <div className="absolute top-3 left-3 flex gap-2 z-10">
-                    <div className={`text-xs px-2 py-1 rounded-full ${getStatusColor(project.status)}`}>
-                      {project.status}
-                    </div>
-                    {project.featured && (
-                      <div className="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400 font-medium">
-                        ⭐ Featured
-                      </div>
-                    )}
+              {/* Image Frame - Architectural */}
+              <div className="relative aspect-[16/10] w-full overflow-hidden border border-white/5 bg-white/[0.02] rounded-lg mb-8">
+                <OptimizedImage
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
+                  sizes="(max-width: 768px) 100vw, 600px"
+                  priority={index < 4}
+                />
+                
+                {/* Meta Overlay */}
+                <div className="absolute top-4 left-4">
+                  <div className="px-3 py-1 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-[8px] font-bold tracking-[0.2em] text-white uppercase opacity-0 group-hover:opacity-100 transition-opacity">
+                    {project.year}
                   </div>
                 </div>
+              </div>
 
-                {/* Project Info */}
-                <div className="p-6 flex-1 flex flex-col">
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <h3 className="font-semibold text-xl mb-1 group-hover:text-primary transition-colors">{project.title}</h3>
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        {getTypeIcon(project.type)}
-                        <span>{project.type} • {project.year}</span>
-                      </div>
-                    </div>
-                    <Badge variant="outline" className="text-xs">
-                      Development
-                    </Badge>
-                  </div>
-
-                  <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
-                    {project.description}
-                  </p>
-
-                  {/* Technologies */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.technologies.map((tech: string) => (
-                      <Badge key={tech} variant="secondary" className="text-xs group-hover:bg-primary/10 transition-colors">
-                        {tech}
-                      </Badge>
-                    ))}
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex gap-2 mb-4 mt-auto">
-                    {project.githubUrl && (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="flex-1 z-30"
-                        onClick={() => window.open(project.githubUrl, '_blank')}
-                      >
-                        <Github className="w-4 h-4 mr-2" />
-                        GitHub
-                      </Button>
-                    )}
-                    {project.liveUrl && (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="flex-1 z-30"
-                        onClick={() => window.open(project.liveUrl, '_blank')}
-                      >
-                        <ExternalLink className="w-4 h-4 mr-2" />
-                        Live Demo
-                      </Button>
-                    )}
-                  </div>
-
-
+              {/* Content - Deconstructed */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <span className="text-[10px] font-medium tracking-[0.2em] text-blue-400 uppercase">{project.type}</span>
+                  <span className="w-4 h-[1px] bg-white/10" />
+                  <span className="text-[10px] font-medium tracking-[0.2em] text-white/20 uppercase">{project.status}</span>
                 </div>
-              </SpotlightCard>
+
+                <h3 className="text-2xl md:text-3xl font-light tracking-tighter text-white group-hover:text-blue-400 transition-colors duration-500">
+                  {project.title}
+                </h3>
+
+                <p className="text-sm text-white/40 leading-relaxed max-w-md">
+                  {project.description}
+                </p>
+
+                <div className="flex flex-wrap gap-4 pt-4">
+                  {project.technologies.slice(0, 3).map((tech: string) => (
+                    <span key={tech} className="text-[9px] font-bold tracking-widest text-white/20 uppercase group-hover:text-white/60 transition-colors duration-500">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Actions - Subtle */}
+                <div className="flex items-center gap-6 pt-8 border-t border-white/5 mt-4">
+                  {project.githubUrl && (
+                    <a href={project.githubUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] text-white/40 hover:text-white uppercase transition-colors">
+                      <Github className="w-3 h-3" />
+                      Repository
+                    </a>
+                  )}
+                  {project.liveUrl && (
+                    <a href={project.liveUrl} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-[10px] font-bold tracking-[0.2em] text-blue-400 hover:text-blue-300 uppercase transition-colors ml-auto">
+                      Visit Site
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  )}
+                </div>
+              </div>
             </motion.div>
           ))}
         </motion.div>
       )}
 
-      {/* View More Button */}
+      {/* View More Button - Minimalist */}
       {filteredProjects.length > 4 && (
-        <div className="text-center">
-          <Button
-            variant="outline"
+        <div className="text-center pt-12">
+          <button
             onClick={handleViewMore}
-            className="group"
+            className="group relative inline-flex items-center gap-4 py-4 px-12 border border-white/10 rounded-full hover:bg-white/5 transition-all overflow-hidden"
           >
-            {showAll ? t.projects_show_less : `${t.projects_view_more} (${filteredProjects.length - 4} more)`}
-            <ChevronDown className={`w-4 h-4 ml-2 transition-transform ${showAll ? 'rotate-180' : ''}`} />
+            <span className="relative z-10 text-xs font-bold tracking-[0.3em] text-white uppercase">
+              {showAll ? "Show Less" : "Explore More Archive"}
+            </span>
+            <ChevronDown className={`w-4 h-4 text-blue-400 transition-transform ${showAll ? 'rotate-180' : ''}`} />
+          </button>
+        </div>
+      )}
+
+      {/* CTA Section - Minimalist */}
+      <div className="pt-24 text-center">
+        <div className="max-w-2xl mx-auto p-12 border border-white/5 rounded-3xl bg-white/[0.01] backdrop-blur-sm">
+          <p className="text-xl font-light text-white/60 mb-8 italic font-serif">
+            "Every project is a journey into solving complex problems with simple, elegant code."
+          </p>
+          <Button
+            className="h-14 px-10 bg-white text-black hover:bg-white/90 rounded-full font-bold tracking-widest uppercase text-[10px] transition-all"
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            Start a project with me
           </Button>
         </div>
-      )}
-
-      {/* Empty State */}
-      {filteredProjects.length === 0 && (
-        <div className="text-center py-12">
-          <Code className="w-16 h-16 mx-auto text-muted-foreground/30 mb-4" />
-          <h3 className="text-lg font-semibold mb-2">No projects found</h3>
-          <p className="text-muted-foreground">
-            No development projects found for the selected category.
-          </p>
-        </div>
-      )}
-
-      {/* Call to Action */}
-      <div className="text-center pt-8">
-        <p className="text-muted-foreground mb-4">
-          {t.portfolio_dev_cta_text}
-        </p>
-        <Button
-          className="group"
-          onClick={() => {
-            const contactSection = document.getElementById('contact');
-            if (contactSection) {
-              contactSection.scrollIntoView({ behavior: 'smooth' });
-            }
-          }}
-        >
-          <Code className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform" />
-          {t.portfolio_dev_cta_button}
-        </Button>
       </div>
     </div>
+
   );
 }

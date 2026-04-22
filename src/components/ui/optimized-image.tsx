@@ -83,7 +83,7 @@ export function OptimizedImage({
     const imageProps = {
         src,
         alt,
-        className: `${className} ${isLoading ? "opacity-0" : "opacity-100"} transition-opacity duration-150`,
+        className: `${className} ${isLoading ? "opacity-0" : "opacity-100"} ${className.includes("transition") ? "" : "transition-opacity duration-150"}`,
         sizes,
         priority,
         onLoad: handleLoad,

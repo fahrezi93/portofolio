@@ -51,48 +51,52 @@ export function EditingSection() {
   }, [filteredProjects, showAll]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-24 bg-transparent">
+      {/* Cinematic Placeholder */}
+      <div className="max-w-4xl mx-auto text-center py-24 border border-white/5 rounded-[40px] bg-white/[0.01] backdrop-blur-md relative overflow-hidden group">
+        {/* Animated Background Element */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 blur-[100px] group-hover:bg-blue-500/10 transition-colors duration-500" />
+        
+        <div className="relative z-10 space-y-8">
+          <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/5 border border-white/10 rounded-full">
+            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+            <span className="text-[10px] font-bold tracking-[0.2em] text-white uppercase">In Production</span>
+          </div>
 
-      {/* Coming Soon Section */}
-      <div className="text-center py-16">
-        <div className="relative inline-block">
-          <Video className="w-24 h-24 mx-auto text-muted-foreground/20 mb-6" />
-          <div className="absolute -top-2 -right-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs px-3 py-1 rounded-full font-medium animate-pulse">
-            Coming Soon
+          <h3 className="text-4xl md:text-6xl font-light tracking-tighter text-white">
+            Cinematic <br />
+            <span className="italic font-serif text-white/90">narratives</span> coming soon.
+          </h3>
+
+          <p className="text-sm text-white/40 max-w-md mx-auto leading-relaxed">
+            I'm currently curating my best work in motion graphics and video storytelling. The archive will be live shortly.
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-6 pt-8">
+            {['Motion Design', 'Video Editing', 'Post Production'].map((tag) => (
+              <span key={tag} className="text-[10px] font-bold tracking-[0.2em] text-white/20 uppercase group-hover:text-white/40 transition-colors duration-500">
+                {tag}
+              </span>
+            ))}
           </div>
         </div>
-        <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-          Video Editing Portfolio
-        </h3>
-        <p className="text-muted-foreground max-w-md mx-auto mb-6">
-          I'm currently working on some amazing video projects! Check back soon to see my latest motion graphics and video editing work.
-        </p>
-        <div className="flex justify-center gap-2">
-          <Badge variant="secondary" className="text-xs">Motion Graphics</Badge>
-          <Badge variant="secondary" className="text-xs">Video Editing</Badge>
-          <Badge variant="secondary" className="text-xs">After Effects</Badge>
+      </div>
+
+      {/* CTA Section - Video Focused */}
+      <div className="pt-12 text-center">
+        <div className="max-w-2xl mx-auto p-12 border border-white/5 rounded-3xl bg-white/[0.01] backdrop-blur-sm">
+          <p className="text-xl font-light text-white/60 mb-8 italic font-serif">
+            "Every frame tells a story, and every cut is a choice."
+          </p>
+          <Button
+            className="h-14 px-10 bg-white text-black hover:bg-white/90 rounded-full font-bold tracking-widest uppercase text-[10px] transition-all"
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            Inquire for video work
+          </Button>
         </div>
       </div>
-
-
-      {/* Call to Action */}
-      <div className="text-center pt-8">
-        <p className="text-muted-foreground mb-4">
-          {t.portfolio_video_cta_text}
-        </p>
-        <Button 
-          className="group"
-          onClick={() => {
-            const contactSection = document.getElementById('contact');
-            if (contactSection) {
-              contactSection.scrollIntoView({ behavior: 'smooth' });
-            }
-          }}
-        >
-          <Camera className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform" />
-          {t.portfolio_video_cta_button}
-        </Button>
-      </div>
     </div>
+
   );
 }

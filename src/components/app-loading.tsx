@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import Loading from './loading';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 
@@ -13,21 +13,35 @@ interface AppLoadingProps {
 
 const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
   const { isLoading, setIsLoading } = useLoading();
+  const [counter, setCounter] = useState(0);
   const pathname = usePathname();
 
-  // Matikan loading global untuk halaman /minimalist
   const isMinimalist = pathname?.startsWith('/minimalist');
 
   useEffect(() => {
-    // Simulate app initialization time
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000); // Show loading for 2 seconds
+    // Percentage counter animation
+    const duration = 2000; // Match the timeout
+    const interval = 20; // Update every 20ms
+    const steps = duration / interval;
+    const increment = 100 / steps;
 
-    return () => clearTimeout(timer);
+    let current = 0;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= 100) {
+        setCounter(100);
+        clearInterval(timer);
+        setTimeout(() => setIsLoading(false), 200);
+      } else {
+        setCounter(Math.floor(current));
+      }
+    }, interval);
+
+    return () => {
+      clearInterval(timer);
+    };
   }, [setIsLoading]);
 
-  // Bypass the loading screen for minimalist route
   if (isMinimalist) {
     return <>{children}</>;
   }
@@ -42,18 +56,52 @@ const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
             exit={{
               y: "-100%",
               transition: {
-                duration: 0.8,
-                ease: [0.76, 0, 0.24, 1] // Custom bezier for smooth "premium" feel
+                duration: 1.2,
+                ease: [0.76, 0, 0.24, 1],
               }
             }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-background"
+            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#050505]"
           >
-            <Loading
-              size={80}
-              text=""
-              showCounter={true}
-              className="text-center"
-            />
+            <motion.div
+              className="relative flex flex-col items-center"
+              exit={{
+                y: -100,
+                opacity: 0,
+                transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] }
+              }}
+            >
+              {/* Counter - Large & Elegant */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex items-baseline gap-2"
+              >
+                <span className="font-bricolage text-[120px] md:text-[180px] font-extrabold text-white leading-none tracking-tighter">
+                  {counter.toString().padStart(2, '0')}
+                </span>
+                <span className="font-space text-2xl text-white/30 font-light mb-8">%</span>
+              </motion.div>
+
+              {/* Progress Line - Minimalist */}
+              <div className="w-48 h-[1px] bg-white/10 relative overflow-hidden">
+                <motion.div
+                  className="absolute inset-0 bg-blue-500 origin-left"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: counter / 100 }}
+                  transition={{ ease: "linear" }}
+                />
+              </div>
+
+              {/* Tagline */}
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0.3, 0.6, 0.3] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="mt-8 font-space text-[10px] tracking-[0.4em] uppercase text-white/40"
+              >
+                Initializing Portfolio
+              </motion.p>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

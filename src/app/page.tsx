@@ -18,7 +18,7 @@ import { useEffect, useState, lazy, Suspense, useCallback } from "react";
 
 // Lazy load komponen berat
 const GitHubStats = lazy(() => import("@/components/github-stats").then(module => ({ default: module.GitHubStats })));
-const CommentsSection = lazy(() => import("@/components/comments-section").then(module => ({ default: module.CommentsSection })));
+
 const SpotifyTopTracks = lazy(() => import("@/components/spotify-top-tracks").then(module => ({ default: module.SpotifyTopTracks })));
 const TopTracksLastfm = lazy(() => import("@/components/top-tracks-lastfm").then(module => ({ default: module.TopTracksLastfm })));
 import { FloatingDock } from "@/components/floating-dock";
@@ -132,17 +132,15 @@ export default function Home() {
     <LanguageProvider>
       {/* Modern Background - Fixed layer with animated elements */}
       <ModernBackground />
-      {/* Aurora Background - Overlay with matching colors */}
-      <AuroraBackground />
       {/* Scroll Progress Indicator */}
       <ScrollProgress />
+
       <div className="flex min-h-screen w-full flex-col relative" style={{ position: 'relative' }}>
         <div className="relative z-10">
           <Header />
-          <main className="flex-1 pt-24 relative" style={{ position: 'relative' }}>
-            <motion.div initial="hidden" animate="visible" variants={sectionVariants} suppressHydrationWarning>
-              <HeroSection />
-            </motion.div>
+          <main className="flex-1 relative">
+            <HeroSection />
+
             <AnimatedSection sectionId="portfolio" className="z-10 relative">
               <PortfolioTabs />
             </AnimatedSection>
@@ -185,16 +183,7 @@ export default function Home() {
                 <TopTracksLastfm />
               </Suspense>
             </div>
-            {/* AnimatedSection removed to fix visibility issues */}
-            <div className="relative z-10 w-full">
-              <Suspense fallback={
-                <div className="flex items-center justify-center py-20">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                </div>
-              }>
-                <CommentsSection />
-              </Suspense>
-            </div>
+
             <AnimatedSection sectionId="contact">
               <ContactSection />
             </AnimatedSection>

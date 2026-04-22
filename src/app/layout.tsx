@@ -1,11 +1,29 @@
 import type { Metadata } from 'next';
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Plus_Jakarta_Sans, Bricolage_Grotesque, Space_Grotesk } from "next/font/google";
 import './globals.css';
 import { AdminProvider } from "@/context/admin-context";
 import { Toaster } from "@/components/ui/toaster";
 import { LanguageProvider } from "@/context/language-context";
 import { LoadingProvider } from "@/context/loading-context";
 import AppLoading from "@/components/app-loading";
+
+const bricolage = Bricolage_Grotesque({
+  subsets: ["latin"],
+  variable: "--font-bricolage",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space",
+  display: "swap",
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-plus-jakarta",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: 'Mohammad Fahrezi - Portofolio Fullstack Developer & Graphic Designer',
@@ -166,7 +184,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="font-body antialiased">
+      <body className={`${plusJakartaSans.variable} ${bricolage.variable} ${spaceGrotesk.variable} font-body antialiased`}>
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe
