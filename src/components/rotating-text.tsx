@@ -8,7 +8,7 @@ import {
   type VariantLabels,
   type Target,
   type TargetAndTransition
-} from 'motion/react';
+} from 'framer-motion';
 
 function cn(...classes: (string | undefined | null | boolean)[]): string {
   return classes.filter(Boolean).join(' ');
@@ -177,10 +177,10 @@ const RotatingText = forwardRef<RotatingTextRef, RotatingTextProps>(
     );
 
     useEffect(() => {
-      if (!auto) return;
+      if (!auto || texts.length < 2) return;
       const intervalId = setInterval(next, rotationInterval);
       return () => clearInterval(intervalId);
-    }, [next, rotationInterval, auto]);
+    }, [next, rotationInterval, auto, texts.length]);
 
     return (
       <motion.span

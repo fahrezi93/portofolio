@@ -2,26 +2,50 @@ import { useEffect } from 'react';
 
 export function useLenis() {
   useEffect(() => {
-    // Dynamically import Lenis to avoid SSR issues
-    import('lenis').then(({ default: Lenis }) => {
-      const lenis = new Lenis({
-        duration: 1.2,
-        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        wrapper: window, // Use window as wrapper to avoid position issues
-        content: document.documentElement, // Use document as content
-      });
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
 
-      function raf(time: number) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
+    let rafId = 0;
+    let isDisposed = false;
+    let initTimeout: ReturnType<typeof setTimeout> | null = null;
+    let lenis: { raf: (time: number) => void; destroy: () => void } | null = null;
+
+    const initLenis = async () => {
+      try {
+        const { default: Lenis } = await import('lenis');
+        if (isDisposed) return;
+
+        lenis = new Lenis({
+          duration: 1.1,
+          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          wrapper: window,
+          content: document.documentElement,
+        });
+
+        const raf = (time: number) => {
+          if (isDisposed || !lenis) return;
+          lenis.raf(time);
+          rafId = requestAnimationFrame(raf);
+        };
+
+        rafId = requestAnimationFrame(raf);
+      } catch {
+        // Keep native scroll if Lenis fails to load.
       }
+    };
 
-      const rafId = requestAnimationFrame(raf);
+    // Delay initialization slightly to avoid adding work on first paint.
+    initTimeout = setTimeout(initLenis, 140);
 
-      return () => {
-        cancelAnimationFrame(rafId);
-        lenis.destroy();
-      };
-    });
+    return () => {
+      isDisposed = true;
+      if (initTimeout) {
+        clearTimeout(initTimeout);
+      }
+      cancelAnimationFrame(rafId);
+      lenis?.destroy();
+      lenis = null;
+    };
   }, []);
 }

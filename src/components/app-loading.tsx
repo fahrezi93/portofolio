@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useLayoutEffect, useState, useEffect } from 'react';
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
@@ -11,36 +11,81 @@ interface AppLoadingProps {
   children: React.ReactNode;
 }
 
+const INTRO_SESSION_KEY = 'portfolio_intro_seen_v1';
+
 const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
   const { isLoading, setIsLoading } = useLoading();
   const [counter, setCounter] = useState(0);
+  const [shouldShowIntro, setShouldShowIntro] = useState(false);
   const pathname = usePathname();
 
   const isMinimalist = pathname?.startsWith('/minimalist');
 
-  useEffect(() => {
-    // Percentage counter animation
-    const duration = 2000; // Match the timeout
-    const interval = 20; // Update every 20ms
-    const steps = duration / interval;
-    const increment = 100 / steps;
+  useLayoutEffect(() => {
+    if (isMinimalist) {
+      setShouldShowIntro(false);
+      setIsLoading(false);
+      setCounter(100);
+      return;
+    }
 
-    let current = 0;
-    const timer = setInterval(() => {
-      current += increment;
-      if (current >= 100) {
-        setCounter(100);
-        clearInterval(timer);
-        setTimeout(() => setIsLoading(false), 200);
-      } else {
-        setCounter(Math.floor(current));
+    const introSeen = window.sessionStorage.getItem(INTRO_SESSION_KEY) === '1';
+    if (introSeen) {
+      setShouldShowIntro(false);
+      setIsLoading(false);
+      setCounter(100);
+      return;
+    }
+
+    setShouldShowIntro(true);
+    setIsLoading(true);
+    setCounter(0);
+  }, [isMinimalist, setIsLoading]);
+
+  useEffect(() => {
+    if (!shouldShowIntro || !isLoading) return;
+
+    const durationMs = 1400;
+    const settleDelayMs = 120;
+    const hardTimeoutMs = 3500;
+    let frameId = 0;
+    let settleTimeout: ReturnType<typeof setTimeout> | null = null;
+    let hardTimeout: ReturnType<typeof setTimeout> | null = null;
+    const startedAt = performance.now();
+
+    const tick = (now: number) => {
+      const progress = Math.min((now - startedAt) / durationMs, 1);
+      setCounter(Math.floor(progress * 100));
+
+      if (progress < 1) {
+        frameId = requestAnimationFrame(tick);
+        return;
       }
-    }, interval);
+
+      window.sessionStorage.setItem(INTRO_SESSION_KEY, '1');
+      settleTimeout = setTimeout(() => {
+        setCounter(100);
+        setIsLoading(false);
+      }, settleDelayMs);
+    };
+
+    frameId = requestAnimationFrame(tick);
+    hardTimeout = setTimeout(() => {
+      window.sessionStorage.setItem(INTRO_SESSION_KEY, '1');
+      setCounter(100);
+      setIsLoading(false);
+    }, hardTimeoutMs);
 
     return () => {
-      clearInterval(timer);
+      cancelAnimationFrame(frameId);
+      if (settleTimeout) {
+        clearTimeout(settleTimeout);
+      }
+      if (hardTimeout) {
+        clearTimeout(hardTimeout);
+      }
     };
-  }, [setIsLoading]);
+  }, [isLoading, setIsLoading, shouldShowIntro]);
 
   if (isMinimalist) {
     return <>{children}</>;

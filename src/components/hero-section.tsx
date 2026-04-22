@@ -4,21 +4,19 @@ import { ArrowDown } from "lucide-react";
 import StarBorder from "./StarBorder";
 import RotatingText from "./rotating-text";
 import { useLanguage } from "@/context/language-context";
-import { motion, LayoutGroup } from "motion/react";
-import { useLoading } from "@/context/loading-context";
+import { motion, LayoutGroup } from "framer-motion";
 import AuroraBackground from "./aurora-background";
 
 export function HeroSection() {
   const { t } = useLanguage();
-  const { isLoading } = useLoading();
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.8
+        staggerChildren: 0.12,
+        delayChildren: 0.2
       }
     }
   };
@@ -38,8 +36,14 @@ export function HeroSection() {
 
   return (
     <section id="home" className="relative w-full min-h-screen bg-[#0B1121] overflow-hidden flex flex-col items-center justify-center pt-40 pb-8">
-      {/* Background Atmosphere - Grainy noise */}
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none z-10" />
+      {/* Background Atmosphere */}
+      <div
+        className="absolute inset-0 pointer-events-none z-10 opacity-40"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 12% 18%, rgba(59,130,246,0.12), transparent 42%), radial-gradient(circle at 82% 10%, rgba(167,139,250,0.1), transparent 36%)",
+        }}
+      />
 
       {/* Aurora Background - Centered within hero */}
       <div className="absolute inset-0 z-0 opacity-40 mix-blend-screen pointer-events-none">
@@ -51,7 +55,7 @@ export function HeroSection() {
           className="flex flex-col items-center text-center space-y-10 md:space-y-14"
           variants={containerVariants}
           initial="hidden"
-          animate={isLoading ? "hidden" : "visible"}
+          animate="visible"
         >
           {/* Top Label - Editorial Style */}
           <motion.div
@@ -80,10 +84,10 @@ export function HeroSection() {
                   initial={{ y: "100%" }}
                   animate={{ y: 0 }}
                   exit={{ y: "-120%" }}
-                  staggerDuration={0.025}
+                  staggerDuration={0.012}
                   splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
-                  transition={{ type: "spring", damping: 30, stiffness: 400 }}
-                  rotationInterval={3000}
+                  transition={{ type: "spring", damping: 28, stiffness: 320 }}
+                  rotationInterval={4200}
                 />
                 <span className="block mt-2 opacity-90">digital experiences.</span>
               </motion.h1>

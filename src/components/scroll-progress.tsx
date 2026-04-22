@@ -7,15 +7,29 @@ export function ScrollProgress() {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
+    let frameId = 0;
+    let ticking = false;
+
     const updateScrollProgress = () => {
-      const scrollPx = document.documentElement.scrollTop;
-      const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = scrollPx / winHeightPx;
-      setScrollProgress(scrolled);
+      if (ticking) return;
+      ticking = true;
+
+      frameId = window.requestAnimationFrame(() => {
+        const scrollPx = document.documentElement.scrollTop;
+        const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = winHeightPx > 0 ? scrollPx / winHeightPx : 0;
+        setScrollProgress(scrolled);
+        ticking = false;
+      });
     };
 
-    window.addEventListener('scroll', updateScrollProgress);
-    return () => window.removeEventListener('scroll', updateScrollProgress);
+    window.addEventListener('scroll', updateScrollProgress, { passive: true });
+    updateScrollProgress();
+
+    return () => {
+      window.removeEventListener('scroll', updateScrollProgress);
+      window.cancelAnimationFrame(frameId);
+    };
   }, []);
 
   return (

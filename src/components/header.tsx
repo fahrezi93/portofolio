@@ -25,7 +25,6 @@ export function Header() {
   const activeSection = useActiveSection();
   
   const headerRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   let t;
   try {
@@ -46,13 +45,27 @@ export function Header() {
     setMounted(true);
     gsap.registerPlugin(ScrollToPlugin);
 
+    let frameId = 0;
+    let ticking = false;
+
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      setIsScrolled(scrollY > 50);
+      if (ticking) return;
+      ticking = true;
+
+      frameId = window.requestAnimationFrame(() => {
+        const nextScrolled = window.scrollY > 50;
+        setIsScrolled((prev) => (prev === nextScrolled ? prev : nextScrolled));
+        ticking = false;
+      });
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.cancelAnimationFrame(frameId);
+    };
   }, []);
 
   // GSAP Animation Logic for Expanding and Shrinking

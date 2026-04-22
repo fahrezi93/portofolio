@@ -144,7 +144,8 @@ export default function AuroraSimple(props: AuroraSimpleProps) {
     const renderer = new Renderer({
       alpha: true,
       premultipliedAlpha: true,
-      antialias: true,
+      antialias: false,
+      dpr: Math.min(window.devicePixelRatio || 1, 1.5),
     });
     
     const gl = renderer.gl;
@@ -198,9 +199,17 @@ export default function AuroraSimple(props: AuroraSimpleProps) {
     // Animation loop
     let time = 0;
     let animationId = 0;
+    let resizeFrameId = 0;
+    let lastTimestamp = 0;
     
-    const animate = () => {
-      time += 0.01 * speed;
+    const animate = (timestamp: number) => {
+      if (!lastTimestamp) {
+        lastTimestamp = timestamp;
+      }
+
+      const delta = (timestamp - lastTimestamp) / 16.67;
+      lastTimestamp = timestamp;
+      time += 0.01 * speed * delta;
       program.uniforms.uTime.value = time;
       renderer.render({ scene: mesh });
       animationId = requestAnimationFrame(animate);
@@ -208,18 +217,18 @@ export default function AuroraSimple(props: AuroraSimpleProps) {
     
     // Start animation and handle resize
     const resizeObserver = new ResizeObserver(() => {
-      resize();
+      cancelAnimationFrame(resizeFrameId);
+      resizeFrameId = requestAnimationFrame(resize);
     });
     resizeObserver.observe(container);
-    window.addEventListener('resize', resize);
     resize();
     animationId = requestAnimationFrame(animate);
     
     // Cleanup
     return () => {
       cancelAnimationFrame(animationId);
+      cancelAnimationFrame(resizeFrameId);
       resizeObserver.disconnect();
-      window.removeEventListener('resize', resize);
       if (container && gl.canvas.parentNode === container) {
         container.removeChild(gl.canvas);
       }

@@ -38,55 +38,38 @@ export function useActiveSection() {
       observer.observe(section);
     });
 
-    // Set initial active section based on scroll position
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + 200; // Offset for header
-      const viewportHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      
-      // If at the very top of the page, no section should be active
+    // Initial check once so active nav state is correct on deep-link refresh.
+    const updateInitialSection = () => {
       if (window.scrollY < 100) {
         setActiveSection('');
         return;
       }
-      
-      // Find the section that occupies most of the viewport
-      let maxVisibleArea = 0;
-      let mostVisibleSection = '';
-      
+
+      const viewportReference = window.innerHeight * 0.4;
+      let closestSection = '';
+      let minDistance = Number.POSITIVE_INFINITY;
+
       sections.forEach((section) => {
         const element = section as HTMLElement;
         const rect = element.getBoundingClientRect();
-        const { offsetTop, offsetHeight } = element;
-        
-        // Calculate visible area of this section
-        const visibleTop = Math.max(0, -rect.top);
-        const visibleBottom = Math.min(rect.height, viewportHeight - rect.top);
-        const visibleArea = Math.max(0, visibleBottom - visibleTop);
-        
-        // Only consider sections that are significantly visible (at least 30% or 200px)
-        const visibilityThreshold = Math.min(offsetHeight * 0.3, 200);
-        
-        if (visibleArea > visibilityThreshold && visibleArea > maxVisibleArea) {
-          maxVisibleArea = visibleArea;
-          mostVisibleSection = element.id;
+        if (rect.bottom <= 80 || rect.top >= window.innerHeight) return;
+
+        const distance = Math.abs(rect.top - viewportReference);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestSection = element.id;
         }
       });
-      
-      setActiveSection(mostVisibleSection);
+
+      setActiveSection(closestSection);
     };
 
-    // Initial check
-    handleScroll();
-    
-    // Add scroll listener as backup
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    updateInitialSection();
 
     return () => {
       sections.forEach((section) => {
         observer.unobserve(section);
       });
-      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 

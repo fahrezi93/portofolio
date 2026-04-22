@@ -9,7 +9,7 @@ export function MinimalistAbout() {
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[5fr_7fr] gap-16 lg:gap-24 items-start">
         {/* Left Column / Image */}
         <motion.div
-          initial={{ opacity: 0, filter: "blur(10px)", x: -20 }}
+          initial={{ opacity: 0, filter: "blur(8px)", x: -20 }}
           whileInView={{ opacity: 1, filter: "blur(0px)", x: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
@@ -34,7 +34,7 @@ export function MinimalistAbout() {
 
         {/* Right Column / Text */}
         <motion.div
-          initial={{ opacity: 0, filter: "blur(10px)", y: 20 }}
+          initial={{ opacity: 0, filter: "blur(8px)", y: 20 }}
           whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}

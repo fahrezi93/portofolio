@@ -40,7 +40,7 @@ export function MinimalistFooter() {
 
       {/* Main Content Area */}
       <motion.div
-        initial={{ opacity: 0, filter: "blur(5px)", y: 15 }}
+        initial={{ opacity: 0, filter: "blur(8px)", y: 15 }}
         whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.8 }}

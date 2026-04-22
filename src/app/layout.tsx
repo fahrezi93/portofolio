@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans, Bricolage_Grotesque, Space_Grotesk } from "next/font/google";
+import Script from 'next/script';
 import './globals.css';
 import { AdminProvider } from "@/context/admin-context";
 import { Toaster } from "@/components/ui/toaster";
@@ -95,32 +96,6 @@ export default function RootLayout({
         <link rel="preconnect" href="https://njenjctrbcqpgeosoiob.supabase.co" />
         <link rel="dns-prefetch" href="https://njenjctrbcqpgeosoiob.supabase.co" />
 
-        {/* Google Tag Manager */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-              })(window,document,'script','dataLayer','GTM-PMN9QPFH');
-            `,
-          }}
-        />
-
-        {/* Google Analytics (gtag.js) */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-TYY6QMXHLF"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-TYY6QMXHLF');
-            `,
-          }}
-        />
-
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/images/thumbnail-porto.png" />
         <meta property="og:image" content="/images/thumbnail-porto.png" />
@@ -129,9 +104,6 @@ export default function RootLayout({
         <meta property="og:image:type" content="image/png" />
         <meta name="twitter:image" content="/images/thumbnail-porto.png" />
         <meta name="twitter:image:alt" content="Mohammad Fahrezi Portofolio - Front-End Developer & Graphic Designer" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -205,6 +177,34 @@ export default function RootLayout({
           </LanguageProvider>
         </AdminProvider>
         <Toaster />
+
+        <Script id="gtm-base" strategy="afterInteractive">
+          {`
+            (function(w,d,s,l,i){
+              w[l]=w[l]||[];
+              w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
+              var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+              j.async=true;
+              j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+              f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-PMN9QPFH');
+          `}
+        </Script>
+
+        <Script
+          id="gtag-src"
+          src="https://www.googletagmanager.com/gtag/js?id=G-TYY6QMXHLF"
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-TYY6QMXHLF');
+          `}
+        </Script>
       </body>
     </html>
   );
