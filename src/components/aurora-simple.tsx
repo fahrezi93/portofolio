@@ -145,7 +145,8 @@ export default function AuroraSimple(props: AuroraSimpleProps) {
       alpha: true,
       premultipliedAlpha: true,
       antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 1.5),
+      // DPR dibatasi 1.0 — lebih dari itu tidak terlihat untuk background effect tapi 2x lipat cost GPU
+      dpr: 1,
     });
     
     const gl = renderer.gl;
@@ -156,6 +157,8 @@ export default function AuroraSimple(props: AuroraSimpleProps) {
     gl.canvas.style.position = "absolute";
     gl.canvas.style.top = "0";
     gl.canvas.style.left = "0";
+    // Hint browser agar promote canvas ke GPU layer tersendiri
+    gl.canvas.style.willChange = "transform";
     
     // Set size
     const resize = () => {

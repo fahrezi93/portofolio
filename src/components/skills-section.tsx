@@ -10,7 +10,7 @@ export function SkillsSection() {
   return (
     <section id="skills" className="w-full py-24 md:py-32 relative overflow-hidden bg-[#0B1121]">
       {/* Background Atmosphere */}
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] pointer-events-none" />
+      {/* External noise URL dihapus — network request ke domain asing untuk efek 2% opacity */}
       <div className="absolute top-1/2 left-0 w-[600px] h-[600px] bg-blue-500/[0.03] blur-[120px] rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2" />
 
       <div className="container mx-auto px-6 relative z-10">

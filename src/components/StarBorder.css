@@ -18,11 +18,15 @@
   z-index: 0;
   opacity: 0;
   transition: opacity 300ms ease-in-out;
+  /* Pause saat tidak hover — browser tidak perlu hitung frame animasi saat invisible */
+  animation-play-state: paused;
+  will-change: transform;
 }
 
 .star-border-container:hover .border-gradient-top,
 .star-border-container:hover .border-gradient-bottom {
   opacity: 1;
+  animation-play-state: running;
 }
 
 .border-gradient-bottom {

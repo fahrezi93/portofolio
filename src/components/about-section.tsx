@@ -5,7 +5,7 @@ import StarBorder from "./StarBorder";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { Download, Code2, Palette, Terminal, Globe, Pen, Video, Brain } from "lucide-react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 
 export function AboutSection() {
@@ -27,18 +27,16 @@ export function AboutSection() {
       setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
     }, 3000);
     return () => clearInterval(interval);
+  // roles.length stabil (6 item static), tidak perlu masuk dependency
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
 
-  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
+  // useScroll + useTransform dihapus — y tidak dipakai di JSX tapi tetap attach scroll listener
 
   return (
     <section id="about" ref={containerRef} className="w-full py-24 md:py-32 relative overflow-hidden bg-[#0B1121]">
       {/* Background Atmosphere */}
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] pointer-events-none" />
+      {/* External noise URL dihapus — fetch ke domain asing di setiap render */}
       <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-blue-500/[0.02] blur-[120px] rounded-full pointer-events-none translate-x-1/4 translate-y-1/4" />
 
       <div className="container mx-auto px-6 relative z-10">
@@ -57,7 +55,8 @@ export function AboutSection() {
                 src="/images/profile.webp"
                 alt="Mohammad Fahrezi"
                 fill
-                className="object-cover object-bottom grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
+                // transition-all diganti spesifik — menghindari animasi tiap properti CSS saat hover
+                className="object-cover object-bottom grayscale group-hover:grayscale-0 transition-[filter,transform] duration-700 group-hover:scale-105"
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0B1121] via-transparent to-transparent opacity-60" />

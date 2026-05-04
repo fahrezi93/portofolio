@@ -15,20 +15,20 @@ export function HeroSection() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.12,
-        delayChildren: 0.2
+        staggerChildren: 0.1,
+        delayChildren: 0.1
       }
     }
   };
 
+  // filter: blur() dihapus — sangat berat karena memaksa GPU repaint di tiap frame
   const itemVariants = {
-    hidden: { opacity: 0, y: 20, filter: "blur(10px)" },
+    hidden: { opacity: 0, y: 16 },
     visible: {
       opacity: 1,
       y: 0,
-      filter: "blur(0px)",
       transition: {
-        duration: 1,
+        duration: 0.6,
         ease: [0.16, 1, 0.3, 1] as const
       }
     }
@@ -46,7 +46,8 @@ export function HeroSection() {
       />
 
       {/* Aurora Background - Centered within hero */}
-      <div className="absolute inset-0 z-0 opacity-40 mix-blend-screen pointer-events-none">
+      {/* mix-blend-mode dihapus — compositing layer berat, apalagi di atas WebGL canvas */}
+      <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
         <AuroraBackground />
       </div>
 
@@ -70,13 +71,15 @@ export function HeroSection() {
           </motion.div>
 
           {/* Main Heading */}
+          {/* LayoutGroup di-scope ketat hanya ke inline content h1 — lightweight, hanya tracking 2 motion.span */}
           <div className="space-y-6">
-            <LayoutGroup>
+            <LayoutGroup id="hero-heading">
               <motion.h1
                 className="font-headline text-[2.8rem] sm:text-6xl md:text-7xl lg:text-8xl font-light tracking-tight text-white leading-[1.3] text-center"
                 variants={itemVariants}
               >
-                <motion.span layout className="inline-block whitespace-pre">Crafting immersive </motion.span>
+                {/* layout="position" — hanya animasikan posisi x/y, lebih ringan dari layout penuh */}
+                <motion.span layout="position" className="inline-block whitespace-pre">Crafting immersive </motion.span>
                 <RotatingText
                   texts={[t.hero_rotating_2, t.hero_rotating_3, t.hero_rotating_4]}
                   mainClassName="px-2 sm:px-2 md:px-3 bg-blue-400/20 border border-blue-400/30 text-blue-300 font-serif italic overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg backdrop-blur-sm inline-flex align-middle mx-1"

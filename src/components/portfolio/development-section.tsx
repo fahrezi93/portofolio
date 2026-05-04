@@ -270,7 +270,8 @@ export function DevelopmentSection() {
                   src={project.image}
                   alt={project.title}
                   fill
-                  className="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
+                  // transition-all diganti spesifik \u2014 hanya animasikan filter & transform, bukan semua properti
+                  className="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-[filter,opacity,transform] duration-700"
                   sizes="(max-width: 768px) 100vw, 600px"
                   priority={index < 4}
                 />
