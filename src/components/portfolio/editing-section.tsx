@@ -60,16 +60,15 @@ export function EditingSection() {
         <div className="relative z-10 space-y-8">
           <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/5 border border-white/10 rounded-full">
             <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-            <span className="text-[10px] font-bold tracking-[0.2em] text-white uppercase">In Production</span>
+            <span className="text-[10px] font-bold tracking-[0.2em] text-white uppercase">{t.portfolio_video_tag}</span>
           </div>
 
           <h3 className="text-4xl md:text-6xl font-light tracking-tighter text-white">
-            Cinematic <br />
-            <span className="italic font-serif text-white/90">narratives</span> coming soon.
+            {t.portfolio_video_coming_soon}
           </h3>
 
           <p className="text-sm text-white/40 max-w-md mx-auto leading-relaxed">
-            I'm currently curating my best work in motion graphics and video storytelling. The archive will be live shortly.
+            {t.portfolio_video_desc}
           </p>
 
           <div className="flex flex-wrap justify-center gap-6 pt-8">
@@ -86,13 +85,13 @@ export function EditingSection() {
       <div className="pt-12 text-center">
         <div className="max-w-2xl mx-auto p-12 border border-white/5 rounded-3xl bg-white/[0.01] backdrop-blur-sm">
           <p className="text-xl font-light text-white/60 mb-8 italic font-serif">
-            "Every frame tells a story, and every cut is a choice."
+            {t.portfolio_video_quote}
           </p>
           <Button
             className="h-14 px-10 bg-white text-black hover:bg-white/90 rounded-full font-bold tracking-widest uppercase text-[10px] transition-all"
             onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
           >
-            Inquire for video work
+            {t.portfolio_video_start}
           </Button>
         </div>
       </div>

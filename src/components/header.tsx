@@ -35,7 +35,7 @@ export function Header() {
   }
 
   const navLinks: NavLink[] = [
-    { href: "#portfolio", label: t?.nav_work || "Work", scrollTarget: "portfolio-title" },
+    { href: "#portfolio", label: t?.nav_work || "Work" },
     { href: "#about", label: t?.nav_about || "About" },
     { href: "#experience", label: t?.nav_experience || "Experience" },
     { href: "#contact", label: t?.nav_contact || "Contact" },
@@ -123,11 +123,8 @@ export function Header() {
     const targetElement = document.getElementById(targetId);
 
     if (targetElement) {
-      gsap.to(window, {
-        duration: 1,
-        scrollTo: { y: targetElement, offsetY: 80 },
-        ease: "power4.inOut"
-      });
+      const y = targetElement.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top: y, behavior: 'smooth' });
       window.history.replaceState(null, '', `${window.location.pathname}${link.href}`);
     }
   };
@@ -262,7 +259,8 @@ export function Header() {
                       const targetId = link.scrollTarget || link.href.replace('#', '');
                       const target = document.getElementById(targetId);
                       if (target) {
-                        target.scrollIntoView({ behavior: 'smooth' });
+                        const y = target.getBoundingClientRect().top + window.scrollY - 80;
+                        window.scrollTo({ top: y, behavior: 'smooth' });
                       }
                     }, 500);
                   }}

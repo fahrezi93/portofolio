@@ -64,7 +64,7 @@ export function AboutSection() {
               {/* Gallery-style metadata label */}
               <div className="absolute bottom-6 left-6 right-6">
                 <div className="p-4 bg-white/[0.03] backdrop-blur-md border border-white/10 rounded-xl space-y-1">
-                  <p className="text-[8px] font-bold tracking-[0.2em] text-white/40 uppercase">Digital Persona</p>
+                  <p className="text-[8px] font-bold tracking-[0.2em] text-white/40 uppercase">{t.about_persona}</p>
                   <p className="text-sm font-light text-white">Mohammad Fahrezi</p>
                 </div>
               </div>
@@ -72,7 +72,7 @@ export function AboutSection() {
 
             {/* Expertise List - Deconstructed */}
             <div className="space-y-6">
-              <p className="text-[10px] font-medium tracking-[0.3em] text-blue-400 uppercase">Focus Areas</p>
+              <p className="text-[10px] font-medium tracking-[0.3em] text-blue-400 uppercase">{t.about_focus}</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {roles.slice(0, 4).map((role, i) => (
                   <motion.div
@@ -103,7 +103,7 @@ export function AboutSection() {
                 className="flex items-center gap-3"
               >
                 <span className="w-8 h-[1px] bg-blue-500/50" />
-                <span className="text-[10px] font-medium tracking-[0.3em] text-blue-400 uppercase">Narrative / Bio</span>
+                <span className="text-[10px] font-medium tracking-[0.3em] text-blue-400 uppercase">{t.about_label}</span>
               </motion.div>
 
               <motion.h2
@@ -113,8 +113,8 @@ export function AboutSection() {
                 transition={{ delay: 0.1 }}
                 className="text-4xl md:text-6xl lg:text-7xl font-light tracking-tighter text-white leading-[1.1]"
               >
-                Designing <br />
-                <span className="italic font-serif text-white/90">digital</span> stories.
+                {t.about_heading_1} <br />
+                <span className="italic font-serif text-white/90">{t.about_heading_2}</span>{t.about_heading_3}
               </motion.h2>
 
               <motion.div
@@ -125,10 +125,10 @@ export function AboutSection() {
                 className="space-y-6 max-w-xl"
               >
                 <p className="text-lg md:text-xl text-gray-300 font-light leading-relaxed">
-                  {t.about_p1.split("meaningful digital experiences").map((part, i) => (
+                  {t.about_p1.split(t.about_highlight).map((part, i) => (
                     <span key={i}>
                       {part}
-                      {i === 0 && <span className="italic font-serif text-white">meaningful digital experiences</span>}
+                      {i === 0 && <span className="italic font-serif text-white">{t.about_highlight}</span>}
                     </span>
                   ))}
                 </p>

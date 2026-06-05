@@ -60,7 +60,7 @@ export function ExperienceSection() {
               className="flex items-center gap-3"
             >
               <span className="w-8 h-[1px] bg-blue-500/50" />
-              <span className="text-[10px] font-medium tracking-[0.3em] text-blue-400 uppercase">Chronicle / Experience</span>
+              <span className="text-[10px] font-medium tracking-[0.3em] text-blue-400 uppercase">{t.experience_label}</span>
             </motion.div>
             <motion.h2 
               initial={{ opacity: 0, y: 20 }}
@@ -69,7 +69,7 @@ export function ExperienceSection() {
               transition={{ delay: 0.1 }}
               className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-white leading-tight"
             >
-              Professional <span className="italic font-serif text-white/90">Pathways</span>.
+              {t.experience_heading_1}<span className="italic font-serif text-white/90">{t.experience_heading_2}</span>{t.experience_heading_3}
             </motion.h2>
           </div>
 

@@ -70,24 +70,44 @@ export function Footer() {
                 hello@fahrezi.tech
               </a>
               <div className="text-gray-500 text-sm space-y-1 leading-relaxed">
-                <p>Based in Indonesia</p>
-                <p>Available for freelance</p>
+                <p>{t.footer_based_in}</p>
+                <p>{t.footer_available}</p>
               </div>
             </div>
           </div>
 
           {/* Right Side: Navigation */}
           <div className="flex flex-col gap-6 items-start md:items-end">
-            <a href="#work" className="text-xl text-white/60 hover:text-white transition-colors duration-300 font-medium tracking-tight">Work</a>
-            <a href="#about" className="text-xl text-white/60 hover:text-white transition-colors duration-300 font-medium tracking-tight">About</a>
-            <a href="#experience" className="text-xl text-white/60 hover:text-white transition-colors duration-300 font-medium tracking-tight">Experience</a>
-            <a href="#contact" className="text-xl text-white/60 hover:text-white transition-colors duration-300 font-medium tracking-tight">Contact</a>
+            {[
+              { href: "#portfolio", label: t.nav_work },
+              { href: "#about", label: t.nav_about },
+              { href: "#experience", label: t.nav_experience },
+              { href: "#contact", label: t.nav_contact },
+            ].map((link) => (
+              <a 
+                key={link.href}
+                href={link.href} 
+                onClick={(e) => {
+                  e.preventDefault();
+                  const targetId = link.href.replace('#', '');
+                  const targetElement = document.getElementById(targetId);
+                  if (targetElement) {
+                    const y = targetElement.getBoundingClientRect().top + window.scrollY - 80;
+                    window.scrollTo({ top: y, behavior: 'smooth' });
+                    window.history.replaceState(null, '', `${window.location.pathname}${link.href}`);
+                  }
+                }}
+                className="text-xl text-white/60 hover:text-white transition-colors duration-300 font-medium tracking-tight"
+              >
+                {link.label}
+              </a>
+            ))}
           </div>
         </div>
 
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center pt-10 border-t border-white/5 gap-6 text-[10px] font-semibold tracking-[0.2em] uppercase text-white/30 relative z-30">
-          <p className="text-center">© {new Date().getFullYear()} Mohammad Fahrezi. All Rights Reserved</p>
+          <p className="text-center">© {new Date().getFullYear()} {t.footer_rights}</p>
         </div>
       </div>
 

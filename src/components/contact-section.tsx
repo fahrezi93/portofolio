@@ -109,7 +109,7 @@ export function ContactSection() {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                   </span>
-                  <span className="text-[11px] font-medium tracking-[0.3em] text-blue-400/80 uppercase">Available for projects</span>
+                  <span className="text-[11px] font-medium tracking-[0.3em] text-blue-400/80 uppercase">{t.contact_available}</span>
                 </motion.div>
 
                 <motion.h2
@@ -119,9 +119,9 @@ export function ContactSection() {
                   transition={{ delay: 0.1 }}
                   className="text-5xl md:text-6xl lg:text-7xl font-light tracking-tight text-white leading-[1.1]"
                 >
-                  Let's start <br />
-                  <span className="italic font-serif">something</span> <br />
-                  remarkable.
+                  {t.contact_heading_1} <br />
+                  <span className="italic font-serif">{t.contact_heading_2}</span> <br />
+                  {t.contact_heading_3}
                 </motion.h2>
 
                 <motion.p
@@ -143,8 +143,8 @@ export function ContactSection() {
                 transition={{ delay: 0.3 }}
                 className="space-y-4 pt-8 border-t border-white/5"
               >
-                <p className="text-[10px] font-medium tracking-[0.2em] text-white/20 uppercase">Based in</p>
-                <p className="text-white/60 font-light italic">Indonesia, GMT+7</p>
+                <p className="text-[10px] font-medium tracking-[0.2em] text-white/20 uppercase">{t.contact_based_in}</p>
+                <p className="text-white/60 font-light italic">{t.contact_timezone}</p>
               </motion.div>
             </div>
 
@@ -168,7 +168,7 @@ export function ContactSection() {
                       render={({ field }) => (
                         <FormItem className="space-y-2">
                           <div className="flex justify-between items-end">
-                            <FormLabel className="text-[10px] font-medium tracking-[0.2em] text-white/60 uppercase">01 / Full Name</FormLabel>
+                            <FormLabel className="text-[10px] font-medium tracking-[0.2em] text-white/60 uppercase">{t.contact_form_name_label}</FormLabel>
                           </div>
                           <FormControl>
                             <Input
@@ -187,7 +187,7 @@ export function ContactSection() {
                       render={({ field }) => (
                         <FormItem className="space-y-2">
                           <div className="flex justify-between items-end">
-                            <FormLabel className="text-[10px] font-medium tracking-[0.2em] text-white/60 uppercase">02 / Email</FormLabel>
+                            <FormLabel className="text-[10px] font-medium tracking-[0.2em] text-white/60 uppercase">{t.contact_form_email_label}</FormLabel>
                           </div>
                           <FormControl>
                             <Input
@@ -206,11 +206,11 @@ export function ContactSection() {
                       render={({ field }) => (
                         <FormItem className="space-y-2">
                           <div className="flex justify-between items-end">
-                            <FormLabel className="text-[10px] font-medium tracking-[0.2em] text-white/60 uppercase">03 / Message</FormLabel>
+                            <FormLabel className="text-[10px] font-medium tracking-[0.2em] text-white/60 uppercase">{t.contact_form_message_label}</FormLabel>
                           </div>
                           <FormControl>
                             <Textarea
-                              placeholder="Tell me about your vision..."
+                              placeholder={t.contact_form_message_placeholder}
                               className="resize-none bg-transparent border-0 border-b border-white/10 text-white placeholder:text-white/20 focus-visible:ring-0 focus-visible:border-white/40 rounded-none p-0 transition-all text-xl font-light min-h-[120px]"
                               {...field}
                             />
@@ -228,7 +228,7 @@ export function ContactSection() {
                       className="group relative flex items-center justify-center gap-4 bg-white text-black hover:bg-blue-500 hover:text-white h-14 w-full md:w-[280px] rounded-full font-medium transition-all duration-500 ease-in-out shadow-lg shadow-white/5"
                     >
                       <span className="text-xs tracking-[0.2em] uppercase">
-                        {isSubmitting ? "Dispatching..." : "Send Message"}
+                        {isSubmitting ? t.contact_dispatching : t.contact_form_submit}
                       </span>
                       <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                     </button>

@@ -4,11 +4,13 @@ import { ArrowDown } from "lucide-react";
 import StarBorder from "./StarBorder";
 import RotatingText from "./rotating-text";
 import { useLanguage } from "@/context/language-context";
+import { useLoading } from "@/context/loading-context";
 import { motion, LayoutGroup } from "framer-motion";
 import AuroraBackground from "./aurora-background";
 
 export function HeroSection() {
   const { t } = useLanguage();
+  const { isLoading, loadingScreenPlayed } = useLoading();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -16,7 +18,7 @@ export function HeroSection() {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.1
+        delayChildren: loadingScreenPlayed ? 0.8 : 0.1
       }
     }
   };
@@ -56,7 +58,7 @@ export function HeroSection() {
           className="flex flex-col items-center text-center space-y-10 md:space-y-14"
           variants={containerVariants}
           initial="hidden"
-          animate="visible"
+          animate={isLoading ? "hidden" : "visible"}
         >
           {/* Top Label - Editorial Style */}
           <motion.div
@@ -79,7 +81,7 @@ export function HeroSection() {
                 variants={itemVariants}
               >
                 {/* layout="position" — hanya animasikan posisi x/y, lebih ringan dari layout penuh */}
-                <motion.span layout="position" className="inline-block whitespace-pre">Crafting immersive </motion.span>
+                <motion.span layout="position" className="inline-block whitespace-pre">{t.hero_heading_start}</motion.span>
                 <RotatingText
                   texts={[t.hero_rotating_2, t.hero_rotating_3, t.hero_rotating_4]}
                   mainClassName="px-2 sm:px-2 md:px-3 bg-blue-400/20 border border-blue-400/30 text-blue-300 font-serif italic overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg backdrop-blur-sm inline-flex align-middle mx-1"
@@ -92,7 +94,7 @@ export function HeroSection() {
                   transition={{ type: "spring", damping: 28, stiffness: 320 }}
                   rotationInterval={4200}
                 />
-                <span className="block mt-2 opacity-90">digital experiences.</span>
+                <span className="block mt-2 opacity-90">{t.hero_heading_end}</span>
               </motion.h1>
             </LayoutGroup>
 

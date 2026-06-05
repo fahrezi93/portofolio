@@ -25,7 +25,7 @@ export function SkillsSection() {
               className="flex items-center gap-3"
             >
               <span className="w-8 h-[1px] bg-blue-500/50" />
-              <span className="text-[10px] font-medium tracking-[0.3em] text-blue-400 uppercase">Expertise / Tech Stack</span>
+              <span className="text-[10px] font-medium tracking-[0.3em] text-blue-400 uppercase">{t.skills_label}</span>
             </motion.div>
             <motion.h2 
               initial={{ opacity: 0, y: 20 }}
@@ -34,8 +34,8 @@ export function SkillsSection() {
               transition={{ delay: 0.1 }}
               className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-white leading-tight"
             >
-              The <span className="italic font-serif">technologies</span> <br /> 
-              behind the craft.
+              {t.skills_heading_1}<span className="italic font-serif">{t.skills_heading_2}</span> <br /> 
+              {t.skills_heading_3}
             </motion.h2>
           </div>
 
@@ -49,11 +49,11 @@ export function SkillsSection() {
                 className="space-y-6"
               >
                 <div className="space-y-2">
-                  <p className="text-[10px] font-medium tracking-[0.2em] text-white/20 uppercase">01 / Development</p>
-                  <h3 className="text-2xl text-white font-light">Programming & <br />Frameworks</h3>
+                  <p className="text-[10px] font-medium tracking-[0.2em] text-white/20 uppercase">{t.skills_dev_label}</p>
+                  <h3 className="text-2xl text-white font-light max-w-[200px]">{t.skills_dev_heading}</h3>
                 </div>
                 <p className="text-sm text-gray-500 leading-relaxed font-light max-w-xs">
-                  Building robust digital experiences using modern tools and high-performance frameworks.
+                  {t.skills_dev_desc}
                 </p>
               </motion.div>
 
@@ -85,11 +85,11 @@ export function SkillsSection() {
                 className="space-y-6"
               >
                 <div className="space-y-2">
-                  <p className="text-[10px] font-medium tracking-[0.2em] text-white/20 uppercase">02 / Creative</p>
-                  <h3 className="text-2xl text-white font-light">Design & <br />Visual Tools</h3>
+                  <p className="text-[10px] font-medium tracking-[0.2em] text-white/20 uppercase">{t.skills_creative_label}</p>
+                  <h3 className="text-2xl text-white font-light max-w-[200px]">{t.skills_creative_heading}</h3>
                 </div>
                 <p className="text-sm text-gray-500 leading-relaxed font-light max-w-xs">
-                  Crafting visually stunning interfaces and digital assets with precision and creative flair.
+                  {t.skills_creative_desc}
                 </p>
               </motion.div>
 

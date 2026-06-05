@@ -246,7 +246,7 @@ export function DesignSection() {
             className="group relative inline-flex items-center gap-4 py-4 px-12 border border-white/10 rounded-full hover:bg-white/5 transition-all overflow-hidden"
           >
             <span className="relative z-10 text-xs font-bold tracking-[0.3em] text-white uppercase">
-              {showAll ? "Show Less" : "View Entire Gallery"}
+              {showAll ? t.projects_show_less : t.portfolio_view_gallery}
             </span>
             <ChevronDown className={`w-4 h-4 text-blue-400 transition-transform ${showAll ? 'rotate-180' : ''}`} />
           </button>
@@ -257,13 +257,13 @@ export function DesignSection() {
       <div className="pt-24 text-center">
         <div className="max-w-2xl mx-auto p-12 border border-white/5 rounded-3xl bg-white/[0.01] backdrop-blur-sm">
           <p className="text-xl font-light text-white/60 mb-8 italic font-serif leading-relaxed">
-            "Design is not just what it looks like and feels like. Design is how it works."
+            {t.portfolio_design_quote}
           </p>
           <Button
             className="h-14 px-10 bg-white text-black hover:bg-white/90 rounded-full font-bold tracking-widest uppercase text-[10px] transition-all"
             onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
           >
-            Start a design project
+            {t.portfolio_design_start}
           </Button>
         </div>
       </div>

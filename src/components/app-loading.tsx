@@ -14,7 +14,7 @@ interface AppLoadingProps {
 const INTRO_SESSION_KEY = 'portfolio_intro_seen_v1';
 
 const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
-  const { isLoading, setIsLoading } = useLoading();
+  const { isLoading, setIsLoading, setLoadingScreenPlayed } = useLoading();
   const [counter, setCounter] = useState(0);
   const [shouldShowIntro, setShouldShowIntro] = useState(false);
   const pathname = usePathname();
@@ -26,6 +26,7 @@ const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
       setShouldShowIntro(false);
       setIsLoading(false);
       setCounter(100);
+      setLoadingScreenPlayed(false);
       return;
     }
 
@@ -34,13 +35,15 @@ const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
       setShouldShowIntro(false);
       setIsLoading(false);
       setCounter(100);
+      setLoadingScreenPlayed(false);
       return;
     }
 
     setShouldShowIntro(true);
     setIsLoading(true);
     setCounter(0);
-  }, [isMinimalist, setIsLoading]);
+    setLoadingScreenPlayed(true);
+  }, [isMinimalist, setIsLoading, setLoadingScreenPlayed]);
 
   useEffect(() => {
     if (!shouldShowIntro || !isLoading) return;

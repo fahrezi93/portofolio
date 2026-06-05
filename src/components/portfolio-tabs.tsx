@@ -143,11 +143,11 @@ export function PortfolioTabs() {
           <motion.div variants={headerVariants} className="space-y-6 mb-20">
             <div className="flex items-center gap-3">
               <span className="w-8 h-[1px] bg-blue-500/50" />
-              <span className="text-[10px] font-medium tracking-[0.3em] text-blue-400 uppercase">Selected Works</span>
+              <span className="text-[10px] font-medium tracking-[0.3em] text-blue-400 uppercase">{t.portfolio_label}</span>
             </div>
             <h2 className="text-4xl md:text-6xl font-light tracking-tighter text-white leading-tight">
-              A collection of <br />
-              <span className="italic font-serif text-white/90">digital craft</span> & design.
+              {t.portfolio_heading_1} <br />
+              <span className="italic font-serif text-white/90">{t.portfolio_heading_2}</span>{t.portfolio_heading_3}
             </h2>
           </motion.div>
 
@@ -187,7 +187,7 @@ export function PortfolioTabs() {
 
               {/* Stats/Counter */}
               <div className="hidden lg:block text-[10px] font-medium tracking-[0.2em] text-white/20 uppercase">
-                Active Archive / 2024 — 2025
+                {t.portfolio_archive}
               </div>
             </div>
           </motion.div>
