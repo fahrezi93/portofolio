@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useLayoutEffect, useState, useEffect } from 'react';
+import React, { useLayoutEffect, useState, useEffect, useRef } from 'react';
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
@@ -15,7 +15,8 @@ const INTRO_SESSION_KEY = 'portfolio_intro_seen_v1';
 
 const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
   const { isLoading, setIsLoading, setLoadingScreenPlayed } = useLoading();
-  const [counter, setCounter] = useState(0);
+  const counterRef = useRef<HTMLSpanElement>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
   const [shouldShowIntro, setShouldShowIntro] = useState(false);
   const pathname = usePathname();
 
@@ -25,7 +26,8 @@ const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
     if (isMinimalist) {
       setShouldShowIntro(false);
       setIsLoading(false);
-      setCounter(100);
+      if (counterRef.current) counterRef.current.textContent = '100';
+      if (progressRef.current) progressRef.current.style.transform = `scaleX(1)`;
       setLoadingScreenPlayed(false);
       return;
     }
@@ -34,14 +36,16 @@ const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
     if (introSeen) {
       setShouldShowIntro(false);
       setIsLoading(false);
-      setCounter(100);
+      if (counterRef.current) counterRef.current.textContent = '100';
+      if (progressRef.current) progressRef.current.style.transform = `scaleX(1)`;
       setLoadingScreenPlayed(false);
       return;
     }
 
     setShouldShowIntro(true);
     setIsLoading(true);
-    setCounter(0);
+    if (counterRef.current) counterRef.current.textContent = '00';
+    if (progressRef.current) progressRef.current.style.transform = `scaleX(0)`;
     setLoadingScreenPlayed(true);
   }, [isMinimalist, setIsLoading, setLoadingScreenPlayed]);
 
@@ -58,7 +62,9 @@ const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
 
     const tick = (now: number) => {
       const progress = Math.min((now - startedAt) / durationMs, 1);
-      setCounter(Math.floor(progress * 100));
+      const val = Math.floor(progress * 100);
+      if (counterRef.current) counterRef.current.textContent = val.toString().padStart(2, '0');
+      if (progressRef.current) progressRef.current.style.transform = `scaleX(${progress})`;
 
       if (progress < 1) {
         frameId = requestAnimationFrame(tick);
@@ -67,7 +73,8 @@ const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
 
       window.sessionStorage.setItem(INTRO_SESSION_KEY, '1');
       settleTimeout = setTimeout(() => {
-        setCounter(100);
+        if (counterRef.current) counterRef.current.textContent = '100';
+        if (progressRef.current) progressRef.current.style.transform = `scaleX(1)`;
         setIsLoading(false);
       }, settleDelayMs);
     };
@@ -75,7 +82,8 @@ const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
     frameId = requestAnimationFrame(tick);
     hardTimeout = setTimeout(() => {
       window.sessionStorage.setItem(INTRO_SESSION_KEY, '1');
-      setCounter(100);
+      if (counterRef.current) counterRef.current.textContent = '100';
+      if (progressRef.current) progressRef.current.style.transform = `scaleX(1)`;
       setIsLoading(false);
     }, hardTimeoutMs);
 
@@ -124,19 +132,18 @@ const AppLoading: React.FC<AppLoadingProps> = ({ children }) => {
                 animate={{ opacity: 1, y: 0 }}
                 className="flex items-baseline gap-2"
               >
-                <span className="font-bricolage text-[120px] md:text-[180px] font-extrabold text-white leading-none tracking-tighter">
-                  {counter.toString().padStart(2, '0')}
+                <span ref={counterRef} className="font-bricolage text-[120px] md:text-[180px] font-extrabold text-white leading-none tracking-tighter">
+                  00
                 </span>
                 <span className="font-space text-2xl text-white/30 font-light mb-8">%</span>
               </motion.div>
 
               {/* Progress Line - Minimalist */}
               <div className="w-48 h-[1px] bg-white/10 relative overflow-hidden">
-                <motion.div
+                <div
+                  ref={progressRef}
                   className="absolute inset-0 bg-blue-500 origin-left"
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: counter / 100 }}
-                  transition={{ ease: "linear" }}
+                  style={{ transform: "scaleX(0)" }}
                 />
               </div>
 

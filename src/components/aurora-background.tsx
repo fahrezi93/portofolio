@@ -43,12 +43,13 @@ export default function AuroraBackground() {
     };
   }, []);
 
-  // Disable aurora hanya jika user prefer reduced motion
-  if (reducedMotion) {
+  // Disable aurora di mobile atau jika user prefer reduced motion
+  if (reducedMotion || isMobile) {
     return (
       <div className="pointer-events-none absolute inset-0 -z-10 w-full h-full">
-        {/* Static gradient fallback untuk reduced motion */}
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-950/10 via-purple-950/5 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-[#0B1121] to-[#0B1121]" />
+        {/* Tambahan blur glow ringan untuk mobile */}
+        <div className="absolute top-[20%] left-[50%] -translate-x-1/2 w-[80vw] h-[40vh] bg-blue-600/10 blur-[100px] rounded-full" />
       </div>
     );
   }
@@ -59,15 +60,15 @@ export default function AuroraBackground() {
 
       {isAuroraReady && (
         <div
-          className={`absolute inset-0 transition-opacity duration-1000 ease-out will-change-opacity ${
+          className={`absolute inset-0 transition-opacity duration-1000 ease-out will-change-[opacity] ${
             isAuroraVisible ? 'opacity-100' : 'opacity-0'
           }`}
         >
           <AuroraSimple 
             colorStops={["#1E3A8A", "#3B82F6", "#60A5FA"]} 
-            blend={isMobile ? 0.12 : 0.2} 
-            amplitude={isMobile ? 0.25 : 0.6} 
-            speed={isMobile ? 0.02 : 0.05} 
+            blend={0.2} 
+            amplitude={0.6} 
+            speed={0.05} 
           />
         </div>
       )}

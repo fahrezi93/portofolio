@@ -68,51 +68,23 @@ export function Header() {
     };
   }, []);
 
-  // GSAP Animation Logic for Expanding and Shrinking
+  // CSS Transition Logic for Expanding and Shrinking (Optimized for Mobile)
   useEffect(() => {
     if (!mounted || !headerRef.current) return;
 
     const header = headerRef.current;
-    const logoIcon = header.querySelector('.logo-icon');
-    const logoText = header.querySelector('.logo-text');
+    const logoIcon = header.querySelector('.logo-icon') as HTMLElement;
+    const logoText = header.querySelector('.logo-text') as HTMLElement;
 
-    // Create a smooth, unified transition
-    gsap.to(header, {
-      width: isScrolled ? "100%" : "85%",
-      maxWidth: isScrolled ? "100%" : "850px",
-      borderRadius: isScrolled ? "0px" : "100px",
-      marginTop: isScrolled ? "0px" : "24px",
-      height: isScrolled ? "64px" : "56px",
-      paddingLeft: isScrolled ? "2rem" : "1.5rem",
-      paddingRight: isScrolled ? "2rem" : "1.5rem",
-      backgroundColor: isScrolled ? "rgba(3, 7, 18, 1)" : "rgba(3, 7, 18, 0.3)",
-      backdropFilter: isScrolled ? "blur(0px)" : "blur(24px) saturate(180%)",
-      borderTop: isScrolled ? "0px solid rgba(255,255,255,0)" : "1px solid rgba(255, 255, 255, 0.45)",
-      borderBottom: isScrolled ? "1px solid rgba(255, 255, 255, 0.1)" : "1px solid rgba(255, 255, 255, 0.08)",
-      boxShadow: isScrolled 
-        ? "0 4px 30px rgba(0, 0, 0, 0.4)" 
-        : "0 10px 40px -10px rgba(0, 0, 0, 0.7)",
-      duration: 0.8,
-      ease: "power4.inOut",
-      overwrite: "auto"
-    });
-
-    // Animate logos in sync
     if (logoIcon && logoText) {
-      gsap.to(logoIcon, {
-        opacity: isScrolled ? 1 : 0,
-        scale: isScrolled ? 1 : 0.8,
-        x: isScrolled ? 0 : -10,
-        duration: 0.6,
-        ease: "power3.inOut"
-      });
-      gsap.to(logoText, {
-        opacity: isScrolled ? 0 : 1,
-        scale: isScrolled ? 1.1 : 1,
-        x: isScrolled ? 10 : 0,
-        duration: 0.6,
-        ease: "power3.inOut"
-      });
+      logoIcon.style.transition = "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
+      logoText.style.transition = "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
+      
+      logoIcon.style.opacity = isScrolled ? "1" : "0";
+      logoIcon.style.transform = isScrolled ? "scale(1) translateX(0)" : "scale(0.8) translateX(-10px)";
+      
+      logoText.style.opacity = isScrolled ? "0" : "1";
+      logoText.style.transform = isScrolled ? "scale(1.1) translateX(10px)" : "scale(1) translateX(0)";
     }
   }, [isScrolled, mounted]);
 
@@ -141,17 +113,23 @@ export function Header() {
     <header className="fixed top-0 z-50 w-full flex justify-center pointer-events-none">
       <div
         ref={headerRef}
-        className="pointer-events-auto flex items-center justify-between relative overflow-hidden"
+        className="pointer-events-auto flex items-center justify-between relative overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
         style={{
-          width: "85%",
-          maxWidth: "850px",
-          marginTop: "24px",
-          height: "56px",
-          borderRadius: "100px",
-          backgroundColor: "rgba(3, 7, 18, 0.3)",
-          backdropFilter: "blur(24px) saturate(180%)",
-          borderTop: "1px solid rgba(255, 255, 255, 0.45)",
-          borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+          width: isScrolled ? "100%" : "85%",
+          maxWidth: isScrolled ? "100%" : "850px",
+          marginTop: isScrolled ? "0px" : "24px",
+          height: isScrolled ? "64px" : "56px",
+          paddingLeft: isScrolled ? "2rem" : "1.5rem",
+          paddingRight: isScrolled ? "2rem" : "1.5rem",
+          borderRadius: isScrolled ? "0px" : "100px",
+          backgroundColor: isScrolled ? "rgba(3, 7, 18, 0.9)" : "rgba(3, 7, 18, 0.3)",
+          backdropFilter: isScrolled ? "blur(8px) saturate(150%)" : "blur(12px) saturate(180%)",
+          WebkitBackdropFilter: isScrolled ? "blur(8px) saturate(150%)" : "blur(12px) saturate(180%)",
+          borderTop: isScrolled ? "0px solid rgba(255,255,255,0)" : "1px solid rgba(255, 255, 255, 0.3)",
+          borderBottom: isScrolled ? "1px solid rgba(255, 255, 255, 0.1)" : "1px solid rgba(255, 255, 255, 0.08)",
+          boxShadow: isScrolled 
+            ? "0 4px 20px rgba(0, 0, 0, 0.3)" 
+            : "0 10px 30px -10px rgba(0, 0, 0, 0.5)",
         }}
       >
         {/* Logo Section */}

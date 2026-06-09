@@ -300,10 +300,18 @@ export function AIDescriptionGeneratorComponent({
       {/* Helper Text */}
       {!showPreview && !error && (
         <div className="text-xs text-muted-foreground">
-          💡 AI will generate a professional description based on your project title, category, and technologies.
-          {!hasRequiredFields && (
-            <span className="text-yellow-600 dark:text-yellow-400">
-              {" "}Enter a project title to enable AI generation.
+          {context.imageUrl ? (
+            <span className="flex items-center gap-1">
+              🖼️ <span className="text-blue-500 dark:text-blue-400 font-medium">Image detected</span> — AI will analyze your project image to generate a more accurate description.
+            </span>
+          ) : (
+            <span>
+              💡 AI will generate a professional description based on your project title, category, and technologies.
+              {!hasRequiredFields && (
+                <span className="text-yellow-600 dark:text-yellow-400">
+                  {" "}Enter a project title to enable AI generation.
+                </span>
+              )}
             </span>
           )}
         </div>

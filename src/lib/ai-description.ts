@@ -7,6 +7,7 @@ export interface ProjectContext {
   type?: string;
   technologies?: string[];
   year?: string;
+  imageUrl?: string; // optional: if provided, AI will analyze the image visually
 }
 
 export class AIDescriptionGenerator {

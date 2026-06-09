@@ -177,6 +177,12 @@ export function ProjectsManager(): JSX.Element {
       return;
     }
 
+    // Development requires a demo/live URL
+    if (formData.category === 'development' && !formData.demoUrl) {
+      alert('Development projects require a Demo/Live URL');
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
 
@@ -752,7 +758,8 @@ export function ProjectsManager(): JSX.Element {
                     category: formData.category,
                     type: formData.type,
                     technologies: formData.technologies,
-                    year: formData.year
+                    year: formData.year,
+                    imageUrl: formData.image || undefined,
                   }}
                   currentDescription={formData.description}
                   onDescriptionGenerated={(description) => 
@@ -812,29 +819,64 @@ export function ProjectsManager(): JSX.Element {
                 />
               </div>
 
-              {/* URLs */}
-              <div className="grid grid-cols-2 gap-4">
+              {/* URLs — berbeda per kategori */}
+              {formData.category === 'development' && (
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      Demo/Live URL <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="url"
+                      value={formData.demoUrl}
+                      onChange={(e) => setFormData(prev => ({ ...prev, demoUrl: e.target.value }))}
+                      className="w-full px-3 py-2 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      placeholder="https://yoursite.com"
+                      required
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">Link live website / demo app (wajib)</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">GitHub/Source URL</label>
+                    <input
+                      type="url"
+                      value={formData.githubUrl}
+                      onChange={(e) => setFormData(prev => ({ ...prev, githubUrl: e.target.value }))}
+                      className="w-full px-3 py-2 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      placeholder="https://github.com/username/repo"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">Source code (opsional)</p>
+                  </div>
+                </div>
+              )}
+
+              {formData.category === 'design' && (
                 <div>
-                  <label className="block text-sm font-medium mb-2">Demo/Live URL</label>
+                  <label className="block text-sm font-medium mb-2">Behance / Portfolio URL</label>
                   <input
                     type="url"
                     value={formData.demoUrl}
                     onChange={(e) => setFormData(prev => ({ ...prev, demoUrl: e.target.value }))}
                     className="w-full px-3 py-2 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    placeholder="https://example.com"
+                    placeholder="https://behance.net/project/..."
                   />
+                  <p className="text-xs text-muted-foreground mt-1">Link Behance, Dribbble, atau portfolio lain (opsional)</p>
                 </div>
+              )}
+
+              {formData.category === 'video' && (
                 <div>
-                  <label className="block text-sm font-medium mb-2">GitHub/Source URL</label>
+                  <label className="block text-sm font-medium mb-2">YouTube / Video URL</label>
                   <input
                     type="url"
-                    value={formData.githubUrl}
-                    onChange={(e) => setFormData(prev => ({ ...prev, githubUrl: e.target.value }))}
+                    value={formData.demoUrl}
+                    onChange={(e) => setFormData(prev => ({ ...prev, demoUrl: e.target.value }))}
                     className="w-full px-3 py-2 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    placeholder="https://github.com/username/repo"
+                    placeholder="https://youtube.com/watch?v=..."
                   />
+                  <p className="text-xs text-muted-foreground mt-1">Link YouTube atau platform video lain (opsional)</p>
                 </div>
-              </div>
+              )}
 
               {/* Technologies */}
               <div>
