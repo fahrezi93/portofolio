@@ -17,6 +17,11 @@ export function PortfolioTabs() {
   const [isMobile, setIsMobile] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
+  const handleTabChange = (tabId: TabType) => {
+    setActiveTab(tabId);
+    window.history.replaceState(null, "", `#portfolio-${tabId}`);
+  };
+
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -29,8 +34,42 @@ export function PortfolioTabs() {
     checkMobile();
     checkReducedMotion();
 
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace("#", "");
+      if (!hash) return;
+
+      let targetTab: TabType | null = null;
+      if (hash === "design" || hash === "portfolio-design") {
+        targetTab = "design";
+      } else if (hash === "editing" || hash === "portfolio-editing") {
+        targetTab = "editing";
+      } else if (hash === "development" || hash === "portfolio-development") {
+        targetTab = "development";
+      }
+
+      if (targetTab) {
+        setActiveTab(targetTab);
+        
+        // Wait briefly for component to mount and render, then scroll to portfolio
+        setTimeout(() => {
+          const portfolioSection = document.getElementById("portfolio");
+          if (portfolioSection) {
+            const y = portfolioSection.getBoundingClientRect().top + window.scrollY - 80;
+            window.scrollTo({ top: y, behavior: "smooth" });
+          }
+        }, 150);
+      }
+    };
+
+    // Run on initial load
+    handleHashChange();
+
     window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("hashchange", handleHashChange);
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener("hashchange", handleHashChange);
+    };
   }, []);
 
   const tabs = [
@@ -160,7 +199,7 @@ export function PortfolioTabs() {
                   return (
                     <div key={tab.id} className="flex items-center gap-2 md:gap-8">
                       <button
-                        onClick={() => setActiveTab(tab.id)}
+                        onClick={() => handleTabChange(tab.id)}
                         className={`group relative py-2 text-sm transition-all duration-500 ${
                           isActive ? "text-white" : "text-white/40 hover:text-white/60"
                         }`}
