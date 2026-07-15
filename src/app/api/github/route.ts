@@ -38,7 +38,7 @@ export async function GET() {
                 created_at: "2022-01-01T00:00:00Z",
                 bio: "Front-End Developer | UI/UX Enthusiast",
                 location: "Indonesia",
-                company: "Student",
+                company: "Fresh Graduate",
                 login: GITHUB_USERNAME
             },
             repos: []

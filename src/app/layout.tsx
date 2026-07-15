@@ -28,7 +28,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: 'Mohammad Fahrezi - Portofolio Fullstack Developer & Graphic Designer',
-  description: "Mohammad Fahrezi's Portfolio. A Computer Science student at Sriwijaya University focused on Fullstack Development and Graphic Design. Building modern and intuitive web applications.",
+  description: "Mohammad Fahrezi's Portfolio. A Computer Science fresh graduate from Sriwijaya University focused on Fullstack Development and Graphic Design. Building modern and intuitive web applications.",
   keywords: ['Mohammad Fahrezi', 'Portfolio Mohammad Fahrezi', 'Fullstack Developer', 'Graphic Designer', 'React', 'Next.js', 'TypeScript', 'Web Developer', 'Universitas Sriwijaya', 'Portfolio Mohammad Fahrezi'],
   authors: [{ name: 'Mohammad Fahrezi' }],
   creator: 'Mohammad Fahrezi',
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://www.fahrezi.tech',
     title: 'Mohammad Fahrezi - Portfolio Fullstack Developer & Graphic Designer',
-    description: "Mohammad Fahrezi's Portfolio. A Computer Science student at Sriwijaya University focused on Fullstack Development and Graphic Design.",
+    description: "Mohammad Fahrezi's Portfolio. A Computer Science fresh graduate from Sriwijaya University focused on Fullstack Development and Graphic Design.",
     siteName: 'Mohammad Fahrezi Portfolio',
     images: [
       {
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Mohammad Fahrezi - Portfolio Fullstack Developer & Graphic Designer',
-    description: "Mohammad Fahrezi's Portfolio. A Computer Science student focused on Fullstack Development and Graphic Design.",
+    description: "Mohammad Fahrezi's Portfolio. A Computer Science fresh graduate focused on Fullstack Development and Graphic Design.",
     images: ['/images/thumbnail-porto.png'],
     creator: '@fahrezi93',
   },
@@ -113,7 +113,7 @@ export default function RootLayout({
                 "@type": "Person",
                 "name": "Mohammad Fahrezi",
                 "jobTitle": "Fullstack Developer & Graphic Designer",
-                "description": "Mohammad Fahrezi's Portfolio. A Computer Science student at Sriwijaya University focused on Fullstack Development and Graphic Design",
+                "description": "Mohammad Fahrezi's Portfolio. A Computer Science fresh graduate from Sriwijaya University focused on Fullstack Development and Graphic Design",
                 "url": "https://www.fahrezi.tech",
                 "sameAs": [
                   "https://github.com/fahrezi93",

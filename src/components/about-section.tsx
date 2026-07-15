@@ -162,7 +162,7 @@ export function AboutSection() {
                 className="h-14 px-8 bg-transparent hover:bg-white/5 border-white/10 text-white rounded-full font-medium transition-colors backdrop-blur-md"
               >
                 <a
-                  href="/CV-Fahrezi-new.pdf"
+                  href="/CV%20Fahrezi%20Dev.pdf"
                   download
                   className="flex items-center gap-3"
                 >
