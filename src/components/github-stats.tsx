@@ -44,18 +44,14 @@ export function GitHubStats() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const [statsRes, reposRes] = await Promise.all([
-          fetch(`https://api.github.com/users/${GITHUB_USERNAME}`),
-          fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=10`)
-        ]);
-
-        if (!statsRes.ok || !reposRes.ok) throw new Error('Failed to fetch GitHub data');
-
-        const statsData = await statsRes.json();
-        const reposData = await reposRes.json();
-
-        setStats(statsData);
-        setRepos(reposData.filter((repo: any) => !repo.fork).slice(0, 6));
+        const res = await fetch('/api/github');
+        if (!res.ok) throw new Error('Failed to fetch GitHub data');
+        
+        const data = await res.json();
+        
+        setStats(data.user);
+        // Ensure repos are filtered and limited as expected
+        setRepos(Array.isArray(data.repos) ? data.repos.filter((repo: any) => !repo.fork).slice(0, 6) : []);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
