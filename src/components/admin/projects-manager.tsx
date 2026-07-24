@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
 import { 
   Plus, 
@@ -29,8 +30,8 @@ interface Project {
   description: string;
   category: 'development' | 'design' | 'video';
   image: string;
-  demoUrl?: string;
-  githubUrl?: string;
+  demoUrl?: string | null;
+  githubUrl?: string | null;
   technologies: string[];
   status: string;
   featured: boolean;
@@ -196,8 +197,8 @@ export function ProjectsManager(): JSX.Element {
           type: formData.type || formData.category,
           year: formData.year,
           image_url: formData.image,
-          demo_url: formData.demoUrl || undefined,
-          github_url: formData.githubUrl || undefined,
+          demo_url: formData.demoUrl || null,
+          github_url: formData.githubUrl || null,
           technologies: formData.technologies,
           status: formData.status,
           featured: formData.featured
@@ -417,8 +418,8 @@ export function ProjectsManager(): JSX.Element {
           type: project.type,
           year: project.year,
           image_url: project.image,
-          demo_url: project.demoUrl,
-          github_url: project.githubUrl,
+          demo_url: project.demoUrl || null,
+          github_url: project.githubUrl || null,
           technologies: project.technologies,
           status: project.status,
           featured: newFeaturedStatus
@@ -719,8 +720,8 @@ export function ProjectsManager(): JSX.Element {
       )}
 
       {/* Add/Edit Modal */}
-      {(showAddModal || editingProject) && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+      {(showAddModal || editingProject) && typeof document !== 'undefined' && createPortal(
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-[100]">
           <div className="bg-card rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <h3 className="text-lg font-semibold mb-4">
               {editingProject ? 'Edit Project' : 'Add New Project'}
@@ -942,7 +943,8 @@ export function ProjectsManager(): JSX.Element {
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

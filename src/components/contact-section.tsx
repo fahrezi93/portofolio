@@ -20,6 +20,7 @@ import { useLanguage } from "@/context/language-context";
 import emailjs from '@emailjs/browser';
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { supabase } from "@/lib/supabase";
 
 
 const formSchema = z.object({
@@ -62,6 +63,19 @@ export function ContactSection() {
       reply_to: values.email,
       to_name: 'Fahrezi'
     };
+
+    // Save to Supabase
+    supabase.from('contacts').insert([
+      {
+        name: values.name,
+        email: values.email,
+        message: values.message
+      }
+    ]).then(({ error }) => {
+      if (error) {
+        console.error("Error saving contact message to Supabase:", error);
+      }
+    });
 
     emailjs.send(serviceId, templateId, templateParams, publicKey)
       .then((response) => {

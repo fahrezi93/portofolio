@@ -42,3 +42,18 @@ export interface CommentInsert {
   pinned?: boolean
   hidden?: boolean
 }
+
+export interface ContactMessage {
+  id: string
+  name: string
+  email: string
+  message: string
+  created_at: string
+  is_read: boolean
+}
+
+export interface ContactMessageInsert {
+  name: string
+  email: string
+  message: string
+}

@@ -20,8 +20,8 @@ interface Project {
   technologies: string[];
   type: string;
   year: string;
-  githubUrl?: string;
-  liveUrl?: string;
+  githubUrl?: string | null;
+  liveUrl?: string | null;
   status: string;
   category: string;
   createdAt: string;

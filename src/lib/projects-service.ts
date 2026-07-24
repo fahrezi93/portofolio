@@ -9,8 +9,8 @@ export interface ProjectData {
   type?: string;
   year: string;
   image_url: string;
-  demo_url?: string;
-  github_url?: string;
+  demo_url?: string | null;
+  github_url?: string | null;
   technologies: string[];
   status?: string;
   featured: boolean;

@@ -9,15 +9,18 @@ import {
   LogOut,
   User,
   BarChart3,
-  Eye
+  Eye,
+  Mail,
+  Plus
 } from 'lucide-react';
 import { useAdmin } from '@/context/admin-context';
 import { Button } from '@/components/ui/button';
 import { ProjectsManager } from '@/components/admin/projects-manager';
 import { CommentsManager } from '@/components/admin/comments-manager';
+import { ContactsManager } from '@/components/admin/contacts-manager';
 import { supabase } from '@/lib/supabase';
 
-type TabType = 'overview' | 'projects' | 'comments';
+type TabType = 'overview' | 'projects' | 'comments' | 'messages';
 
 export function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
@@ -27,6 +30,7 @@ export function AdminDashboard() {
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
     { id: 'projects', label: 'Projects', icon: FolderOpen },
     { id: 'comments', label: 'Comments', icon: MessageSquare },
+    { id: 'messages', label: 'Messages', icon: Mail },
   ] as const;
 
   const renderContent = () => {
@@ -37,87 +41,86 @@ export function AdminDashboard() {
         return <ProjectsManager />;
       case 'comments':
         return <CommentsManager />;
+      case 'messages':
+        return <ContactsManager />;
       default:
         return <OverviewPanel onTabChange={setActiveTab} />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-950/20">
-      {/* Header */}
-      <header className="bg-card border-b border-border shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#0A0A0A] text-white selection:bg-white/20">
+      {/* Sleek Glass Header */}
+      <header className="sticky top-0 z-30 bg-[#0A0A0A]/80 backdrop-blur-xl border-b border-white/5">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-primary to-purple-600 rounded-lg flex items-center justify-center">
-                <User className="w-5 h-5 text-white" />
+            <div className="flex items-center gap-4">
+              <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
+                <User className="w-4 h-4 text-white/70" />
               </div>
-              <div>
-                <h1 className="text-xl font-bold text-foreground">Admin Dashboard</h1>
-                <p className="text-xs text-muted-foreground">Portfolio Management</p>
+              <div className="flex flex-col">
+                <span className="text-sm font-medium text-white/90">Fahrezi Workspace</span>
+                <span className="text-[10px] uppercase tracking-widest text-white/40 font-medium">Admin</span>
               </div>
             </div>
             
-            <div className="flex items-center gap-3">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => window.open('/', '_blank')}
-                className="flex items-center gap-2"
+            <div className="flex items-center gap-4">
+              <a 
+                href="/" 
+                target="_blank" 
+                rel="noreferrer"
+                className="text-xs font-medium text-white/60 hover:text-white flex items-center gap-2 transition-colors"
               >
                 <Eye className="w-4 h-4" />
-                View Site
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
+                Live Site
+              </a>
+              <div className="w-[1px] h-4 bg-white/10"></div>
+              <button
                 onClick={logout}
-                className="flex items-center gap-2 text-red-600 hover:text-red-700"
+                className="text-xs font-medium text-red-400/80 hover:text-red-400 flex items-center gap-2 transition-colors"
               >
                 <LogOut className="w-4 h-4" />
                 Logout
-              </Button>
+              </button>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex gap-8">
-          {/* Sidebar */}
-          <div className="w-64 flex-shrink-0">
-            <nav className="bg-card rounded-xl p-4 shadow-sm border border-border">
-              <div className="space-y-2">
-                {tabs.map((tab) => {
-                  const IconComponent = tab.icon;
-                  const isActive = activeTab === tab.id;
-                  
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveTab(tab.id as TabType)}
-                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                        isActive
-                          ? 'bg-primary text-primary-foreground shadow-sm'
-                          : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                      }`}
-                    >
-                      <IconComponent className="w-5 h-5" />
-                      <span className="font-medium">{tab.label}</span>
-                    </button>
-                  );
-                })}
-              </div>
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-10">
+        <div className="flex flex-col lg:flex-row gap-12">
+          {/* Minimalist Sidebar */}
+          <div className="lg:w-56 flex-shrink-0">
+            <nav className="flex flex-row lg:flex-col gap-1 overflow-x-auto pb-4 lg:pb-0 scrollbar-none">
+              {tabs.map((tab) => {
+                const IconComponent = tab.icon;
+                const isActive = activeTab === tab.id;
+                
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id as TabType)}
+                    className={`relative flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all duration-300 ${
+                      isActive
+                        ? 'text-white bg-white/10'
+                        : 'text-white/40 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    <IconComponent className={`w-4 h-4 ${isActive ? 'opacity-100' : 'opacity-60'}`} />
+                    <span className="font-medium">{tab.label}</span>
+                  </button>
+                );
+              })}
             </nav>
           </div>
 
-          {/* Main Content */}
-          <div className="flex-1">
+          {/* Main Content Area */}
+          <div className="flex-1 min-w-0">
             <motion.div
               key={activeTab}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.2 }}
+              initial={{ opacity: 0, filter: 'blur(4px)', y: 10 }}
+              animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
             >
               {renderContent()}
             </motion.div>
@@ -134,118 +137,116 @@ function OverviewPanel({ onTabChange }: { onTabChange: (tab: TabType) => void })
   const [totalProjects, setTotalProjects] = useState<number>(0);
   const [isLoadingComments, setIsLoadingComments] = useState(true);
   const [isLoadingProjects, setIsLoadingProjects] = useState(true);
+  
+  // Analytics State
+  const [pageViews, setPageViews] = useState<string>('N/A');
+  const [engagement, setEngagement] = useState<string>('N/A');
+  const [isLoadingAnalytics, setIsLoadingAnalytics] = useState(true);
 
-  // Fetch data from Supabase
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoadingComments(true);
         setIsLoadingProjects(true);
         
-        // Check if Supabase is configured
         if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-          console.log('Supabase not configured, using fallback data');
           setTotalComments(0);
-          setTotalProjects(39); // Fallback to static count
+          setTotalProjects(39);
           setIsLoadingComments(false);
           setIsLoadingProjects(false);
           return;
         }
 
-        // Fetch comments count
-        const { count: commentsCount, error: commentsError } = await supabase
+        const { count: commentsCount } = await supabase
           .from('comments')
           .select('*', { count: 'exact', head: true });
 
-        if (commentsError) {
-          console.error('Error fetching comments count:', commentsError);
-          setTotalComments(0);
-        } else {
-          setTotalComments(commentsCount || 0);
-        }
+        setTotalComments(commentsCount || 0);
 
-        // Fetch projects count
-        const { count: projectsCount, error: projectsError } = await supabase
+        const { count: projectsCount } = await supabase
           .from('projects')
           .select('*', { count: 'exact', head: true });
 
-        if (projectsError) {
-          console.error('Error fetching projects count:', projectsError);
-          setTotalProjects(39); // Fallback to static count
-        } else {
-          setTotalProjects(projectsCount || 0);
-        }
+        setTotalProjects(projectsCount || 0);
 
       } catch (error) {
         console.error('Error fetching data:', error);
-        setTotalComments(0);
-        setTotalProjects(39); // Fallback to static count
       } finally {
         setIsLoadingComments(false);
         setIsLoadingProjects(false);
       }
     };
 
-    fetchData();
-  }, []);
+    const fetchAnalytics = async () => {
+      try {
+        setIsLoadingAnalytics(true);
+        const response = await fetch('/api/analytics');
+        const result = await response.json();
+        
+        if (result.success && result.data) {
+          setPageViews(result.data.pageViews);
+          setEngagement(result.data.engagementRate);
+        }
+      } catch (error) {
+        console.error('Error fetching analytics:', error);
+      } finally {
+        setIsLoadingAnalytics(false);
+      }
+    };
 
-  // Real data calculations
-  const pageViews = 'N/A'; // Would need analytics integration
-  const engagement = 'N/A'; // Would need analytics integration
+    fetchData();
+    fetchAnalytics();
+  }, []);
   
   const stats = [
     { 
-      label: 'Total Projects', 
+      label: 'Projects', 
       value: isLoadingProjects ? '...' : totalProjects.toString(), 
-      icon: FolderOpen, 
-      color: 'text-blue-600' 
+      icon: FolderOpen,
     },
     { 
       label: 'Comments', 
       value: isLoadingComments ? '...' : totalComments.toString(), 
-      icon: MessageSquare, 
-      color: 'text-green-600' 
+      icon: MessageSquare,
     },
-    { label: 'Page Views', value: pageViews, icon: Eye, color: 'text-purple-600' },
-    { label: 'Engagement', value: engagement, icon: BarChart3, color: 'text-orange-600' },
+    { 
+      label: 'Page Views', 
+      value: isLoadingAnalytics ? '...' : pageViews, 
+      icon: Eye,
+    },
+    { 
+      label: 'Engagement', 
+      value: isLoadingAnalytics ? '...' : engagement, 
+      icon: BarChart3,
+    },
   ];
 
-  // Quick Actions handlers
-  const handleAddProject = () => {
-    onTabChange('projects');
-  };
-
-  const handleModerateComments = () => {
-    onTabChange('comments');
-  };
-
-
   return (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-bold text-foreground mb-2">Dashboard Overview</h2>
-        <p className="text-muted-foreground">Welcome back! Here's what's happening with your portfolio.</p>
+    <div className="space-y-12">
+      <div className="space-y-2">
+        <h2 className="text-3xl font-light tracking-tight text-white">Overview</h2>
+        <p className="text-sm text-white/40">Performance metrics and quick access.</p>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Bento Grid Stats */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat, index) => {
           const IconComponent = stat.icon;
           return (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-card rounded-xl p-6 shadow-sm border border-border"
+              transition={{ delay: index * 0.05 }}
+              className="group bg-white/[0.02] border border-white/5 rounded-2xl p-6 hover:bg-white/[0.04] transition-colors"
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">{stat.label}</p>
-                  <p className="text-2xl font-bold text-foreground mt-1">{stat.value}</p>
+              <div className="flex flex-col h-full justify-between gap-6">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-medium text-white/40 tracking-wide uppercase">{stat.label}</span>
+                  <IconComponent className="w-4 h-4 text-white/20 group-hover:text-white/60 transition-colors" />
                 </div>
-                <div className={`p-3 rounded-lg bg-muted ${stat.color}`}>
-                  <IconComponent className="w-6 h-6" />
+                <div>
+                  <span className="text-4xl font-light text-white tracking-tight">{stat.value}</span>
                 </div>
               </div>
             </motion.div>
@@ -253,25 +254,24 @@ function OverviewPanel({ onTabChange }: { onTabChange: (tab: TabType) => void })
         })}
       </div>
 
-      {/* Quick Actions */}
-      <div className="bg-card rounded-xl p-6 shadow-sm border border-border">
-        <h3 className="text-lg font-semibold text-foreground mb-4">Quick Actions</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Button 
-            onClick={handleAddProject}
-            className="flex items-center gap-2 h-12 hover:scale-105 transition-transform"
+      {/* Actions (Minimalist style) */}
+      <div className="space-y-4">
+        <h3 className="text-sm font-medium text-white/40 tracking-wide uppercase">Shortcuts</h3>
+        <div className="flex flex-wrap gap-4">
+          <button 
+            onClick={() => onTabChange('projects')}
+            className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full text-sm font-medium hover:bg-white/90 transition-colors"
           >
-            <FolderOpen className="w-5 h-5" />
-            Add New Project
-          </Button>
-          <Button 
-            variant="outline" 
-            onClick={handleModerateComments}
-            className="flex items-center gap-2 h-12 hover:scale-105 transition-transform"
+            <Plus className="w-4 h-4" />
+            New Project
+          </button>
+          <button 
+            onClick={() => onTabChange('comments')}
+            className="flex items-center gap-2 bg-white/5 border border-white/10 text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white/10 transition-colors"
           >
-            <MessageSquare className="w-5 h-5" />
+            <MessageSquare className="w-4 h-4 opacity-50" />
             Moderate Comments
-          </Button>
+          </button>
         </div>
       </div>
     </div>
